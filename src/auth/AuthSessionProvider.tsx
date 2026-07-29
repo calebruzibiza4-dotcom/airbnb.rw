@@ -59,13 +59,15 @@ function normalizeSessionUser(payload: any): SessionUser | null {
 
   const email = typeof payload.email === 'string' ? payload.email : '';
   const name = typeof payload.name === 'string' ? payload.name : '';
-  const { firstName, lastName } = getNameParts(name);
+  const firstNameFromPayload = typeof payload.firstName === 'string' ? payload.firstName : '';
+  const lastNameFromPayload = typeof payload.lastName === 'string' ? payload.lastName : '';
+  const { firstName, lastName } = getNameParts(firstNameFromPayload || name);
 
   return {
-    id: typeof payload.id === 'string' ? payload.id : 'guest',
-    firstName: typeof payload.firstName === 'string' ? payload.firstName : firstName,
-    lastName: typeof payload.lastName === 'string' ? payload.lastName : lastName,
-    name: buildDisplayName(name, email),
+    id: typeof payload.id === 'string' ? payload.id : typeof payload.sub === 'string' ? payload.sub : 'guest',
+    firstName: firstNameFromPayload || firstName,
+    lastName: lastNameFromPayload || lastName,
+    name: buildDisplayName(name || `${firstName} ${lastName}`.trim(), email),
     email,
     image: typeof payload.image === 'string' ? payload.image : null,
     phone: typeof payload.phone === 'string' ? payload.phone : null,
@@ -102,9 +104,24 @@ export function AuthSessionProvider({ children }: { children: ReactNode }) {
   });
 
   useEffect(() => {
-    const storedSession = readStoredSession();
-    setSession(storedSession);
-    setStatus(storedSession ? 'authenticated' : 'unauthenticated');
+    let active = true;
+
+    const hydrateSession = async () => {
+      try {
+        const storedSession = readStoredSession();
+        setSession(storedSession);
+        setStatus(storedSession ? 'authenticated' : 'unauthenticated');
+      } catch {
+        setSession(null);
+        setStatus('unauthenticated');
+      }
+    };
+
+    void hydrateSession();
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   const updateSession = useCallback((nextSession: AppSession) => {

@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarCheck, faCreditCard, faGear, faGlobe, faReceipt, faHouseChimneyUser, faUser, faUserPen } from '@fortawesome/free-solid-svg-icons';
-import Avatar from './Avatar';
+import ProfileAvatar from './ProfileAvatar';
+import ProfileHeader from './ProfileHeader';
 
 
 
@@ -8,6 +9,7 @@ type UserMenuProps = {
   open: boolean;
   onToggle: () => void;
   userName?: string | null;
+  userEmail?: string | null;
   userImage?: string | null;
   onSignOut: () => void;
 };
@@ -23,7 +25,7 @@ const primaryItems = [
   { label: 'Account Settings', icon: faGear, iconClassName: 'text-slate-700' },
 ];
 
-export default function UserMenu({ open, onToggle, userName, userImage, onSignOut }: UserMenuProps) {
+export default function UserMenu({ open, onToggle, userName, userEmail, userImage, onSignOut }: UserMenuProps) {
   return (
     <div className="relative shrink-0">
       <button
@@ -34,15 +36,12 @@ export default function UserMenu({ open, onToggle, userName, userImage, onSignOu
         aria-haspopup="menu"
         className="group inline-flex h-12 items-center gap-3 rounded-full border border-emerald-200 bg-white px-2.5 pr-3 text-slate-700 shadow-sm transition duration-200 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2"
       >
-        <Avatar src={userImage} name={userName} sizeClassName="h-8 w-8" />
+        <ProfileAvatar src={userImage} name={userName} sizeClassName="h-8 w-8" className="ring-2 ring-white/80" />
         <span className="hidden text-sm font-semibold text-slate-900 sm:block">{userName || 'Account'}</span>
       </button>
       {open ? (
         <div role="menu" className="absolute right-0 top-full z-20 mt-2 w-72 origin-top-right animate-[dropdown_200ms_ease-out] rounded-2xl border border-slate-200 bg-white p-2 shadow-xl shadow-slate-900/10">
-          <div className="rounded-2xl border border-emerald-100 bg-emerald-50/70 p-2.5">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-700">Signed in</p>
-            <p className="mt-0.5 text-sm font-semibold text-slate-900">{userName || 'Welcome back'}</p>
-          </div>
+          <ProfileHeader name={userName} email={userEmail} image={userImage} />
           <div className="mt-1.5 space-y-1">
             {primaryItems.map((item) => (
               <button key={item.label} type="button" role="menuitem" className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-left text-sm text-slate-700 transition duration-200 hover:bg-slate-100 focus-visible:bg-slate-100 focus-visible:outline-none">

@@ -103,7 +103,10 @@ export async function POST(request: Request) {
           id: existingUser._id?.toString?.() ?? null,
           email: existingUser.email,
           name: existingUser.name,
+          firstName: existingUser.firstName ?? null,
+          lastName: existingUser.lastName ?? null,
           phone: existingUser.phone,
+          image: existingUser.image ?? null,
         },
       }),
       {

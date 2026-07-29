@@ -36,7 +36,14 @@ export default function AccountMenu({ onLogIn, onSignUp, onSignOutComplete }: Ac
   return (
     <div ref={menuRef}>
       {authenticated ? (
-        <UserMenu open={open} onToggle={() => setOpen((value) => !value)} userName={session?.user?.name || session?.user?.email} userImage={session?.user?.image} onSignOut={handleSignOut} />
+        <UserMenu
+          open={open}
+          onToggle={() => setOpen((value) => !value)}
+          userName={session?.user?.name || session?.user?.email}
+          userEmail={session?.user?.email}
+          userImage={session?.user?.image}
+          onSignOut={handleSignOut}
+        />
       ) : (
         <GuestMenu open={open} onToggle={() => setOpen((value) => !value)} onLogIn={onLogIn} onSignUp={onSignUp} />
       )}
