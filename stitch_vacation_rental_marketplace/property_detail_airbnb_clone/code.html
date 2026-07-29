@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>InvisibleFrame | Luxury Property Details</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-container": "#fffbff",
+                    "outline-variant": "#e5bdbe",
+                    "on-surface": "#1a1c1c",
+                    "on-secondary-fixed-variant": "#474746",
+                    "primary-fixed-dim": "#ffb2b6",
+                    "on-error-container": "#93000a",
+                    "background": "#f9f9f9",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "tertiary": "#006a45",
+                    "on-tertiary": "#ffffff",
+                    "surface-bright": "#f9f9f9",
+                    "tertiary-fixed-dim": "#62dca3",
+                    "secondary-container": "#e2dfde",
+                    "surface": "#f9f9f9",
+                    "secondary-fixed": "#e5e2e1",
+                    "on-tertiary-fixed": "#002113",
+                    "on-primary": "#ffffff",
+                    "secondary": "#5f5e5e",
+                    "outline": "#906f70",
+                    "on-secondary-container": "#636262",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed-variant": "#920029",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#ffb2b6",
+                    "surface-container-low": "#f3f3f3",
+                    "surface-dim": "#dadada",
+                    "primary-fixed": "#ffdada",
+                    "surface-container-high": "#e8e8e8",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#f6fff6",
+                    "inverse-surface": "#2f3131",
+                    "on-primary-fixed": "#40000d",
+                    "surface-variant": "#e2e2e2",
+                    "on-surface-variant": "#5c3f41",
+                    "surface-container-highest": "#e2e2e2",
+                    "on-tertiary-fixed-variant": "#005234",
+                    "primary-container": "#e21e4a",
+                    "on-background": "#1a1c1c",
+                    "tertiary-container": "#008558",
+                    "surface-tint": "#be0038",
+                    "inverse-on-surface": "#f1f1f1",
+                    "primary": "#ba0036",
+                    "tertiary-fixed": "#80f9bd",
+                    "surface-container": "#eeeeee",
+                    "on-secondary-fixed": "#1b1c1c"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "24px",
+                    "unit": "8px",
+                    "container-max": "1280px",
+                    "gutter": "24px",
+                    "margin-desktop": "80px",
+                    "stack-lg": "48px",
+                    "margin-mobile": "20px",
+                    "stack-sm": "12px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "label-sm": ["Inter"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "label-md": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-md": ["22px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "18px", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["26px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-rows: repeat(2, 250px);
+            gap: 8px;
+        }
+        .gallery-item-main { grid-column: 1 / 2; grid-row: 1 / 3; }
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: 300px;
+            }
+            .gallery-item-sub { display: none; }
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .shadow-soft {
+            box-shadow: 0px 6px 16px rgba(0,0,0,0.12);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-surface-container-lowest border-b border-secondary-container dark:border-outline-variant sticky top-0 z-50">
+<div class="flex justify-between items-center h-20 px-gutter w-full max-w-container-max mx-auto">
+<div class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed">
+                InvisibleFrame
+            </div>
+<nav class="hidden md:flex gap-8 font-label-md text-label-md">
+<a class="text-on-surface dark:text-on-surface font-bold border-b-2 border-on-surface py-2" href="#">Stays</a>
+<a class="text-secondary dark:text-on-secondary-fixed-variant hover:bg-surface-container-low transition-colors duration-200 py-2" href="#">Experiences</a>
+<a class="text-secondary dark:text-on-secondary-fixed-variant hover:bg-surface-container-low transition-colors duration-200 py-2" href="#">Online Experiences</a>
+</nav>
+<div class="flex items-center gap-4">
+<span class="hidden lg:block font-label-md text-label-md text-on-surface cursor-pointer hover:bg-surface-container-low p-3 rounded-full transition-colors">Become a Host</span>
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-on-surface">language</span>
+</button>
+<div class="flex items-center gap-2 p-1 pl-3 border border-outline-variant rounded-full cursor-pointer hover:shadow-soft transition-all bg-surface-container-lowest">
+<span class="material-symbols-outlined text-on-surface">menu</span>
+<img alt="User menu" class="w-8 h-8 rounded-full bg-secondary-container" data-alt="A clean, minimalist profile avatar placeholder featuring a soft gray geometric user icon on a crisp white background, shot in bright studio lighting to match a corporate modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByK544-hyn2Ps_XHP3qa-ZT8bZVMUTT9HPNgXANLdCdJT04M7oAg8W0VuDvmzOT0mk00PgW1u5sWHGKRFA0WKL398z2QIAazhGXvA81OxoNvx_6J_Cj-M-T7al_WGTLXdzjd02aRnlVhwmOjtNIek4P6hfCzICV-GscObLNnf0kt0Vq3ySw28G_YrWwWijeLbAumgi8PNE_7mNgkpmWmOEVWq_cDIWSf7WEZRiXfqSPD0ujw-aPbNs9gKsiXHFgAVZn5FCmNLQen0"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-gutter py-stack-md">
+<!-- Title & Basic Info -->
+<div class="mb-stack-sm flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg mb-2">The Glass Pavilion: Minimalist Cliffside Sanctuary</h1>
+<div class="flex flex-wrap items-center gap-4 font-label-md text-label-md text-on-surface">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span> 4.98 · 124 reviews</span>
+<span class="hidden sm:inline">·</span>
+<span class="underline font-semibold cursor-pointer">Malibu, California, United States</span>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-surface-container-low transition-colors font-label-md underline">
+<span class="material-symbols-outlined text-[20px]">share</span> Share
+                </button>
+<button class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-surface-container-low transition-colors font-label-md underline">
+<span class="material-symbols-outlined text-[20px]">favorite</span> Save
+                </button>
+</div>
+</div>
+<!-- Image Gallery Grid -->
+<section class="gallery-grid rounded-xl overflow-hidden mb-stack-lg">
+<div class="gallery-item-main relative group cursor-pointer overflow-hidden">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="A high-resolution wide-angle architectural shot of a minimalist modern glass house perched on a cliffside in Malibu at dusk. The warm interior lighting contrasts with the cool blue coastal sky. The furniture inside is sleek and corporate-modern, utilizing a palette of white and soft gray with subtle red accents. High-quality whitespace and clarity." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAOCDzQ8vR8J4AuwOlNp2MLum7hEHzTjt_YALycFK1_RXsXcDKXaY876Aponb1JQHEU8X2i8Ok4cV3IZk7dTpul647k_h8dVqsLjDOfulfhpkf13Lhb7P0q7s-RXR6vQS2xPixitdEEaSwY5Y_gVYzCOgcNL2bznqngNF9miHOpxtMAUGUeYLWWty4uDgWfDSKhCyGclOCKGvyVNDRkHn833mNNZQJEiAWq7l7Rfc17hVB_g59xbBqM728VQf611CrUaJ1Bi1jKbtg')">
+</div>
+</div>
+<div class="gallery-item-sub relative group cursor-pointer overflow-hidden">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="Close up detail of a minimalist bedroom within a glass pavilion. Pristine white linens, a simple low-profile bed frame, and an unobstructed view of the Pacific Ocean through floor-to-ceiling windows. Bright morning light floods the room, emphasizing a clean and airy aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDPhpRiL6yNljtWydynwyGkTx42KEd38K8fG4XyyYXxly8TxT0Wj_AQLgfSjXP-n9iD1jotPySsUt0sL-DJRMdULRnaC787G6E8QTrCL58KVBf0rNx9ziAv0qwnnM47K219kBBfwFnRtjpmXyxeqhQSYGBjs8edneijSL9IsUiotoLfeAqA_gvgX_qk8XBwc26p9kPZwyanDryHrClyah49hgrwFQUXTWVsD9XQ2Ch3w6ChgG0hU7rVupAX67u7Ndyh779yXzssO9w')">
+</div>
+</div>
+<div class="gallery-item-sub relative group cursor-pointer overflow-hidden rounded-tr-xl">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="A modern designer kitchen with white marble countertops and integrated high-end appliances. The style is ultra-minimalist with no clutter, featuring a single vase with a minimalist botanical arrangement. Natural light pours in from skylights." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDGY78iTKpZ4mnkrM6bs-wIT5wE1ge7LLGnCl2_nOZpbXN-JtBTb4rbnC0ijpwCnsG8MsmotSkw8mO3TrwdJPvNcCNvveOjYb9fw_GJAsr4usDyLKtW9bkqil3iLeCJ1IcOCQrVlHks1glYMLATEIEiac2IoBzR-qrYDuGgxtiZZKO68SHAlaSCQ1pPWJ8sD1oPkh1Zsr9WQ0kWj7O9IUrURWYQDqrP4OVGL5O0GyucchKpW58Nu0vr5TVpDtOKDbpwNUx55z_W1ak')">
+</div>
+</div>
+<div class="gallery-item-sub relative group cursor-pointer overflow-hidden">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="An outdoor infinity pool area overlooking the ocean at sunset. The poolside is paved with light gray stone, and minimalist lounge chairs are arranged neatly. The atmosphere is serene, luxurious, and peaceful, captured in a high-key photographic style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDcepz_nxjbs0I1qK8v--gxakRo3cwsUqdGMHPAg8ejSeCJA2IVxFnMFlNDDvpnCzIBNRcfVHNT6waBZ1R8UJc6Vh1aPt3KfkZWyXlPLiYtgIneMCccCWIhH63vWnWg63qN-9w7WsgLGflwLXYBZUsQojutd5H8ioNN-P0rlCK2Ah5xLpzgylsfTxdPtIODY9MrKY8CKFR3smBweKw57M2e2adHb7Orz_8Pd0yCCVa3YO1yYbZ6DJ-sscvKhk_dk-exwin4rYyP-ug')">
+</div>
+</div>
+<div class="gallery-item-sub relative group cursor-pointer overflow-hidden rounded-br-xl">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="Detailed shot of the architectural structure showing the seamless transition between glass walls and steel frames. A minimalist outdoor fire pit glows softly in the twilight, reflecting in the polished surfaces of the modern home." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAQnObUkwjCDYinyE9hiid3IDPjAs_rGN5qECBLnh93zWkGiCGFkTwkqNaU_qlgSJqnMLwYmBmiN7Jo1x3GPOMArsVh0W7dhh8qzeQ8pMZoywtGUsx877-bK18znlW2GwC0Q9bsCbcU1uF-dmysjuaa_d64J5UBi0IPqLAYV1nvp5a-lGVQ6MQEO4KxrPvF3qZpjStnnt1j_Z040Vx2tQAeYpSLzSjUl-_nDfGDnXbNVylmt8KLRe7NpJtyqN3ctK1tvCj1AgzxAD4')">
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-16 relative">
+<!-- Content Left Column -->
+<div class="lg:col-span-2">
+<!-- Host Header -->
+<div class="flex justify-between items-start border-b border-secondary-container pb-stack-md mb-stack-md">
+<div>
+<h2 class="font-headline-md text-headline-md mb-1">Entire villa hosted by Julian</h2>
+<p class="font-body-md text-secondary">6 guests · 3 bedrooms · 3 beds · 3.5 baths</p>
+</div>
+<img class="w-14 h-14 rounded-full object-cover" data-alt="A professional portrait of a male host in his 40s, wearing a crisp white shirt, smiling warmly against a blurred minimalist interior background. The photo is bright, clear, and high-resolution, conveying trust and professionalism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjFufBGvp_ESw1wPIGuYR6c1BxFjnOtE-mNhvK5bB1BfrglJmnK0Wu_kAv1RoFtG3q6EV-4GF3pKIhWBZKxqIe9-aEKz7isDDGCwonp9YkLULomwF4XtxUhL7IgzGoHkiw-_7yTNUGfvlUaQwzTUIJ7VoTwAtTcKPW5wuwFqMCPXX5xpfPdpRjIJISUbLqJlmK5aYFn92TyM-9uCvMZmIYnMxc_SzPl50ZwveYs2Zp9aBEdnrAw-RksPKKRwUkPlThuAzqsPmIjc4"/>
+</div>
+<!-- Features Section -->
+<div class="space-y-6 border-b border-secondary-container pb-stack-md mb-stack-md">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface pt-1">workspace_premium</span>
+<div>
+<p class="font-label-md text-label-md">Julian is a Superhost</p>
+<p class="font-body-sm text-secondary">Superhosts are experienced, highly rated hosts who are committed to providing great stays for guests.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface pt-1">location_on</span>
+<div>
+<p class="font-label-md text-label-md">Great location</p>
+<p class="font-body-sm text-secondary">95% of recent guests gave the location a 5-star rating.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface pt-1">calendar_today</span>
+<div>
+<p class="font-label-md text-label-md">Free cancellation for 48 hours</p>
+<p class="font-body-sm text-secondary">Get a full refund if you change your mind.</p>
+</div>
+</div>
+</div>
+<!-- Description -->
+<div class="border-b border-secondary-container pb-stack-md mb-stack-md">
+<p class="font-body-lg text-on-surface mb-6 leading-relaxed">
+                        Step into a world of architectural brilliance. The Glass Pavilion is a masterclass in minimalist design, offering an immersive experience where the boundary between nature and structure dissolves. Every corner of this cliffside sanctuary has been curated to provide peace and visual inspiration.
+                    </p>
+<button class="font-label-md underline flex items-center">Show more <span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+<!-- Amenities -->
+<div class="border-b border-secondary-container pb-stack-md mb-stack-md">
+<h3 class="font-headline-md text-headline-md mb-stack-md">What this place offers</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-y-4">
+<div class="flex items-center gap-4"><span class="material-symbols-outlined">waves</span> <span class="font-body-md">Sea view</span></div>
+<div class="flex items-center gap-4"><span class="material-symbols-outlined">pool</span> <span class="font-body-md">Private infinity pool</span></div>
+<div class="flex items-center gap-4"><span class="material-symbols-outlined">wifi</span> <span class="font-body-md">High-speed WiFi</span></div>
+<div class="flex items-center gap-4"><span class="material-symbols-outlined">kitchen</span> <span class="font-body-md">Chef's kitchen</span></div>
+<div class="flex items-center gap-4"><span class="material-symbols-outlined">local_parking</span> <span class="font-body-md">Free parking on premises</span></div>
+<div class="flex items-center gap-4"><span class="material-symbols-outlined">ac_unit</span> <span class="font-body-md">Central air conditioning</span></div>
+</div>
+<button class="mt-8 px-6 py-3 border border-on-surface rounded-lg font-label-md hover:bg-surface-container-low transition-colors">Show all 45 amenities</button>
+</div>
+</div>
+<!-- Sticky Booking Widget -->
+<div class="lg:block">
+<div class="sticky top-28 bg-surface-container-lowest border border-secondary-container rounded-xl p-6 shadow-soft">
+<div class="flex justify-between items-end mb-6">
+<div>
+<span class="text-headline-md font-bold">$1,250</span>
+<span class="text-secondary font-body-md"> night</span>
+</div>
+<div class="flex items-center gap-1 font-label-md text-label-sm">
+<span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span> 4.98 · <span class="underline text-secondary">124 reviews</span>
+</div>
+</div>
+<!-- Date Picker Simulation -->
+<div class="border border-outline-variant rounded-lg overflow-hidden mb-4">
+<div class="grid grid-cols-2 border-b border-outline-variant">
+<div class="p-3 border-r border-outline-variant cursor-pointer hover:bg-surface-container-low transition-colors">
+<label class="block text-[10px] font-bold uppercase tracking-wider">Check-in</label>
+<span class="text-body-sm">12/15/2024</span>
+</div>
+<div class="p-3 cursor-pointer hover:bg-surface-container-low transition-colors">
+<label class="block text-[10px] font-bold uppercase tracking-wider">Checkout</label>
+<span class="text-body-sm">12/20/2024</span>
+</div>
+</div>
+<div class="p-3 cursor-pointer hover:bg-surface-container-low transition-colors">
+<label class="block text-[10px] font-bold uppercase tracking-wider">Guests</label>
+<span class="text-body-sm">2 guests</span>
+</div>
+</div>
+<button class="w-full bg-primary py-4 rounded-lg text-on-primary font-label-md text-lg active:scale-95 transition-transform mb-4">
+                        Reserve
+                    </button>
+<p class="text-center text-body-sm text-secondary mb-6">You won't be charged yet</p>
+<div class="space-y-3 mb-6">
+<div class="flex justify-between text-body-md">
+<span class="underline">$1,250 x 5 nights</span>
+<span>$6,250</span>
+</div>
+<div class="flex justify-between text-body-md">
+<span class="underline">Cleaning fee</span>
+<span>$250</span>
+</div>
+<div class="flex justify-between text-body-md">
+<span class="underline">InvisibleFrame service fee</span>
+<span>$845</span>
+</div>
+</div>
+<div class="pt-6 border-t border-secondary-container flex justify-between font-bold text-lg">
+<span>Total before taxes</span>
+<span>$7,345</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Reviews Section -->
+<section class="mt-stack-lg pt-stack-lg border-t border-secondary-container">
+<div class="flex items-center gap-2 mb-stack-md">
+<span class="material-symbols-outlined text-primary text-[24px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<h3 class="font-headline-md text-headline-md">4.98 · 124 reviews</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-10 mb-stack-lg">
+<!-- Review 1 -->
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<img class="w-12 h-12 rounded-full" data-alt="A candid profile photo of a smiling woman in her late 20s with a modern urban aesthetic, wearing a minimalist black turtleneck. High-key lighting, soft white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqb2d0BuO_x5rQSwcO9rvLfUKlUXHILlEi7GJONDq3B6ZR9aKRvl04cKrse1DeBAupAoFCwjkrJtxVKUylvu7E0CFLRP6363B5Ol1pD2Bbicle6PfT8T2y1gYXaoxuzUHBg7spVKtxPHhuUKCjLy8Enu6bvFHED8y32wx_hKyGpIZZGqnLWKeotx2KQ-R70HdD-hv7zHLW-tzKwatnLeRy1hBu3D7zPvamrRQZv1vHp0bS0paKk_A0n0Ikp_0bA0t9oSyvbKcj76Y"/>
+<div>
+<p class="font-label-md text-label-md">Sarah Jenkins</p>
+<p class="font-body-sm text-secondary">October 2024</p>
+</div>
+</div>
+<p class="font-body-md leading-relaxed">The architectural design of this home is simply breathtaking. We spent most of our time just watching the waves from the infinity pool. Julian was an incredible host, very responsive and helpful.</p>
+</div>
+<!-- Review 2 -->
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<img class="w-12 h-12 rounded-full" data-alt="A high-resolution headshot of a mature man with graying hair and glasses, looking sophisticated and relaxed in a navy linen shirt. Clean, minimalist backdrop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2VcKMidzK9Jm-divn_OO8YGDEqjk3G3WnThzAGDMpK7CrHZ1Euyu5vaY-opFxhRet9k2MpJ3SvToc56tq91y1qxaAXpJhvGnX0SgPakL5RdFDt-KKGG8s4Ua5axg79aiLwrbyplyI4TqFmM9k1LlAp9j3K4Z5ljQeNsbTV6Yc2uyS2jRDzh_v0IXlF4JoWBsVz3cNVAjghPAYGwmYwmPdeL0a79XPlC9fUcVbUiWbjNHnUN8h8oge5NFHtfWvBof2LHsh08LC8wc"/>
+<div>
+<p class="font-label-md text-label-md">Michael Chen</p>
+<p class="font-body-sm text-secondary">September 2024</p>
+</div>
+</div>
+<p class="font-body-md leading-relaxed">A true masterpiece of minimalist living. Everything from the high-end kitchen appliances to the comfort of the beds was top-notch. The location offers total privacy and serenity.</p>
+</div>
+<!-- Review 3 -->
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<img class="w-12 h-12 rounded-full" data-alt="Close-up portrait of a young creative professional with a friendly expression, featuring soft natural lighting that accentuates skin textures. Modern, clean aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSbuqfufpheVlfBTpoeukanhql1P_d9bGYm7TMK0PfhA2wx9N_p_XSwKD9e7BWvNUssqMP8JvfYldz9mXPDay1iXZvOS1WPaxlTdVxpiKTQYIbRfkySE-D-MM8yZrvoppSnw_jhDH1gRuYE4aq5pi9Eb9Ao-DESYoXHyBaFwpLH2BGGSMosrKvAXe2aM7V6Dl1ywVj7qGAeJEKhNcwmvDOVOmjRVO-xKPea9CPPhntx67kfDPzWEqfIcQLtW9_W7ZmCNlEY0XZaHo"/>
+<div>
+<p class="font-label-md text-label-md">Emma Rodriguez</p>
+<p class="font-body-sm text-secondary">August 2024</p>
+</div>
+</div>
+<p class="font-body-md leading-relaxed">Perfect for a quiet getaway. The glass walls make you feel like you're part of the landscape while still being in a luxury environment. Exceeded all our expectations!</p>
+</div>
+<!-- Review 4 -->
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<img class="w-12 h-12 rounded-full" data-alt="Detailed studio headshot of a middle-aged woman with a kind smile, styled with a minimalist silver necklace and professional attire. Bright, airy composition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPSgPt06NX900rJGWJfUQodEnf7AVb6A5XHDsQWtGbOYvUyd0PnrJBthDnK9E91qWtthWPh9PdPo320KKwG6xHQPhvcU3JcKmbPHjW94c5n8yl06tgSZSjawFNkn28vBpbQNk-PWc467cOYAwH01zZgVOfb2nDu32RKsVYmAOwOd00xGftEgCy9YFeF07r5sL2ZGobo6KV6eHw5fxZtgqg6g-2Ns-cZA6YehazTphq8GNjF6oRi2FtCnCMJee9VEMcvwXJXxOSYW4"/>
+<div>
+<p class="font-label-md text-label-md">David Thompson</p>
+<p class="font-body-sm text-secondary">July 2024</p>
+</div>
+</div>
+<p class="font-body-md leading-relaxed">If you appreciate modern architecture, you must stay here. The light during golden hour is magical. Immaculate cleanliness and attention to detail.</p>
+</div>
+</div>
+<button class="px-6 py-3 border border-on-surface rounded-lg font-label-md hover:bg-surface-container-low transition-colors">Show all 124 reviews</button>
+</section>
+<!-- Location Section -->
+<section class="mt-stack-lg pt-stack-lg border-t border-secondary-container">
+<h3 class="font-headline-md text-headline-md mb-stack-md">Where you'll be</h3>
+<div class="w-full h-[480px] rounded-xl overflow-hidden bg-surface-container-high relative mb-6">
+<!-- Map Placeholder -->
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A stylized minimalist map of the Malibu coastline, featuring clean lines, a muted palette of soft blues and grays, and a prominent marker indicating a location near the ocean cliffs. The design is modern, professional, and clear." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBqzL_vBqfFcD0TmOonRX-Oqso0eRh3Ylm9iTSqp8XFn86MGszCVPC5xEv3xiw_oydRTCxjJra-Y3RP0afnUXWvQJdT_bPwXrvA9s91el7jZMIdzQeZv9M3PlmSLBLMq7V0L5IaZC6s9WeHpClw6jV-E_r4zLSl5_2tja_5p8qLvLFjQuvUz2mu11yB0iUTb2bHVk1FfzrgkkE1SFbAtpsMjbXt6Apqs-L98TtaBe5ldWNe-_sJ-8ICh1_1AY2s87Sw85Jyz8DUkNI')"></div>
+<div class="absolute top-4 left-4 glass-panel p-4 rounded-lg shadow-soft font-label-md">
+                    Malibu, California
+                </div>
+</div>
+<p class="font-label-md text-on-surface mb-2">Malibu, California, United States</p>
+<p class="font-body-md text-secondary leading-relaxed max-w-2xl">Located on a private cliffside estate, the pavilion offers total seclusion while being just a 15-minute drive from the boutiques and restaurants of the Malibu Country Mart.</p>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-surface-container-highest border-t border-secondary-container dark:border-outline-variant mt-stack-lg">
+<div class="w-full py-stack-md px-gutter flex flex-col md:flex-row justify-between items-center max-w-container-max mx-auto gap-4">
+<div class="flex flex-col md:flex-row items-center gap-4 text-secondary dark:text-on-secondary-fixed-variant font-body-sm text-body-sm">
+<span class="text-label-md font-bold text-on-surface">© 2024 InvisibleFrame, Inc.</span>
+<div class="flex gap-4">
+<a class="hover:text-on-surface hover:underline transition-colors opacity-80 hover:opacity-100" href="#">Privacy</a>
+<a class="hover:text-on-surface hover:underline transition-colors opacity-80 hover:opacity-100" href="#">Terms</a>
+<a class="hover:text-on-surface hover:underline transition-colors opacity-80 hover:opacity-100" href="#">Sitemap</a>
+<a class="hover:text-on-surface hover:underline transition-colors opacity-80 hover:opacity-100" href="#">Company Details</a>
+</div>
+</div>
+<div class="flex items-center gap-6 text-on-surface">
+<div class="flex items-center gap-2 font-label-md text-label-md cursor-pointer hover:underline">
+<span class="material-symbols-outlined">language</span> English (US)
+                </div>
+<div class="flex items-center gap-2 font-label-md text-label-md cursor-pointer hover:underline">
+                    $ USD
+                </div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined cursor-pointer hover:opacity-70 transition-opacity">face_nod</span>
+<span class="material-symbols-outlined cursor-pointer hover:opacity-70 transition-opacity">alternate_email</span>
+<span class="material-symbols-outlined cursor-pointer hover:opacity-70 transition-opacity">video_library</span>
+</div>
+</div>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-surface py-3 px-4 border-t border-secondary-container dark:border-outline-variant shadow-lg md:hidden">
+<div class="flex flex-col items-center gap-1 text-primary dark:text-primary-fixed font-bold transition-all duration-300 active:bg-secondary-container/20">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">search</span>
+<span class="font-label-sm text-label-sm">Explore</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-secondary dark:text-on-secondary-fixed-variant transition-all duration-300 active:bg-secondary-container/20">
+<span class="material-symbols-outlined">favorite</span>
+<span class="font-label-sm text-label-sm">Wishlists</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-secondary dark:text-on-secondary-fixed-variant transition-all duration-300 active:bg-secondary-container/20">
+<span class="material-symbols-outlined">travel_explore</span>
+<span class="font-label-sm text-label-sm">Trips</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-secondary dark:text-on-secondary-fixed-variant transition-all duration-300 active:bg-secondary-container/20">
+<span class="material-symbols-outlined">chat</span>
+<span class="font-label-sm text-label-sm">Inbox</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-secondary dark:text-on-secondary-fixed-variant transition-all duration-300 active:bg-secondary-container/20">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</div>
+</nav>
+<script>
+        // Simple interactive handling for the booking widget
+        document.addEventListener('DOMContentLoaded', () => {
+            const reserveBtn = document.querySelector('button.bg-primary');
+            reserveBtn.addEventListener('click', () => {
+                reserveBtn.textContent = 'Redirecting to checkout...';
+                reserveBtn.classList.add('opacity-80');
+                setTimeout(() => {
+                    reserveBtn.textContent = 'Reserve';
+                    reserveBtn.classList.remove('opacity-80');
+                }, 2000);
+            });
+
+            // Smooth header visibility on scroll
+            let lastScroll = 0;
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                if (currentScroll > lastScroll && currentScroll > 80) {
+                    header.style.transform = 'translateY(-100%)';
+                } else {
+                    header.style.transform = 'translateY(0)';
+                }
+                header.style.transition = 'transform 0.3s ease';
+                lastScroll = currentScroll;
+            });
+        });
+    </script>
+</body></html>

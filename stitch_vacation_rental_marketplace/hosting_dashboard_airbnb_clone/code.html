@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>InvisibleFrame | Hosting Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-container": "#fffbff",
+                    "outline-variant": "#e5bdbe",
+                    "on-surface": "#1a1c1c",
+                    "on-secondary-fixed-variant": "#474746",
+                    "primary-fixed-dim": "#ffb2b6",
+                    "on-error-container": "#93000a",
+                    "background": "#f9f9f9",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "tertiary": "#006a45",
+                    "on-tertiary": "#ffffff",
+                    "surface-bright": "#f9f9f9",
+                    "tertiary-fixed-dim": "#62dca3",
+                    "secondary-container": "#e2dfde",
+                    "surface": "#f9f9f9",
+                    "secondary-fixed": "#e5e2e1",
+                    "on-tertiary-fixed": "#002113",
+                    "on-primary": "#ffffff",
+                    "secondary": "#5f5e5e",
+                    "outline": "#906f70",
+                    "on-secondary-container": "#636262",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed-variant": "#920029",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#ffb2b6",
+                    "surface-container-low": "#f3f3f3",
+                    "surface-dim": "#dadada",
+                    "primary-fixed": "#ffdada",
+                    "surface-container-high": "#e8e8e8",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#f6fff6",
+                    "inverse-surface": "#2f3131",
+                    "on-primary-fixed": "#40000d",
+                    "surface-variant": "#e2e2e2",
+                    "on-surface-variant": "#5c3f41",
+                    "surface-container-highest": "#e2e2e2",
+                    "on-tertiary-fixed-variant": "#005234",
+                    "primary-container": "#e21e4a",
+                    "on-background": "#1a1c1c",
+                    "tertiary-container": "#008558",
+                    "surface-tint": "#be0038",
+                    "inverse-on-surface": "#f1f1f1",
+                    "primary": "#ba0036",
+                    "tertiary-fixed": "#80f9bd",
+                    "surface-container": "#eeeeee",
+                    "on-secondary-fixed": "#1b1c1c"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "24px",
+                    "unit": "8px",
+                    "container-max": "1280px",
+                    "gutter": "24px",
+                    "margin-desktop": "80px",
+                    "stack-lg": "48px",
+                    "margin-mobile": "20px",
+                    "stack-sm": "12px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "label-sm": ["Inter"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "label-md": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-md": ["22px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "18px", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["26px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-tab-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #1a1c1c;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e2e2e2;
+            border-radius: 10px;
+        }
+        @media (max-width: 768px) {
+            .mobile-hide { display: none; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased">
+<!-- TopNavBar -->
+<nav class="bg-surface border-b border-secondary-container sticky top-0 z-50 w-full">
+<div class="flex justify-between items-center h-20 px-gutter w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<div class="text-headline-md font-headline-md font-bold text-primary">InvisibleFrame</div>
+<div class="hidden md:flex gap-6">
+<a class="text-on-surface font-bold border-b-2 border-on-surface py-2 font-label-md text-label-md" href="#">Dashboard</a>
+<a class="text-secondary hover:bg-surface-container-low transition-colors duration-200 py-2 font-label-md text-label-md" href="#">Calendar</a>
+<a class="text-secondary hover:bg-surface-container-low transition-colors duration-200 py-2 font-label-md text-label-md" href="#">Listings</a>
+<a class="text-secondary hover:bg-surface-container-low transition-colors duration-200 py-2 font-label-md text-label-md" href="#">Inbox</a>
+<a class="text-secondary hover:bg-surface-container-low transition-colors duration-200 py-2 font-label-md text-label-md" href="#">Menu</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:block px-4 py-2 hover:bg-surface-container-low rounded-full transition-colors font-label-md text-label-md">Become a Host</button>
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined">language</span>
+</button>
+<button class="flex items-center gap-2 p-2 border border-secondary-container rounded-full hover:shadow-lg transition-all">
+<span class="material-symbols-outlined ml-1">menu</span>
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a friendly real estate host in a minimalist office setting. The lighting is soft and natural, emphasizing a bright and welcoming atmosphere. The host is dressed in modern, smart-casual attire. The background is slightly blurred to keep focus on the subject, consistent with a premium and trustworthy corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLAH5mKBGv4E1o8dbqp075DyT0fwIAwOBzlz5Sa27fuBlOb8W_3wW4qVQFzrYiRfD74a3n1PQUYKrXll7_yeFSKh2xfWsoCa7Xi5EKAB-k1bU89s4IuESUlAadNAF5U3A3GhrX2lvl83z16q64FTtxYi9JyOYGYRe6YfR7K-Lb1btFgVcAZ7am4QMprpcOIZYl6tb81obmqlqklrda3R4Hi9Pjh3FGYyNyGKZGKOd87F90_aVfnrdDkGA64nycdxgPO20IWS5R8c8"/>
+</div>
+</button>
+</div>
+</div>
+</nav>
+<main class="max-w-container-max mx-auto px-gutter py-stack-md">
+<!-- Dashboard Header -->
+<header class="mb-stack-lg flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg md:text-display-lg font-display-lg">Welcome back, Host</h1>
+<p class="text-secondary font-body-md mt-2">Here's what's happening with your properties today.</p>
+</div>
+<div class="flex gap-2">
+<button class="px-6 py-3 bg-primary text-on-primary font-label-md text-label-md rounded-lg hover:brightness-110 transition-all shadow-sm">Complete your setup</button>
+</div>
+</header>
+<!-- Bento Grid Layout for Stats and Reservations -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-stack-md mb-stack-lg">
+<!-- Reservations Overview (Check-ins/Outs) -->
+<section class="md:col-span-8 bg-surface-container-lowest border border-secondary-container rounded-xl overflow-hidden">
+<div class="p-6 border-b border-secondary-container flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md">Your reservations</h2>
+<button class="text-on-surface underline font-label-md text-label-md">All reservations (12)</button>
+</div>
+<div class="flex border-b border-secondary-container px-6">
+<button class="py-4 border-b-2 border-on-surface font-label-md text-label-md text-on-surface mr-8">Checking out (2)</button>
+<button class="py-4 font-label-md text-label-md text-secondary mr-8">Arriving soon (3)</button>
+<button class="py-4 font-label-md text-label-md text-secondary">Upcoming (7)</button>
+</div>
+<div class="p-6 space-y-4">
+<!-- Reservation Card 1 -->
+<div class="flex items-center justify-between p-4 bg-surface rounded-lg border border-secondary-container hover:shadow-md transition-shadow">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A smiling young couple in casual travel attire, posing in front of a modern architectural backdrop. The image style is bright and airy with high-key lighting, emphasizing a sense of adventure and comfort. The colors are muted but warm, aligning with a high-end travel dashboard's clean and sophisticated visual language." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDr74yLuAnlYUAD2aXtAzmzxLhFnK6HEhExDhrlIFc3kTwLPflumSbPPIIgLA5Ym6x4bWaolkbHRIbCc58EeyJ56jrp0rwPJ-K1zTNf7pBOFiAuTq0rhT0dE2AUsBXHs94w3l04UNgW6A7rX2o_ZYQ94-P8JWkMBgKawgcfxY6X1jtnd9sv2OWrD6uFRcm28-PSoC6Cf2MwBEh475_Xh5aSNuX6xx9Uabd8hibvR8FYsPPzg-ZAS3t0pfaeQoOlpWgUZtmiKz2PkGk"/>
+</div>
+<div>
+<div class="font-label-md text-label-md">Sarah & Marc</div>
+<div class="text-body-sm text-secondary font-body-sm">Today • Modern Lakeside Cabin</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-label-md text-label-md">11:00 AM</div>
+<div class="text-body-sm text-secondary font-body-sm">Checkout</div>
+</div>
+<button class="p-2 hover:bg-surface-container-low rounded-full">
+<span class="material-symbols-outlined">chat</span>
+</button>
+</div>
+<!-- Reservation Card 2 -->
+<div class="flex items-center justify-between p-4 bg-surface rounded-lg border border-secondary-container hover:shadow-md transition-shadow">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of a professional traveler in a stylish urban setting. The lighting is crisp and clear, highlighting detail and texture in a modern, minimalist style. The color palette features cool grays and warm skin tones, conveying a sense of reliability and global connectivity within a premium interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8ILys3n_KdWUCd04RFIhT555J2YrWmUOA5C-XdXIDo-jm_5ZJDezWzCtCzjD0BWIBuIF5Z6aqb9Uv4IZ0UCm7cGJum2W8XfVpcwJIC6t5sutFpBl8m8leIVrYIy4gZCrPF0GxHOhksaZkEgUGbHYuXJnwhKsMlgRqefMdc4WXOHjoGiUVpKGGxEO38bgqwbWVYpPJcxWKbEwjmt9fyRapmez0JNdDUevdM691IB2x6SJ-wYX_29MUBkyDYA10LHt5mQwfPiTVUKs"/>
+</div>
+<div>
+<div class="font-label-md text-label-md">Jonathan K.</div>
+<div class="text-body-sm text-secondary font-body-sm">Today • Downtown Loft</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-label-md text-label-md">10:00 AM</div>
+<div class="text-body-sm text-secondary font-body-sm">Checkout</div>
+</div>
+<button class="p-2 hover:bg-surface-container-low rounded-full">
+<span class="material-symbols-outlined">chat</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Earnings Summary Chart (Simplified Visual) -->
+<section class="md:col-span-4 bg-surface-container-lowest border border-secondary-container rounded-xl p-6 flex flex-col justify-between">
+<div>
+<h2 class="font-headline-md text-headline-md mb-2">Earnings</h2>
+<div class="text-display-lg font-display-lg text-on-surface">$4,280.50</div>
+<p class="text-body-sm text-secondary font-body-sm">Earnings for June</p>
+</div>
+<!-- Simple CSS Chart -->
+<div class="flex items-end gap-2 h-32 mt-6">
+<div class="flex-1 bg-secondary-container rounded-t-sm h-[40%] hover:bg-primary transition-colors"></div>
+<div class="flex-1 bg-secondary-container rounded-t-sm h-[65%] hover:bg-primary transition-colors"></div>
+<div class="flex-1 bg-secondary-container rounded-t-sm h-[50%] hover:bg-primary transition-colors"></div>
+<div class="flex-1 bg-secondary-container rounded-t-sm h-[85%] hover:bg-primary transition-colors"></div>
+<div class="flex-1 bg-primary rounded-t-sm h-[100%]"></div>
+<div class="flex-1 bg-secondary-container rounded-t-sm h-[70%] hover:bg-primary transition-colors"></div>
+<div class="flex-1 bg-secondary-container rounded-t-sm h-[60%] hover:bg-primary transition-colors"></div>
+</div>
+<div class="mt-6 flex justify-between items-center">
+<span class="text-body-sm text-secondary font-body-sm">Last 7 days</span>
+<button class="text-on-surface underline font-label-md text-label-md">View details</button>
+</div>
+</section>
+</div>
+<!-- Your Listings Section -->
+<section class="mb-stack-lg">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline-md text-headline-md">Your listings</h2>
+<button class="flex items-center gap-2 px-4 py-2 border border-secondary-container rounded-lg hover:bg-surface-container-low transition-colors font-label-md text-label-md">
+<span class="material-symbols-outlined text-[20px]">add</span> Create listing
+                </button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Listing Card 1 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-square rounded-xl overflow-hidden mb-3">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-resolution photograph of a modern lakeside cabin with floor-to-ceiling windows, nestled among pine trees. The lighting is golden hour, casting a warm and inviting glow on the wooden exterior. The style is pristine and architectural, reflecting a premium travel experience. The composition follows the rule of thirds for a balanced and professional look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAj4vy-mFiZzxejGpsxHLkiKu5Z7foOZsgohBpU1nnhYcpu8GXO0cduHgy4pNLlX_9KAfImEk6uZlkaCtYLb2flGqsJsQCldO-A6vrn5LOzjUmcab5S6mUX0koBNLnjxr9DHIX_e-RlKoHbV6_BdMH8ZN9U1gayUW3IdsozAMHeU6y7UOzoBfPBfQs8KrttyVN6uE50a8s6LntUSshFMSSnu9Iw4WlLoGY85XsRg3nLX_9oRegOf-ebRlw5H9ORQIsJZNhjEjq9Oc8"/>
+<div class="absolute top-3 right-3 px-2 py-1 bg-white/90 backdrop-blur-md rounded font-label-sm text-label-sm shadow-sm">Listed</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-[16px]">Modern Lakeside Cabin</h3>
+<p class="text-secondary font-body-sm mb-1">Cabin in Lake Tahoe</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-label-md">4.92</span>
+<span class="text-secondary font-body-sm ml-1">(128 reviews)</span>
+</div>
+</div>
+<!-- Listing Card 2 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-square rounded-xl overflow-hidden mb-3">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="An interior shot of a bright, minimalist downtown loft with industrial accents and high ceilings. Large windows flood the space with soft, natural daylight. The design is contemporary and airy, with a palette of whites, light woods, and charcoal accents. The atmosphere is sophisticated and quiet, perfectly suited for a luxury urban stay." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPxQvpkh_gqXfQmnO7aDG3ohV7h6QjwDM8qlsPnlO4xrA4ETs7yF7Pz9x0BA17jwFC3qdrklpxpV53RlmYhAupM2XtPNv5DBwk0EukPHyq4wrWADc-bQ0BMAp1e8C48aSehvQwc6HQiXFqkDqZ84rBNDhAIbip-ERsPUlFZt7HCd6SqrknSpSHeqm4fCJIUtBDFGCImOuRr8QgWQvQziz8awdoKUBKSIjuryJ9QD4YkD9H81VOIkITqSxgrSYXzentC7BnGMoAJXk"/>
+<div class="absolute top-3 right-3 px-2 py-1 bg-white/90 backdrop-blur-md rounded font-label-sm text-label-sm shadow-sm">Listed</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-[16px]">Minimalist Downtown Loft</h3>
+<p class="text-secondary font-body-sm mb-1">Apartment in Chicago</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-label-md">4.85</span>
+<span class="text-secondary font-body-sm ml-1">(94 reviews)</span>
+</div>
+</div>
+<!-- Listing Card 3 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-square rounded-xl overflow-hidden mb-3">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A stunning architectural villa overlooking the Mediterranean sea. The image features clean white walls against a deep blue sky and crystal-clear water. The style is high-end luxury, with sharp shadows and vibrant, saturated colors. The lighting is bright midday sun, creating a high-contrast and energetic mood for a dream vacation property." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmGE_BbDw7ky12gCFODsab_ATnMNWLHvXsQss54lsv2fytXc0VKOKuUAeObkx4xjj1igr5fzWOy-fG9CxXKBHZ2YqrsBTJdvgQfObpYYABNVsUvZYAGoAeUqPgTKzcHSjZiUwGxk6HgvsoNt5HSFQofYUucTSU4tEdNSLnQYH1yvc-xOoSKTkN5DdN7Ufai7RmEW4YHcBfhXTxdWL890ZAJS_NadJ7JaQy7l9NWdrIfoQolLYXuCAcyTJRCD_t-ANuh9b8RZBnFi8"/>
+<div class="absolute top-3 right-3 px-2 py-1 bg-white/90 backdrop-blur-md rounded font-label-sm text-label-sm shadow-sm">Draft</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-[16px]">Coastal Cliffside Villa</h3>
+<p class="text-secondary font-body-sm mb-1">Villa in Santorini</p>
+<div class="flex items-center gap-1">
+<span class="text-secondary font-body-sm italic">In progress...</span>
+</div>
+</div>
+<!-- Manage All Link -->
+<div class="flex flex-col items-center justify-center border-2 border-dashed border-secondary-container rounded-xl p-8 hover:bg-surface-container-low transition-colors group cursor-pointer aspect-square">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">list</span>
+</div>
+<span class="font-label-md text-label-md">Manage all listings</span>
+</div>
+</div>
+</section>
+<!-- Quick Links / Resources -->
+<section class="bg-surface-container-low rounded-2xl p-gutter mb-stack-lg">
+<h2 class="font-headline-md text-headline-md mb-8 text-center">Hosting resources</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary text-[32px]">school</span>
+<div>
+<h4 class="font-label-md text-label-md mb-1">Hosting Academy</h4>
+<p class="text-body-sm text-secondary font-body-sm">Learn tips from top-rated hosts on how to grow your business.</p>
+<a class="text-on-surface underline font-label-md text-label-md mt-2 inline-block" href="#">Learn more</a>
+</div>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary text-[32px]">security</span>
+<div>
+<h4 class="font-label-md text-label-md mb-1">AirCover for Hosts</h4>
+<p class="text-body-sm text-secondary font-body-sm">Top-to-bottom protection. Always included, always free.</p>
+<a class="text-on-surface underline font-label-md text-label-md mt-2 inline-block" href="#">See details</a>
+</div>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary text-[32px]">support_agent</span>
+<div>
+<h4 class="font-label-md text-label-md mb-1">Host Support</h4>
+<p class="text-body-sm text-secondary font-body-sm">Get specialized help with reservations, listings, and more.</p>
+<a class="text-on-surface underline font-label-md text-label-md mt-2 inline-block" href="#">Contact us</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-md px-gutter mt-stack-lg flex flex-col md:flex-row justify-between items-center max-w-container-max mx-auto border-t border-secondary-container">
+<div class="flex items-center gap-4 mb-4 md:mb-0">
+<span class="text-label-md font-bold font-label-md">© 2024 InvisibleFrame, Inc.</span>
+<div class="flex gap-4">
+<a class="text-secondary hover:text-on-surface transition-colors font-body-sm text-body-sm" href="#">Privacy</a>
+<a class="text-secondary hover:text-on-surface transition-colors font-body-sm text-body-sm" href="#">Terms</a>
+<a class="text-secondary hover:text-on-surface transition-colors font-body-sm text-body-sm" href="#">Sitemap</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 font-label-md text-label-md cursor-pointer hover:underline">
+<span class="material-symbols-outlined text-[18px]">language</span>
+                English (US)
+            </div>
+<div class="flex items-center gap-2 font-label-md text-label-md cursor-pointer hover:underline">
+                $ USD
+            </div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-secondary cursor-pointer hover:text-on-surface">face_nod</span>
+<span class="material-symbols-outlined text-secondary cursor-pointer hover:text-on-surface">photo_camera</span>
+</div>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-surface py-3 px-4 border-t border-secondary-container shadow-lg md:hidden">
+<a class="flex flex-col items-center gap-1 text-primary dark:text-primary-fixed font-bold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-secondary" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-sm text-label-sm">Calendar</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-secondary" href="#">
+<span class="material-symbols-outlined">list</span>
+<span class="font-label-sm text-label-sm">Listings</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-secondary" href="#">
+<span class="material-symbols-outlined">chat</span>
+<span class="font-label-sm text-label-sm">Inbox</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-secondary" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-sm text-label-sm">Menu</span>
+</a>
+</nav>
+<script>
+        // Simple interactive micro-interactions
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                el.style.transform = 'scale(0.96)';
+            });
+            el.addEventListener('mouseup', () => {
+                el.style.transform = 'scale(1)';
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = 'scale(1)';
+            });
+        });
+
+        // Tab logic for reservations section
+        const resTabs = document.querySelectorAll('section button.font-label-md');
+        resTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                resTabs.forEach(t => {
+                    t.classList.remove('border-b-2', 'border-on-surface', 'text-on-surface');
+                    t.classList.add('text-secondary');
+                });
+                tab.classList.remove('text-secondary');
+                tab.classList.add('border-b-2', 'border-on-surface', 'text-on-surface');
+            });
+        });
+    </script>
+</body></html>

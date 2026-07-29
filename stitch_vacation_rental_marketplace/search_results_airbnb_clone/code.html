@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>InvisibleFrame | Search Results</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .map-pin-shadow {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#fffbff",
+                        "outline-variant": "#e5bdbe",
+                        "on-surface": "#1a1c1c",
+                        "on-secondary-fixed-variant": "#474746",
+                        "primary-fixed-dim": "#ffb2b6",
+                        "on-error-container": "#93000a",
+                        "background": "#f9f9f9",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "tertiary": "#006a45",
+                        "on-tertiary": "#ffffff",
+                        "surface-bright": "#f9f9f9",
+                        "tertiary-fixed-dim": "#62dca3",
+                        "secondary-container": "#e2dfde",
+                        "surface": "#f9f9f9",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-tertiary-fixed": "#002113",
+                        "on-primary": "#ffffff",
+                        "secondary": "#5f5e5e",
+                        "outline": "#906f70",
+                        "on-secondary-container": "#636262",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#920029",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#ffb2b6",
+                        "surface-container-low": "#f3f3f3",
+                        "surface-dim": "#dadada",
+                        "primary-fixed": "#ffdada",
+                        "surface-container-high": "#e8e8e8",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#f6fff6",
+                        "inverse-surface": "#2f3131",
+                        "on-primary-fixed": "#40000d",
+                        "surface-variant": "#e2e2e2",
+                        "on-surface-variant": "#5c3f41",
+                        "surface-container-highest": "#e2e2e2",
+                        "on-tertiary-fixed-variant": "#005234",
+                        "primary-container": "#e21e4a",
+                        "on-background": "#1a1c1c",
+                        "tertiary-container": "#008558",
+                        "surface-tint": "#be0038",
+                        "inverse-on-surface": "#f1f1f1",
+                        "primary": "#ba0036",
+                        "tertiary-fixed": "#80f9bd",
+                        "surface-container": "#eeeeee",
+                        "on-secondary-fixed": "#1b1c1c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "24px",
+                        "unit": "8px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "margin-desktop": "80px",
+                        "stack-lg": "48px",
+                        "margin-mobile": "20px",
+                        "stack-sm": "12px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-md": ["22px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "18px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["26px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background font-body-md text-on-surface overflow-hidden h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-surface-container-lowest border-b border-secondary-container dark:border-outline-variant z-40">
+<nav class="flex justify-between items-center h-20 px-gutter w-full max-w-container-max mx-auto">
+<!-- Brand -->
+<div class="flex items-center gap-2">
+<span class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed">InvisibleFrame</span>
+</div>
+<!-- Central Search Bar (Simplified for Results View) -->
+<div class="hidden md:flex items-center bg-surface-container-lowest border border-secondary-container shadow-sm rounded-full px-4 py-2 gap-4 cursor-pointer hover:shadow-md transition-shadow">
+<span class="font-label-md text-label-md border-r border-secondary-container pr-4">Anywhere</span>
+<span class="font-label-md text-label-md border-r border-secondary-container pr-4">Any week</span>
+<span class="font-label-md text-label-md text-secondary">Add guests</span>
+<div class="bg-primary p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm" data-icon="search">search</span>
+</div>
+</div>
+<!-- Profile Actions -->
+<div class="flex items-center gap-4">
+<button class="font-label-md text-label-md text-secondary hover:bg-surface-container-low px-4 py-2 rounded-full transition-colors">Become a Host</button>
+<button class="p-2 rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-on-surface" data-icon="language">language</span>
+</button>
+<div class="flex items-center gap-2 border border-secondary-container rounded-full p-2 hover:shadow-md transition-shadow cursor-pointer bg-white">
+<span class="material-symbols-outlined text-secondary ml-1" data-icon="menu">menu</span>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-secondary-container">
+<img class="w-full h-full object-cover" data-alt="A professional and clean user profile avatar in a minimalist style, featuring soft lighting and a neutral background. The image reflects high-end corporate aesthetics with a focus on trust and clarity, using a palette of soft whites and grays." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNA8x8lCU1hdBWFwLVmTGgEdA6GfbMcvYCH4XNW3-iOwGrBV6qW2ysOnBUu0aoJeGZA20yyzOH8AQ4QOIwVwa6x8u4xYu2YzbJsi5tYQMerzv0Vq97suLKtWAFcJ_zZsWbirmS6LqlC8AVulrfIzVbVI8B2dfNmJi0fTjsWtYvm4MR5irZ9JspSS85X8sk3x5U35iPNL685TTNZx_bFNixPs-_wH-NiJPNeAdxvJ24JwNPkQ4NlF_IwPznathiJgb6xMMhWcsgeD0"/>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<!-- Filter Bar -->
+<section class="bg-surface border-b border-secondary-container z-30 sticky top-0">
+<div class="flex items-center px-gutter h-16 max-w-container-max mx-auto gap-6 overflow-x-auto hide-scrollbar">
+<!-- Categories -->
+<div class="flex items-center gap-8 mr-auto">
+<div class="flex flex-col items-center gap-1 cursor-pointer border-b-2 border-on-surface pb-2 text-on-surface">
+<span class="material-symbols-outlined" data-icon="cottage">cottage</span>
+<span class="text-label-sm font-label-sm whitespace-nowrap">Cabins</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer pb-2 text-secondary hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="beach_access">beach_access</span>
+<span class="text-label-sm font-label-sm whitespace-nowrap">Beachfront</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer pb-2 text-secondary hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="pool">pool</span>
+<span class="text-label-sm font-label-sm whitespace-nowrap">Amazing pools</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer pb-2 text-secondary hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="apartment">apartment</span>
+<span class="text-label-sm font-label-sm whitespace-nowrap">Top cities</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer pb-2 text-secondary hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="castle">castle</span>
+<span class="text-label-sm font-label-sm whitespace-nowrap">Castles</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer pb-2 text-secondary hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="landscape">landscape</span>
+<span class="text-label-sm font-label-sm whitespace-nowrap">Countryside</span>
+</div>
+</div>
+<!-- Filters Button -->
+<button class="flex items-center gap-2 border border-secondary-container px-4 py-2 rounded-lg hover:bg-surface-container-low transition-colors h-10">
+<span class="material-symbols-outlined text-sm" data-icon="tune">tune</span>
+<span class="text-label-sm font-label-sm">Filters</span>
+</button>
+</div>
+</section>
+<!-- Split Screen Main Layout -->
+<main class="flex-grow flex flex-col md:flex-row overflow-hidden relative">
+<!-- Left Side: Results List (40%) -->
+<div class="w-full md:w-[40%] h-full overflow-y-auto px-gutter py-stack-md bg-white border-r border-secondary-container hide-scrollbar">
+<div class="mb-stack-md">
+<p class="text-body-sm text-secondary">600+ stays in selected area</p>
+<h1 class="font-headline-md text-headline-md mt-1">Stays in Norway</h1>
+</div>
+<!-- Property Grid -->
+<div class="flex flex-col gap-stack-lg">
+<!-- Card 1 -->
+<div class="group cursor-pointer">
+<div class="aspect-[4/3] rounded-xl overflow-hidden relative bg-surface-container mb-stack-sm">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A breathtaking Scandinavian cabin nestled in a snowy fjord landscape in Norway. The architecture is minimalist with large glass windows reflecting the cold blue hour light. The atmosphere is serene, cozy, and high-end, utilizing a pristine white and deep gray color palette with soft warm interior lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoa5K72OUMSGO5DFQ2BewQS3VQ1-Zz-himM6_0wZm6b3-cEEQN95ORtQ7xuBAmMN1tZS3gKQI-HWm6IpFfEuGC12XKI6s8okmfiIP1EzjR6JpKQVV9OesBxZ9NUWlUwMXrFedurL2XCvPI0jxT2RfXLa_CUF4GrpXFL6UAVeWUHuRUDkW_7KZDRbls8s5Yukqlz6Fp5dCIS7UrZhbHZZwazYNSqgQ6UBLVdU0Ebe94Ywc5u2QLXzT2vQnbeSAVgP0ADt7cz3Q1BBs"/>
+<button class="absolute top-3 right-3 text-white hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="favorite" style="font-variation-settings: 'FILL' 0;">favorite</span>
+</button>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-label-md text-label-md text-on-surface">Modern Cabin in Åndalsnes</h3>
+<p class="text-body-sm text-secondary">Individual Host • Mountain View</p>
+<p class="text-body-sm text-secondary">Nov 12 – 17</p>
+<p class="text-label-md text-label-md mt-1">$450 <span class="font-normal text-secondary">night</span></p>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-label-sm">4.92</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group cursor-pointer">
+<div class="aspect-[4/3] rounded-xl overflow-hidden relative bg-surface-container mb-stack-sm">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="An ultra-modern waterfront villa with clean architectural lines and expansive wooden decking. The property overlooks a calm sea at sunset, bathed in golden hour light. The style is contemporary and sophisticated, emphasizing luxury through minimalist design and a palette of warm oaks and cool stone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAA-x6ezyaof49uHDIURs8Hu6E6ebVY01O1xkK4uQVRnpGFNuvDrBYF6YwqD_U0BKWBbKf8jIB5pSgwwMkm2H4nGhikMCuM9AqhtoiLqZI9SrD2M1DlzNHSWunWJEusfQPY4ByimiLyeauPpIeL2Z78ZYLDfK9ZfQlzH40F62THVCS2Df1Zu497NXHJOWzm1XTB9JT-DIgORItuYcy3K-v8LNWTdGTs-b09BfCCPDI8QLKmz6CPsiaDq_vB2Uys5gseT3yHWwz76RU"/>
+<button class="absolute top-3 right-3 text-white">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+<div class="absolute top-3 left-3 bg-white px-3 py-1 rounded-full shadow-sm">
+<span class="text-[10px] font-bold uppercase tracking-wider">Guest Favorite</span>
+</div>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-label-md text-label-md text-on-surface">Waterfront Serenity in Bergen</h3>
+<p class="text-body-sm text-secondary">Superhost • Private Deck</p>
+<p class="text-body-sm text-secondary">Dec 2 – 7</p>
+<p class="text-label-md text-label-md mt-1">$320 <span class="font-normal text-secondary">night</span></p>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-label-sm">4.98</span>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group cursor-pointer">
+<div class="aspect-[4/3] rounded-xl overflow-hidden relative bg-surface-container mb-stack-sm">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A cozy, high-end mountain retreat with a fire pit glowing outside in the dusk. The cabin features rustic wood beams mixed with sleek glass walls, showcasing an interior of rich textiles and designer furniture. The lighting is low-key and intimate, emphasizing a luxury escape atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiV3hAkpsgDaowTiQjKfRgPB2gwBu3Lt2r3NDCkW5bKRkfxC_5xG4fQlyVPS8T-Jk46ZeUmfGY-UuefEXFM6ku9iW5sGz1bzmRXm3JOb6hEslOftduxwDpGLl22V6fOt2Ns1QhLUhHA4N6XT9KX8kN3y-r41HaO3IU0EPmkK_ZT1hrwqgojDwlLGfY2teKIW3X60rCsg6xG6fpoOd19NWpcTg6YnsJID1ER8GJSpLSzLz4Zr2hsrBnWTLXHhP4g4hHmm9UEG06UkQ"/>
+<button class="absolute top-3 right-3 text-white">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-label-md text-label-md text-on-surface">Luxury Ski Chalet in Hemsedal</h3>
+<p class="text-body-sm text-secondary">Individual Host • Ski-in/Ski-out</p>
+<p class="text-body-sm text-secondary">Jan 5 – 10</p>
+<p class="text-label-md text-label-md mt-1">$680 <span class="font-normal text-secondary">night</span></p>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-label-sm">5.0</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side: Interactive Map (60%) -->
+<div class="hidden md:block md:w-[60%] h-full relative overflow-hidden bg-surface-container">
+<!-- Map Placeholder -->
+<div class="absolute inset-0 grayscale-[0.2] opacity-90">
+<img class="w-full h-full object-cover" data-location="Norway" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBY4wuXMhf3dxtyEp29TOctDk99qYdsnRjHHeNXvGDTIEJg2fjrrpQTukaOBzHTa0bFX95qqBuKuZfapl34yI2gofk20By3Ec0h3bfACGp9aYFXfZWEb96p85-VENs3tn2-v0FW5ICtA1LBKi4mkzH48PfnFus_RD8Q7njN7UpctsPItwzJuw05NDcC5adNauAYD9xk0YvZrXUgqyhlQBlKBPpfQy10kPKRg8hHp0oR-o5Qk1i__JnbO6ZAmlvrcWSuW4aXw1nWCPI"/>
+</div>
+<!-- Fake Map Interface Overlays -->
+<div class="absolute inset-0 pointer-events-none">
+<!-- Price Pins -->
+<!-- Pin 1 -->
+<div class="absolute top-[25%] left-[30%] pointer-events-auto cursor-pointer">
+<div class="bg-white px-3 py-1 rounded-full map-pin-shadow font-label-md text-label-md hover:scale-110 transition-transform active:bg-on-surface active:text-white group">
+                        $450
+                        <div class="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-white rotate-45 group-active:bg-on-surface"></div>
+</div>
+</div>
+<!-- Pin 2 -->
+<div class="absolute top-[50%] left-[60%] pointer-events-auto cursor-pointer">
+<div class="bg-on-surface text-white px-3 py-1 rounded-full map-pin-shadow font-label-md text-label-md hover:scale-110 transition-transform">
+                        $320
+                        <div class="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-on-surface rotate-45"></div>
+</div>
+</div>
+<!-- Pin 3 -->
+<div class="absolute top-[15%] left-[75%] pointer-events-auto cursor-pointer">
+<div class="bg-white px-3 py-1 rounded-full map-pin-shadow font-label-md text-label-md hover:scale-110 transition-transform group">
+                        $680
+                        <div class="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-white rotate-45"></div>
+</div>
+</div>
+<!-- Pin 4 -->
+<div class="absolute top-[70%] left-[20%] pointer-events-auto cursor-pointer">
+<div class="bg-white px-3 py-1 rounded-full map-pin-shadow font-label-md text-label-md hover:scale-110 transition-transform group">
+                        $295
+                        <div class="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-white rotate-45"></div>
+</div>
+</div>
+<!-- Map Controls -->
+<div class="absolute top-4 right-4 flex flex-col gap-2 pointer-events-auto">
+<button class="bg-white p-3 rounded-lg shadow-md hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<button class="bg-white p-3 rounded-lg shadow-md hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined" data-icon="remove">remove</span>
+</button>
+<button class="bg-white p-3 rounded-lg shadow-md mt-4 hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined" data-icon="my_location">my_location</span>
+</button>
+</div>
+<div class="absolute bottom-8 left-1/2 -translate-x-1/2 pointer-events-auto">
+<button class="bg-on-surface text-white px-6 py-3 rounded-full shadow-xl flex items-center gap-2 hover:scale-105 transition-transform active:scale-95">
+<span class="material-symbols-outlined" data-icon="format_list_bulleted">format_list_bulleted</span>
+<span class="font-label-md text-label-md">Show list</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Mobile FAB: Show Map (Only visible on small screens) -->
+<div class="md:hidden fixed bottom-20 left-1/2 -translate-x-1/2 z-50">
+<button class="bg-on-surface text-white px-6 py-3 rounded-full shadow-xl flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-md text-label-md">Map</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-surface py-3 px-4 border-t border-secondary-container md:hidden">
+<div class="flex flex-col items-center gap-1 text-primary font-bold">
+<span class="material-symbols-outlined" data-icon="search" style="font-variation-settings: 'FILL' 1;">search</span>
+<span class="font-label-sm text-label-sm">Explore</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-secondary">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+<span class="font-label-sm text-label-sm">Wishlists</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-secondary">
+<span class="material-symbols-outlined" data-icon="travel_explore">travel_explore</span>
+<span class="font-label-sm text-label-sm">Trips</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-secondary">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+<span class="font-label-sm text-label-sm">Inbox</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-secondary">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</div>
+</nav>
+<script>
+        // Simple interactive micro-interactions
+        document.querySelectorAll('.cursor-pointer').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                // Subtle feedback handled by Tailwind classes
+            });
+        });
+
+        // Toggle heart fill state
+        document.querySelectorAll('.group button').forEach(heartBtn => {
+            heartBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const icon = heartBtn.querySelector('.material-symbols-outlined');
+                const isFilled = icon.style.fontVariationSettings.includes("'FILL' 1");
+                icon.style.fontVariationSettings = isFilled ? "'FILL' 0" : "'FILL' 1";
+                icon.classList.toggle('text-primary');
+            });
+        });
+    </script>
+</body></html>

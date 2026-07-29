@@ -1,0 +1,9 @@
+export default function Divider() {
+  return (
+    <div className="flex items-center gap-3" aria-hidden="true">
+      <span className="h-px flex-1 bg-slate-200" />
+      <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">or continue with</span>
+      <span className="h-px flex-1 bg-slate-200" />
+    </div>
+  );
+}

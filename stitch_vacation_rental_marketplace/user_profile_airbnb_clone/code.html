@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>InvisibleFrame | Profile & Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scroll-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .glass-effect {
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.8);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#fffbff",
+                        "outline-variant": "#e5bdbe",
+                        "on-surface": "#1a1c1c",
+                        "on-secondary-fixed-variant": "#474746",
+                        "primary-fixed-dim": "#ffb2b6",
+                        "on-error-container": "#93000a",
+                        "background": "#f9f9f9",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "tertiary": "#006a45",
+                        "on-tertiary": "#ffffff",
+                        "surface-bright": "#f9f9f9",
+                        "tertiary-fixed-dim": "#62dca3",
+                        "secondary-container": "#e2dfde",
+                        "surface": "#f9f9f9",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-tertiary-fixed": "#002113",
+                        "on-primary": "#ffffff",
+                        "secondary": "#5f5e5e",
+                        "outline": "#906f70",
+                        "on-secondary-container": "#636262",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#920029",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#ffb2b6",
+                        "surface-container-low": "#f3f3f3",
+                        "surface-dim": "#dadada",
+                        "primary-fixed": "#ffdada",
+                        "surface-container-high": "#e8e8e8",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#f6fff6",
+                        "inverse-surface": "#2f3131",
+                        "on-primary-fixed": "#40000d",
+                        "surface-variant": "#e2e2e2",
+                        "on-surface-variant": "#5c3f41",
+                        "surface-container-highest": "#e2e2e2",
+                        "on-tertiary-fixed-variant": "#005234",
+                        "primary-container": "#e21e4a",
+                        "on-background": "#1a1c1c",
+                        "tertiary-container": "#008558",
+                        "surface-tint": "#be0038",
+                        "inverse-on-surface": "#f1f1f1",
+                        "primary": "#ba0036",
+                        "tertiary-fixed": "#80f9bd",
+                        "surface-container": "#eeeeee",
+                        "on-secondary-fixed": "#1b1c1c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "24px",
+                        "unit": "8px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "margin-desktop": "80px",
+                        "stack-lg": "48px",
+                        "margin-mobile": "20px",
+                        "stack-sm": "12px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "18px", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "26px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-20 md:pb-0">
+<!-- TopNavBar (Large) -->
+<header class="bg-surface dark:bg-surface-container-lowest border-b border-secondary-container dark:border-outline-variant fixed top-0 left-0 w-full z-50">
+<div class="flex justify-between items-center h-20 px-gutter w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">insight_spark</span>
+<span class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed">InvisibleFrame</span>
+</div>
+<nav class="hidden md:flex items-center gap-stack-md">
+<a class="text-secondary dark:text-on-secondary-fixed-variant font-label-md text-label-md hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors duration-200 px-4 py-2 rounded-full" href="#">Stays</a>
+<a class="text-secondary dark:text-on-secondary-fixed-variant font-label-md text-label-md hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors duration-200 px-4 py-2 rounded-full" href="#">Experiences</a>
+<a class="text-secondary dark:text-on-secondary-fixed-variant font-label-md text-label-md hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors duration-200 px-4 py-2 rounded-full" href="#">Online Experiences</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="hidden lg:block text-label-md font-label-md text-on-surface hover:bg-surface-container-low px-4 py-2 rounded-full transition-colors">Become a Host</button>
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface">language</span>
+</button>
+<div class="flex items-center gap-2 p-2 pl-4 border border-outline-variant rounded-full hover:shadow-md transition-all cursor-pointer bg-surface-container-lowest">
+<span class="material-symbols-outlined text-secondary">menu</span>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-secondary-container">
+<img class="w-full h-full object-cover" data-alt="A clean, professional headshot of a user for a minimalist profile interface. The background is a soft, neutral off-white, and the person is wearing a simple charcoal grey shirt, looking directly at the camera with a warm, welcoming smile. The lighting is bright and even, reinforcing the high-key light mode aesthetic of the brand palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEXi1lAMFKFyKcRPxCQq6Lafoc1-drmtN3-2HXh73vldgwP0iGKJzKG8H53uBb2rE5mvI_4k_EvIr7vd1opLc42-zDgtGaaasDnIytgLYXh1n7b8NHd9Mw1qg0O96N2zTGVYlJ5yjhugWl2t7HAp-pN-cnlS_Fa35agrnaBiRuN5DSkDL4NSzimVNXhlx-G4fG-XCnFILLZ2AT5tYz9e4yY-WNb4Dj0ZpzDzfWDOo1GQe06OhElgI3yBySuGvFtEeBq1Ns1dsLvNI"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-24 max-w-container-max mx-auto px-gutter mb-stack-lg">
+<!-- Profile Header -->
+<section class="mb-stack-lg flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-2">Account</h1>
+<p class="font-body-lg text-body-lg text-secondary"><span class="font-bold text-on-surface">Alex Johnson</span>, alex.j@example.com · <a class="underline text-on-surface font-bold" href="#">Go to profile</a></p>
+</div>
+</section>
+<!-- Quick Access Settings Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-stack-lg">
+<!-- Personal Info -->
+<div class="p-stack-md bg-surface-container-lowest border border-outline-variant rounded-xl hover:shadow-lg transition-all duration-300 cursor-pointer group">
+<span class="material-symbols-outlined text-primary text-3xl mb-4 group-hover:scale-110 transition-transform">badge</span>
+<h3 class="font-headline-md text-headline-md mb-2">Personal info</h3>
+<p class="font-body-sm text-body-sm text-secondary">Provide personal details and how we can reach you</p>
+</div>
+<!-- Login & Security -->
+<div class="p-stack-md bg-surface-container-lowest border border-outline-variant rounded-xl hover:shadow-lg transition-all duration-300 cursor-pointer group">
+<span class="material-symbols-outlined text-primary text-3xl mb-4 group-hover:scale-110 transition-transform">security</span>
+<h3 class="font-headline-md text-headline-md mb-2">Login & security</h3>
+<p class="font-body-sm text-body-sm text-secondary">Update your password and secure your account</p>
+</div>
+<!-- Payments -->
+<div class="p-stack-md bg-surface-container-lowest border border-outline-variant rounded-xl hover:shadow-lg transition-all duration-300 cursor-pointer group">
+<span class="material-symbols-outlined text-primary text-3xl mb-4 group-hover:scale-110 transition-transform">payments</span>
+<h3 class="font-headline-md text-headline-md mb-2">Payments & payouts</h3>
+<p class="font-body-sm text-body-sm text-secondary">Review payments, payouts, coupons, and gift cards</p>
+</div>
+</section>
+<!-- Management Sections Tabs -->
+<div class="border-b border-secondary-container mb-stack-md sticky top-20 bg-background/95 backdrop-blur-sm z-40">
+<div class="flex gap-stack-md overflow-x-auto scroll-hide">
+<button class="py-4 font-label-md text-label-md border-b-2 border-on-surface text-on-surface whitespace-nowrap" id="btn-trips" onclick="switchTab('trips')">Trips</button>
+<button class="py-4 font-label-md text-label-md border-b-2 border-transparent text-secondary hover:text-on-surface transition-colors whitespace-nowrap" id="btn-wishlists" onclick="switchTab('wishlists')">Wishlists</button>
+<button class="py-4 font-label-md text-label-md border-b-2 border-transparent text-secondary hover:text-on-surface transition-colors whitespace-nowrap" id="btn-security" onclick="switchTab('security')">Security & Data</button>
+</div>
+</div>
+<!-- Trips Panel -->
+<div class="tab-panel" id="panel-trips">
+<h2 class="font-headline-lg text-headline-lg mb-stack-sm">Where you've been</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Trip Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300">
+<div class="relative h-48">
+<img class="w-full h-full object-cover" data-alt="A serene Scandinavian cabin nestled in a dense, frost-covered pine forest. The architecture is modern with large glass windows reflecting a soft lavender and orange twilight sky. Snow blankets the ground, and a warm golden light spills from the interior, creating a cozy and inviting contrast. High-quality architectural photography with sharp details and minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBm4lAuh39sdrcjZCZoSiGgm9eLF3TaSIybMqxPPhbFoCzQujwNvpK-YfRCfFW5evGlL5BkX6z4VyOmWOAbdBuCQ3s-8P7d373MmWgvoB2hJPmzTtF2jZ7utoVrpJuTVm6Jkk-PtfOsRXVLO4twXHciPOHJvA3SUA39VOCG6-Yn2nlf3uWBKGGEyVDfgNwnznyoXljyj8mTMhtKQ-LN1sLSwtfzcNgyeNlQWTm9mWXyqSly0Y7_xgwU9LpBrdDjQ7Ej7TJcq3N-9H0"/>
+<div class="absolute top-4 right-4 bg-surface-container-lowest px-3 py-1 rounded-full shadow-sm text-label-sm font-label-sm">Completed</div>
+</div>
+<div class="p-4">
+<h4 class="font-headline-md text-headline-md mb-1">Bergen, Norway</h4>
+<p class="font-body-sm text-body-sm text-secondary mb-4">Hosted by Ingrid · Jan 12-18, 2024</p>
+<button class="w-full py-2 border border-outline font-label-md text-label-md rounded-lg hover:bg-surface-container-low transition-colors">Write a review</button>
+</div>
+</div>
+<!-- Trip Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300">
+<div class="relative h-48">
+<img class="w-full h-full object-cover" data-alt="A sleek, white-walled luxury villa overlooking the deep blue Aegean sea in Santorini, Greece. The terrace features a small infinity pool that merges with the horizon. The lighting is the golden hour of sunset, casting warm hues across the volcanic landscape and white-washed buildings. The mood is tranquil and premium, following a clean, airy corporate minimalist style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKpQjeg1jtk2WezeB3n5jdSCMhBVruL-X8cvJWHFgENmYdNloYfB3_dQmOjQNvK5WN9JekRiOkYQ85ma1Kd5u485lU7C4bzpS9bQh5EuCMrlPo5gXS9gT2NKcrbKFZTJ_ezNVgFwUdJ610acA-gl4NJISrES-Otz987b9x-kpCxOZxhJFKfTiw4lHLJgHoX1hZcfUBqzyzHOlpBSyxTK8VB-eDAF3XpCxnDGuNcxeIZnBXqlTrkDmC6dQp0_q31greO_p6BcnX-qY"/>
+<div class="absolute top-4 right-4 bg-primary text-on-primary px-3 py-1 rounded-full shadow-sm text-label-sm font-label-sm">Upcoming</div>
+</div>
+<div class="p-4">
+<h4 class="font-headline-md text-headline-md mb-1">Oia, Greece</h4>
+<p class="font-body-sm text-body-sm text-secondary mb-4">Hosted by Nikos · Jun 15-22, 2024</p>
+<button class="w-full py-2 bg-primary text-on-primary font-label-md text-label-md rounded-lg hover:opacity-90 transition-opacity">View Reservation</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Wishlists Panel (Hidden initially) -->
+<div class="tab-panel hidden" id="panel-wishlists">
+<div class="flex justify-between items-center mb-stack-sm">
+<h2 class="font-headline-lg text-headline-lg">Your Wishlists</h2>
+<button class="flex items-center gap-2 px-4 py-2 border border-on-surface rounded-lg font-label-md text-label-md hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-sm">add</span> Create new
+                </button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<!-- Wishlist Folder 1 -->
+<div class="group cursor-pointer">
+<div class="grid grid-cols-2 gap-1 h-40 rounded-xl overflow-hidden border border-outline-variant mb-3 group-hover:shadow-lg transition-shadow">
+<div class="bg-secondary-container h-full w-full relative">
+<img class="w-full h-full object-cover" data-alt="Close up of a minimalist concrete loft interior with a single designer chair and large industrial windows. The space is filled with soft, diffused morning light. The color palette is strictly grayscale with textures of raw concrete and metal, reflecting a modern architectural brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRP5lQCb3Y85lLVDpTB1yEqq-X2UjIg0ZMyY3STM-3Zff0i4G-kBbLOntCQhVYrl8XzyLULsk2Jow_wCIKl3bb9VTyMj_t0Pddluw6iYwmmz37YIOjyUEKenLOaV69YpWlMZOxrUCmzz2s9MRmPPSp8Nt6zAxAp_ScdMgDTLZHixbBo_UlQjBxpesXsiO8QXnVdoSHhXy3Op4OGQwFdenK30uuCuhRBsXbRoc_E2a5j6qhtSdqgyZIVWSoTy8FeOFrF-yk49dij98"/>
+</div>
+<div class="grid grid-rows-2 gap-1">
+<div class="bg-secondary-container h-full w-full">
+<img class="w-full h-full object-cover" data-alt="A tranquil Japanese Zen garden with raked white sand and dark volcanic rocks. A single cherry blossom tree is in bloom, petals gently scattered on the ground. The lighting is soft and flat, emphasizing the peaceful and orderly minimalist design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBE3p8dPwqoxgdrbwCrz1U8zxZjFtp9O798wL5pgyN0RTmvXq39BCz-l3disXeVKPxrpdriWy8vH1RxuraG9xFqRSQ7tl1Uq8kCzk_msDvqgu_g-yUPUXHBwPM1uiLrYQ_qmWC4PxEOmTRV2Jq-MVqaSJlk25m9mETbhreozQbkPoHQlMsoax0VZI5bPboA3iGKzkZtprrExgp698D67gc3ztuVxICjZrjK1iDEYeOLXono6om7Jcn5Q_1mmUUO2-TzZstDrYQyhPk"/>
+</div>
+<div class="bg-secondary-container h-full w-full">
+<img class="w-full h-full object-cover" data-alt="An ultra-modern desert home in Joshua Tree, California, with mirrored glass walls reflecting the arid landscape and rocky terrain. The sky is a clear, vibrant blue. The image has high contrast and clean lines, perfect for a high-end travel interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpGgIrX8V0Xi2mqt7lrraEZ4AzGr2yr5HAn7FzVamYyCTV44YeTdejRC6OpjzsFsbdPxj_pgGyjMOvL8702hfyWp60CFRUOd_6bKRCh1zO04HxoJ5O8pmFTCANP5sRnAQ0ztVdwI1wL1QfMxtc2G_3fXiSjTiiTVCDttzvBIHFMaClkwiHJsU2s5qy7ulai9vVhxYxGtKYN5mcOesTye09XgEmDz8aIrzhDRa13h_lyF8jsao9oUGAvlR4CMr65I2rfRnksk5RdbM"/>
+</div>
+</div>
+</div>
+<h4 class="font-label-md text-label-md">Summer Escapes</h4>
+<p class="font-body-sm text-body-sm text-secondary">12 stays</p>
+</div>
+<!-- Wishlist Folder 2 -->
+<div class="group cursor-pointer">
+<div class="bg-secondary-container h-40 rounded-xl overflow-hidden border border-outline-variant mb-3 group-hover:shadow-lg transition-shadow">
+<img class="w-full h-full object-cover" data-alt="A modern treehouse structure with geometric wooden panels suspended in a lush green rainforest canopy. Mist clings to the trees in the background, creating a mysterious and immersive atmosphere. The photo is taken from a low angle, emphasizing the scale and unique architecture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuACP9nCVFL9p-pZ6ibdAMqMR6MY7H2acJscMartHmJcznNxId90Bv2-lYN__Zkc1sAMs5hXdwEZjjhC6ZyE1FjyGmgG8dVRee6u08y5nE-1e0HMSEHtxkh1ir88RQNpaNmGP9toUgE-vaC4Mia6GPjy7hgzrZyTUT9XJqgs5UhwkRI437S3-XgjSu9au83z0HOxW1NGQeARBJfFz9m-DQpjsz7z0FDgzzLdDPg-5SHXlCaU0zo7I_BrzQZ6KfSnthUCxosFE071l8U"/>
+</div>
+<h4 class="font-label-md text-label-md">Treehouses</h4>
+<p class="font-body-sm text-body-sm text-secondary">4 stays</p>
+</div>
+</div>
+</div>
+<!-- Security Panel (Hidden initially) -->
+<div class="tab-panel hidden" id="panel-security">
+<h2 class="font-headline-lg text-headline-lg mb-stack-sm">Security & Data Management</h2>
+<div class="space-y-4 max-w-2xl">
+<div class="flex justify-between items-start py-6 border-b border-secondary-container">
+<div>
+<h4 class="font-label-md text-label-md mb-1">Two-step verification</h4>
+<p class="font-body-sm text-body-sm text-secondary">Add an extra layer of security to your account by requiring a code.</p>
+</div>
+<button class="text-primary font-label-md underline">Edit</button>
+</div>
+<div class="flex justify-between items-start py-6 border-b border-secondary-container">
+<div>
+<h4 class="font-label-md text-label-md mb-1">Login history</h4>
+<p class="font-body-sm text-body-sm text-secondary">Review a list of devices that have logged into your account.</p>
+</div>
+<button class="text-primary font-label-md underline">View</button>
+</div>
+<div class="flex justify-between items-start py-6">
+<div>
+<h4 class="font-label-md text-label-md mb-1 text-error">Deactivate account</h4>
+<p class="font-body-sm text-body-sm text-secondary">This will permanently delete your account and all associated data.</p>
+</div>
+<button class="text-error font-label-md underline">Manage</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-surface-container-highest border-t border-secondary-container dark:border-outline-variant mt-stack-lg">
+<div class="w-full py-stack-md px-gutter flex flex-col md:flex-row justify-between items-center max-w-container-max mx-auto">
+<div class="flex flex-col md:flex-row items-center gap-4 text-secondary dark:text-on-secondary-fixed-variant font-body-sm text-body-sm">
+<span class="font-bold text-label-md">© 2024 InvisibleFrame, Inc.</span>
+<div class="flex gap-4">
+<a class="hover:text-on-surface underline" href="#">Privacy</a>
+<a class="hover:text-on-surface underline" href="#">Terms</a>
+<a class="hover:text-on-surface underline" href="#">Sitemap</a>
+<a class="hover:text-on-surface underline" href="#">Company Details</a>
+</div>
+</div>
+<div class="flex items-center gap-4 mt-4 md:mt-0 text-secondary">
+<button class="flex items-center gap-1 hover:text-on-surface transition-colors font-label-md">
+<span class="material-symbols-outlined text-[18px]">language</span> English (US)
+                </button>
+<button class="flex items-center gap-1 hover:text-on-surface transition-colors font-label-md">
+                    $ USD
+                </button>
+<div class="flex gap-2">
+<span class="material-symbols-outlined hover:scale-110 transition-transform cursor-pointer">face_nod</span>
+<span class="material-symbols-outlined hover:scale-110 transition-transform cursor-pointer">camera</span>
+</div>
+</div>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-surface py-3 px-4 shadow-lg border-t border-secondary-container md:hidden">
+<button class="flex flex-col items-center gap-1 active:bg-secondary-container/20 transition-all duration-300">
+<span class="material-symbols-outlined text-secondary">search</span>
+<span class="font-label-sm text-label-sm text-secondary">Explore</span>
+</button>
+<button class="flex flex-col items-center gap-1 active:bg-secondary-container/20 transition-all duration-300">
+<span class="material-symbols-outlined text-secondary">favorite</span>
+<span class="font-label-sm text-label-sm text-secondary">Wishlists</span>
+</button>
+<button class="flex flex-col items-center gap-1 active:bg-secondary-container/20 transition-all duration-300">
+<span class="material-symbols-outlined text-secondary">travel_explore</span>
+<span class="font-label-sm text-label-sm text-secondary">Trips</span>
+</button>
+<button class="flex flex-col items-center gap-1 active:bg-secondary-container/20 transition-all duration-300">
+<span class="material-symbols-outlined text-secondary">chat</span>
+<span class="font-label-sm text-label-sm text-secondary">Inbox</span>
+</button>
+<button class="flex flex-col items-center gap-1 active:bg-secondary-container/20 transition-all duration-300">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">Profile</span>
+</button>
+</nav>
+<script>
+        function switchTab(tabId) {
+            // Hide all panels
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.add('hidden');
+            });
+            // Show selected panel
+            document.getElementById('panel-' + tabId).classList.remove('hidden');
+
+            // Reset tab styles
+            const tabs = ['trips', 'wishlists', 'security'];
+            tabs.forEach(id => {
+                const btn = document.getElementById('btn-' + id);
+                btn.classList.remove('border-on-surface', 'text-on-surface');
+                btn.classList.add('border-transparent', 'text-secondary');
+            });
+
+            // Set active tab style
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('border-transparent', 'text-secondary');
+            activeBtn.classList.add('border-on-surface', 'text-on-surface');
+        }
+
+        // Initialize micro-interactions
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'scale(1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>
