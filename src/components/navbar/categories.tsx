@@ -47,8 +47,8 @@ export default function Categories() {
 
   return (
     <section className="sticky top-[88px] z-40 border-b border-slate-200 bg-white/95 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-center gap-2">
+      <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-4 py-4 sm:px-6 lg:px-8">
+        <div className="flex flex-wrap items-center justify-center gap-2">
           {topCategories.map((category) => {
             const Icon = category.icon;
             const isActive = activeCategory === category.id;
@@ -65,19 +65,6 @@ export default function Categories() {
           })}
         </div>
 
-        {activeCategory === 'everything' ? (
-          <div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-emerald-50/70 via-white to-slate-50 p-5 shadow-sm">
-            <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
-                <Compass className="h-5 w-5" strokeWidth={1.9} />
-              </div>
-              <div>
-                <h2 className="text-lg font-semibold text-slate-900">Everything Rwanda has to offer</h2>
-                <p className="mt-1 text-sm text-slate-600">Stay, discover experiences, browse events and book trusted services in one refined journey.</p>
-              </div>
-            </div>
-          </div>
-        ) : null}
       </div>
 
       <CategoryModal

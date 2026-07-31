@@ -12,6 +12,8 @@ type UserMenuProps = {
   userEmail?: string | null;
   userImage?: string | null;
   onSignOut: () => void;
+  onOpenHostWizard?: () => void;
+  hostProfileComplete?: boolean;
 };
 
 const primaryItems = [
@@ -25,7 +27,7 @@ const primaryItems = [
   { label: 'Account Settings', icon: faGear, iconClassName: 'text-slate-700' },
 ];
 
-export default function UserMenu({ open, onToggle, userName, userEmail, userImage, onSignOut }: UserMenuProps) {
+export default function UserMenu({ open, onToggle, userName, userEmail, userImage, onSignOut, onOpenHostWizard, hostProfileComplete = false }: UserMenuProps) {
   return (
     <div className="relative shrink-0">
       <button
@@ -53,7 +55,15 @@ export default function UserMenu({ open, onToggle, userName, userEmail, userImag
             ))}
           </div>
           <div className="my-1.5 h-px bg-slate-200" />
-          <button type="button" onClick={onSignOut} role="menuitem" className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-left text-sm font-semibold text-rose-600 transition duration-200 hover:bg-rose-50 focus-visible:bg-rose-50 focus-visible:outline-none">
+          {onOpenHostWizard ? (
+            <button type="button" onClick={onOpenHostWizard} role="menuitem" className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-left text-sm font-semibold text-emerald-700 transition duration-200 hover:bg-emerald-50 focus-visible:bg-emerald-50 focus-visible:outline-none">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-50 text-xs">
+                <FontAwesomeIcon icon={faHouseChimneyUser} />
+              </span>
+              <span>{hostProfileComplete ? 'Host Dashboard' : 'Create Host Profile'}</span>
+            </button>
+          ) : null}
+          <button type="button" onClick={onSignOut} role="menuitem" className="mt-1 flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-left text-sm font-semibold text-rose-600 transition duration-200 hover:bg-rose-50 focus-visible:bg-rose-50 focus-visible:outline-none">
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-rose-50 text-xs">
               <FontAwesomeIcon icon={faUser} />
             </span>

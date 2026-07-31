@@ -8,6 +8,11 @@ import AccountMenu from './AccountMenu';
 import Categories from './categories';
 import { useAuthSession } from '../../auth/AuthSessionProvider';
 
+type NavbarProps = {
+  onOpenHostWizard?: () => void;
+  hostProfileComplete?: boolean;
+};
+
 type SearchSectionProps = {
   label: string;
   placeholder: string;
@@ -109,10 +114,11 @@ function GlobeIcon() {
   );
 }
 
-export default function Navbar() {
+export default function Navbar({ onOpenHostWizard, hostProfileComplete = false }: NavbarProps) {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup' | 'forgot' | null>(null);
-  const { status } = useAuthSession();
+  const { status, session } = useAuthSession();
+  const authenticated = status === 'authenticated' && !!session?.user;
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -133,13 +139,15 @@ export default function Navbar() {
           <Logo />
           <SearchBar onSearch={() => setMobileSearchOpen(false)} />
           <div className="flex items-center gap-1 sm:gap-2">
-            <button type="button" onClick={() => setAuthMode('signup')} className="hidden rounded-full px-4 py-3 text-sm font-semibold text-slate-700 transition duration-200 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 sm:inline-flex">
-              Become a host
-            </button>
+            {authenticated ? (
+              <button type="button" onClick={onOpenHostWizard} className="hidden rounded-full bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition duration-200 hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2 sm:inline-flex">
+                {hostProfileComplete ? 'Host Dashboard' : 'Create Host Profile'}
+              </button>
+            ) : null}
             <button type="button" aria-label="Choose language" className="hidden h-11 w-11 place-items-center rounded-full text-slate-700 transition duration-200 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 sm:grid">
               <GlobeIcon />
             </button>
-            <AccountMenu onLogIn={() => setAuthMode('login')} onSignUp={() => setAuthMode('signup')} onSignOutComplete={() => setAuthMode(null)} />
+            <AccountMenu onLogIn={() => setAuthMode('login')} onSignUp={() => setAuthMode('signup')} onSignOutComplete={() => setAuthMode(null)} onOpenHostWizard={onOpenHostWizard} hostProfileComplete={hostProfileComplete} />
           </div>
         </div>
         <div className="mt-3">
