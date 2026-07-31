@@ -5,6 +5,7 @@ import ForgotPasswordModal from '../../pages/auth/ForgotPasswordModal';
 import LoginModal from '../../pages/auth/LoginModal';
 import SignupModal from '../../pages/auth/SignupModal';
 import AccountMenu from './AccountMenu';
+import Categories from './categories';
 import { useAuthSession } from '../../auth/AuthSessionProvider';
 
 type SearchSectionProps = {
@@ -125,7 +126,8 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/90 shadow-[0_4px_20px_rgba(15,23,42,0.06)] backdrop-blur-xl">
+    <div className="relative">
+      <header className="sticky top-0 z-50 bg-white/90 shadow-[0_4px_20px_rgba(15,23,42,0.06)] backdrop-blur-xl">
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4">
           <Logo />
@@ -150,5 +152,7 @@ export default function Navbar() {
         </AnimatePresence>
       </AuthModal>
     </header>
+    <Categories />
+    </div>
   );
 }

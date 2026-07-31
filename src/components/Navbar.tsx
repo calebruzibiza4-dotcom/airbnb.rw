@@ -4,7 +4,8 @@ import AuthModal from '../pages/auth/AuthModal';
 import ForgotPasswordModal from '../pages/auth/ForgotPasswordModal';
 import LoginModal from '../pages/auth/LoginModal';
 import SignupModal from '../pages/auth/SignupModal';
-import { SafeUser } from '../types';
+import type { SafeUser } from '../types';
+import Categories from './navbar/categories';
 
 interface NavbarProps {
   currentUser?: SafeUser | null;
@@ -173,32 +174,35 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/90 shadow-[0_4px_20px_rgba(15,23,42,0.06)] backdrop-blur-xl">
-      <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-4">
-          <Logo />
-          <SearchBar onSearch={() => setMobileSearchOpen(false)} />
-          <div className="flex items-center gap-1 sm:gap-2">
-            <button type="button" onClick={() => setAuthMode('signup')} className="hidden rounded-full px-4 py-3 text-sm font-semibold text-slate-700 transition duration-200 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 sm:inline-flex">
-              Become a host
-            </button>
-            <button type="button" aria-label="Choose language" className="hidden h-11 w-11 place-items-center rounded-full text-slate-700 transition duration-200 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 sm:grid">
-              <GlobeIcon />
-            </button>
-            <div ref={profileMenuRef}>
-              <ProfileMenu open={profileOpen} onToggle={() => setProfileOpen((open) => !open)} onLogIn={() => { setProfileOpen(false); setAuthMode('login'); }} onSignUp={() => { setProfileOpen(false); setAuthMode('signup'); }} />
+    <div className="relative">
+      <header className="sticky top-0 z-50 bg-white/90 shadow-[0_4px_20px_rgba(15,23,42,0.06)] backdrop-blur-xl">
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-4">
+            <Logo />
+            <SearchBar onSearch={() => setMobileSearchOpen(false)} />
+            <div className="flex items-center gap-1 sm:gap-2">
+              <button type="button" onClick={() => setAuthMode('signup')} className="hidden rounded-full px-4 py-3 text-sm font-semibold text-slate-700 transition duration-200 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 sm:inline-flex">
+                Become a host
+              </button>
+              <button type="button" aria-label="Choose language" className="hidden h-11 w-11 place-items-center rounded-full text-slate-700 transition duration-200 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 sm:grid">
+                <GlobeIcon />
+              </button>
+              <div ref={profileMenuRef}>
+                <ProfileMenu open={profileOpen} onToggle={() => setProfileOpen((open) => !open)} onLogIn={() => { setProfileOpen(false); setAuthMode('login'); }} onSignUp={() => { setProfileOpen(false); setAuthMode('signup'); }} />
+              </div>
             </div>
           </div>
+          <div className="mt-3">
+            <MobileSearch open={mobileSearchOpen} onToggle={() => setMobileSearchOpen((open) => !open)} />
+          </div>
         </div>
-        <div className="mt-3">
-          <MobileSearch open={mobileSearchOpen} onToggle={() => setMobileSearchOpen((open) => !open)} />
-        </div>
-      </div>
-      <AuthModal open={authMode !== null} title={authMode === 'signup' ? 'Sign up' : authMode === 'forgot' ? 'Password recovery' : 'Log in'} onClose={() => setAuthMode(null)}>
-        <AnimatePresence mode="wait" initial={false}>
-          {authMode === 'signup' ? <SignupModal onSwitchToLogin={() => setAuthMode('login')} /> : authMode === 'forgot' ? <ForgotPasswordModal onClose={() => setAuthMode(null)} onBackToLogin={() => setAuthMode('login')} /> : <LoginModal onSwitchToSignup={() => setAuthMode('signup')} onForgotPassword={() => setAuthMode('forgot')} />}
-        </AnimatePresence>
-      </AuthModal>
-    </header>
+        <AuthModal open={authMode !== null} title={authMode === 'signup' ? 'Sign up' : authMode === 'forgot' ? 'Password recovery' : 'Log in'} onClose={() => setAuthMode(null)}>
+          <AnimatePresence mode="wait" initial={false}>
+            {authMode === 'signup' ? <SignupModal onSwitchToLogin={() => setAuthMode('login')} /> : authMode === 'forgot' ? <ForgotPasswordModal onClose={() => setAuthMode(null)} onBackToLogin={() => setAuthMode('login')} /> : <LoginModal onSwitchToSignup={() => setAuthMode('signup')} onForgotPassword={() => setAuthMode('forgot')} />}
+          </AnimatePresence>
+        </AuthModal>
+      </header>
+      <Categories />
+    </div>
   );
 }
