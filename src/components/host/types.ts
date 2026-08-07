@@ -1,5 +1,17 @@
 export type ListingType = 'experiences' | 'events' | 'services';
 
+export type ImageAsset = {
+  id: string;
+  publicId: string;
+  secureUrl: string;
+  filename: string;
+  status: 'uploading' | 'uploaded' | 'failed';
+  progress: number;
+  error?: string;
+  isCover: boolean;
+  previewUrl?: string;
+};
+
 export type HostFormData = {
   listingType: ListingType | null;
   category: string;
@@ -21,6 +33,35 @@ export type HostFormData = {
   included: string;
   guestRequirements: string;
   accessibility: string;
+  gallery: ImageAsset[];
+  promoVideoUrl: string;
+  availability: {
+    startTime: string;
+    endTime: string;
+    eventDate: string;
+    multiDay: boolean;
+    capacity: string;
+    weeklySchedule: string;
+    appointmentDuration: string;
+    closedDays: string;
+    bookingCutoff: string;
+  };
+  pricing: {
+    currency: string;
+    pricePerGuest: string;
+    groupDiscount: string;
+    standardTicketPrice: string;
+    vipTicketPrice: string;
+    earlyBirdPrice: string;
+    freeEvent: boolean;
+    hourlyRate: string;
+    dailyRate: string;
+    fixedPackagePrice: string;
+    negotiable: boolean;
+    taxesIncluded: boolean;
+    serviceFee: string;
+  };
+  draft: boolean;
 };
 
 export const defaultHostFormData: HostFormData = {
@@ -44,4 +85,33 @@ export const defaultHostFormData: HostFormData = {
   included: '',
   guestRequirements: '',
   accessibility: '',
+  gallery: [],
+  promoVideoUrl: '',
+  availability: {
+    startTime: '',
+    endTime: '',
+    eventDate: '',
+    multiDay: false,
+    capacity: '',
+    weeklySchedule: '',
+    appointmentDuration: '',
+    closedDays: '',
+    bookingCutoff: '',
+  },
+  pricing: {
+    currency: 'RWF',
+    pricePerGuest: '',
+    groupDiscount: '',
+    standardTicketPrice: '',
+    vipTicketPrice: '',
+    earlyBirdPrice: '',
+    freeEvent: false,
+    hourlyRate: '',
+    dailyRate: '',
+    fixedPackagePrice: '',
+    negotiable: false,
+    taxesIncluded: false,
+    serviceFee: '10',
+  },
+  draft: false,
 };
