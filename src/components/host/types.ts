@@ -4,6 +4,7 @@ export type ImageAsset = {
   id: string;
   publicId: string;
   secureUrl: string;
+  path: string;
   filename: string;
   status: 'uploading' | 'uploaded' | 'failed';
   progress: number;

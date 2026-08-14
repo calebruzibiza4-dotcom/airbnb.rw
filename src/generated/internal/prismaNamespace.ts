@@ -771,6 +771,7 @@ export const ListingScalarFieldEnum = {
   title: 'title',
   description: 'description',
   imageSrc: 'imageSrc',
+  images: 'images',
   createdAt: 'createdAt',
   category: 'category',
   roomCount: 'roomCount',
@@ -858,6 +859,13 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
     
 
 

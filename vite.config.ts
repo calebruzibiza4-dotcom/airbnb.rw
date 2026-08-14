@@ -2,8 +2,7 @@ import 'dotenv/config';
 import crypto from 'node:crypto';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { POST as handleRegister } from './src/api/register/route';
-import { POST as handleLogin } from './src/api/login/route';
+import { POST as handleUpload } from './src/api/upload/route';
 
 function getBaseUrl(req: any) {
   const forwardedProto = req.headers['x-forwarded-proto']?.toString().split(',')[0]?.trim();
@@ -140,46 +139,37 @@ export default defineConfig({
             return;
           }
 
-          if ((url !== '/api/register' && url !== '/api/login') || method !== 'POST') {
-            return next();
-          }
-
-          try {
-            let rawBody = '';
+          if (method === 'POST' && url === '/api/upload') {
+            const chunks: Buffer[] = [];
             for await (const chunk of req) {
-              rawBody += chunk;
+              chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
             }
 
-            const body = rawBody ? JSON.parse(rawBody) : {};
-
-            if (url === '/api/register') {
-              const { email, name, password, phone } = body as { email?: string; name?: string; password?: string; phone?: string };
-
-              if (!email || typeof email !== 'string' || !email.trim() || !name || typeof name !== 'string' || !name.trim() || !password || typeof password !== 'string' || password.length < 8 || !phone || typeof phone !== 'string' || !phone.trim()) {
-                res.statusCode = 400;
-                res.setHeader('Content-Type', 'application/json');
-                res.end(JSON.stringify({ message: 'Invalid signup data.' }));
-                return;
+            const rawBody = Buffer.concat(chunks);
+            const headers = new Headers();
+            for (const [key, value] of Object.entries(req.headers)) {
+              if (value === undefined) {
+                continue;
               }
+              headers.set(key, Array.isArray(value) ? value.join(',') : value);
             }
 
             const request = new Request(`http://localhost${url}`, {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers,
               body: rawBody,
             });
 
-            const response = url === '/api/login' ? await handleLogin(request) : await handleRegister(request);
+            const response = await handleUpload(request);
             res.statusCode = response.status;
             response.headers.forEach((value, key) => {
               res.setHeader(key, value);
             });
             res.end(await response.text());
-          } catch (error) {
-            res.statusCode = 500;
-            res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify({ message: url === '/api/login' ? 'Unable to log in.' : 'Unable to create account.' }));
+            return;
           }
+
+          return next();
         });
       },
     },

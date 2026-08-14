@@ -21,17 +21,13 @@ function createImageAsset(file: File): ImageAsset {
     id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
     publicId: '',
     secureUrl: '',
+    path: '',
     filename: file.name,
     status: 'uploading',
     progress: 0,
     isCover: false,
     previewUrl: URL.createObjectURL(file),
   };
-}
-
-function buildCloudinaryUrl(path: string) {
-  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-  return `https://api.cloudinary.com/v1_1/${cloudName}/${path}`;
 }
 
 export default function ImageUpload({ gallery, promoVideoUrl, onGalleryChange, onVideoChange, onMessageChange }: ImageUploadProps) {
@@ -92,14 +88,12 @@ export default function ImageUpload({ gallery, promoVideoUrl, onGalleryChange, o
     }
 
     const formData = new FormData();
-    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-    const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
     formData.append('file', file);
-    formData.append('upload_preset', uploadPreset);
-    formData.append('folder', 'inzu-listings');
+    // Pass listingId for storage path organization
+    formData.append('listingId', 'draft');
 
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', buildCloudinaryUrl('image/upload'));
+    xhr.open('POST', '/api/upload');
 
     xhr.upload.onprogress = (event) => {
       if (!event.lengthComputable) return;
@@ -109,66 +103,60 @@ export default function ImageUpload({ gallery, promoVideoUrl, onGalleryChange, o
 
     xhr.onload = () => {
       if (xhr.status >= 200 && xhr.status < 300) {
-        const response = JSON.parse(xhr.responseText);
-        updateGallery(
-          gallery.map((item) =>
-            item.id === asset.id
-              ? {
-                  ...item,
-                  publicId: response.public_id,
-                  secureUrl: response.secure_url,
-                  status: 'uploaded',
-                  progress: 100,
-                }
-              : item,
-          ),
-        );
-        fileMapRef.current.delete(asset.id);
+        try {
+          const response = JSON.parse(xhr.responseText);
+          updateGallery(
+            gallery.map((item) =>
+              item.id === asset.id
+                ? {
+                    ...item,
+                    path: response.path || '',
+                    secureUrl: response.url || '',
+                    status: 'uploaded',
+                    progress: 100,
+                  }
+                : item,
+            ),
+          );
+          fileMapRef.current.delete(asset.id);
+          setMessage(`Image ${asset.filename} uploaded successfully!`);
+        } catch (error) {
+          console.error('Failed to parse upload response:', error);
+          updateGallery(gallery.map((item) => (item.id === asset.id ? { ...item, status: 'failed', error: 'Failed to process upload response' } : item)));
+          setMessage('Upload succeeded but response parsing failed.');
+        }
       } else {
-        updateGallery(gallery.map((item) => (item.id === asset.id ? { ...item, status: 'failed', error: 'Upload failed' } : item)));
+        try {
+          const errorData = JSON.parse(xhr.responseText);
+          const errorMsg = errorData.error?.message || `Upload failed with status ${xhr.status}`;
+          updateGallery(gallery.map((item) => (item.id === asset.id ? { ...item, status: 'failed', error: errorMsg } : item)));
+          setMessage(errorMsg);
+        } catch {
+          const errorMsg = `Upload failed with status ${xhr.status}`;
+          updateGallery(gallery.map((item) => (item.id === asset.id ? { ...item, status: 'failed', error: errorMsg } : item)));
+          setMessage(errorMsg);
+        }
       }
     };
 
     xhr.onerror = () => {
+      console.error('Network error during upload');
       updateGallery(gallery.map((item) => (item.id === asset.id ? { ...item, status: 'failed', error: 'Network error' } : item)));
+      setMessage('Network error during upload.');
+    };
+
+    xhr.ontimeout = () => {
+      console.error('Upload timeout');
+      updateGallery(gallery.map((item) => (item.id === asset.id ? { ...item, status: 'failed', error: 'Upload timeout' } : item)));
+      setMessage('Upload took too long. Please try again.');
     };
 
     xhr.send(formData);
   };
 
   const handleVideoUpload = (files: FileList | File[]) => {
-    if (files.length === 0) {
-      return;
-    }
-    const file = files[0];
-    if (file.size > 50 * 1024 * 1024) {
-      setMessage('Video must be smaller than 50 MB.');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', import.meta.env.VITE_CLOUDINARY_VIDEO_UPLOAD_PRESET);
-    formData.append('folder', 'inzu-videos');
-
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', buildCloudinaryUrl('video/upload'));
-
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        const response = JSON.parse(xhr.responseText);
-        onVideoChange(response.secure_url);
-        setMessage('Video uploaded successfully.');
-      } else {
-        setMessage('Video upload failed.');
-      }
-    };
-
-    xhr.onerror = () => {
-      setMessage('Video upload failed.');
-    };
-
-    xhr.send(formData);
+    // Video upload with Supabase is optional and can be implemented later
+    setMessage('Video upload support coming soon. For now, please focus on uploading high-quality images.');
   };
 
   const removeImage = (id: string) => {

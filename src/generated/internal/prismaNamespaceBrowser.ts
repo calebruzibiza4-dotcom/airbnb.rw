@@ -101,6 +101,7 @@ export const ListingScalarFieldEnum = {
   title: 'title',
   description: 'description',
   imageSrc: 'imageSrc',
+  images: 'images',
   createdAt: 'createdAt',
   category: 'category',
   roomCount: 'roomCount',

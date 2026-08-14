@@ -78,6 +78,7 @@ export type ListingCountAggregateOutputType = {
   title: number
   description: number
   imageSrc: number
+  images: number
   createdAt: number
   category: number
   roomCount: number
@@ -142,6 +143,7 @@ export type ListingCountAggregateInputType = {
   title?: true
   description?: true
   imageSrc?: true
+  images?: true
   createdAt?: true
   category?: true
   roomCount?: true
@@ -245,6 +247,7 @@ export type ListingGroupByOutputType = {
   title: string
   description: string
   imageSrc: string
+  images: runtime.JsonValue | null
   createdAt: Date
   category: string
   roomCount: number
@@ -284,6 +287,7 @@ export type ListingWhereInput = {
   title?: Prisma.StringFilter<"Listing"> | string
   description?: Prisma.StringFilter<"Listing"> | string
   imageSrc?: Prisma.StringFilter<"Listing"> | string
+  images?: Prisma.JsonNullableFilter<"Listing">
   createdAt?: Prisma.DateTimeFilter<"Listing"> | Date | string
   category?: Prisma.StringFilter<"Listing"> | string
   roomCount?: Prisma.IntFilter<"Listing"> | number
@@ -302,6 +306,7 @@ export type ListingOrderByWithRelationInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   imageSrc?: Prisma.SortOrder
+  images?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   category?: Prisma.SortOrder
   roomCount?: Prisma.SortOrder
@@ -323,6 +328,7 @@ export type ListingWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"Listing"> | string
   description?: Prisma.StringFilter<"Listing"> | string
   imageSrc?: Prisma.StringFilter<"Listing"> | string
+  images?: Prisma.JsonNullableFilter<"Listing">
   createdAt?: Prisma.DateTimeFilter<"Listing"> | Date | string
   category?: Prisma.StringFilter<"Listing"> | string
   roomCount?: Prisma.IntFilter<"Listing"> | number
@@ -341,6 +347,7 @@ export type ListingOrderByWithAggregationInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   imageSrc?: Prisma.SortOrder
+  images?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   category?: Prisma.SortOrder
   roomCount?: Prisma.SortOrder
@@ -365,6 +372,7 @@ export type ListingScalarWhereWithAggregatesInput = {
   title?: Prisma.StringWithAggregatesFilter<"Listing"> | string
   description?: Prisma.StringWithAggregatesFilter<"Listing"> | string
   imageSrc?: Prisma.StringWithAggregatesFilter<"Listing"> | string
+  images?: Prisma.JsonNullableWithAggregatesFilter<"Listing">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Listing"> | Date | string
   category?: Prisma.StringWithAggregatesFilter<"Listing"> | string
   roomCount?: Prisma.IntWithAggregatesFilter<"Listing"> | number
@@ -380,6 +388,7 @@ export type ListingCreateInput = {
   title: string
   description: string
   imageSrc: string
+  images?: runtime.InputJsonValue | null
   createdAt?: Date | string
   category: string
   roomCount: number
@@ -398,6 +407,7 @@ export type ListingUncheckedCreateInput = {
   title: string
   description: string
   imageSrc: string
+  images?: runtime.InputJsonValue | null
   createdAt?: Date | string
   category: string
   roomCount: number
@@ -413,6 +423,7 @@ export type ListingUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: runtime.InputJsonValue | runtime.InputJsonValue | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   roomCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -430,6 +441,7 @@ export type ListingUncheckedUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: runtime.InputJsonValue | runtime.InputJsonValue | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   roomCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -447,6 +459,7 @@ export type ListingCreateManyInput = {
   title: string
   description: string
   imageSrc: string
+  images?: runtime.InputJsonValue | null
   createdAt?: Date | string
   category: string
   roomCount: number
@@ -461,6 +474,7 @@ export type ListingUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: runtime.InputJsonValue | runtime.InputJsonValue | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   roomCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -476,6 +490,7 @@ export type ListingUncheckedUpdateManyInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: runtime.InputJsonValue | runtime.InputJsonValue | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   roomCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -502,6 +517,7 @@ export type ListingCountOrderByAggregateInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   imageSrc?: Prisma.SortOrder
+  images?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   category?: Prisma.SortOrder
   roomCount?: Prisma.SortOrder
@@ -632,6 +648,7 @@ export type ListingCreateWithoutUserInput = {
   title: string
   description: string
   imageSrc: string
+  images?: runtime.InputJsonValue | null
   createdAt?: Date | string
   category: string
   roomCount: number
@@ -648,6 +665,7 @@ export type ListingUncheckedCreateWithoutUserInput = {
   title: string
   description: string
   imageSrc: string
+  images?: runtime.InputJsonValue | null
   createdAt?: Date | string
   category: string
   roomCount: number
@@ -693,6 +711,7 @@ export type ListingScalarWhereInput = {
   title?: Prisma.StringFilter<"Listing"> | string
   description?: Prisma.StringFilter<"Listing"> | string
   imageSrc?: Prisma.StringFilter<"Listing"> | string
+  images?: Prisma.JsonNullableFilter<"Listing">
   createdAt?: Prisma.DateTimeFilter<"Listing"> | Date | string
   category?: Prisma.StringFilter<"Listing"> | string
   roomCount?: Prisma.IntFilter<"Listing"> | number
@@ -708,6 +727,7 @@ export type ListingCreateWithoutReservationsInput = {
   title: string
   description: string
   imageSrc: string
+  images?: runtime.InputJsonValue | null
   createdAt?: Date | string
   category: string
   roomCount: number
@@ -725,6 +745,7 @@ export type ListingUncheckedCreateWithoutReservationsInput = {
   title: string
   description: string
   imageSrc: string
+  images?: runtime.InputJsonValue | null
   createdAt?: Date | string
   category: string
   roomCount: number
@@ -755,6 +776,7 @@ export type ListingUpdateWithoutReservationsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: runtime.InputJsonValue | runtime.InputJsonValue | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   roomCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -771,6 +793,7 @@ export type ListingUncheckedUpdateWithoutReservationsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: runtime.InputJsonValue | runtime.InputJsonValue | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   roomCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -786,6 +809,7 @@ export type ListingCreateManyUserInput = {
   title: string
   description: string
   imageSrc: string
+  images?: runtime.InputJsonValue | null
   createdAt?: Date | string
   category: string
   roomCount: number
@@ -800,6 +824,7 @@ export type ListingUpdateWithoutUserInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: runtime.InputJsonValue | runtime.InputJsonValue | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   roomCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -815,6 +840,7 @@ export type ListingUncheckedUpdateWithoutUserInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: runtime.InputJsonValue | runtime.InputJsonValue | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   roomCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -830,6 +856,7 @@ export type ListingUncheckedUpdateManyWithoutUserInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: runtime.InputJsonValue | runtime.InputJsonValue | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   roomCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -877,6 +904,7 @@ export type ListingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   title?: boolean
   description?: boolean
   imageSrc?: boolean
+  images?: boolean
   createdAt?: boolean
   category?: boolean
   roomCount?: boolean
@@ -898,6 +926,7 @@ export type ListingSelectScalar = {
   title?: boolean
   description?: boolean
   imageSrc?: boolean
+  images?: boolean
   createdAt?: boolean
   category?: boolean
   roomCount?: boolean
@@ -908,7 +937,7 @@ export type ListingSelectScalar = {
   price?: boolean
 }
 
-export type ListingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "description" | "imageSrc" | "createdAt" | "category" | "roomCount" | "bathroomCount" | "guestCount" | "locationValue" | "userid" | "price", ExtArgs["result"]["listing"]>
+export type ListingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "description" | "imageSrc" | "images" | "createdAt" | "category" | "roomCount" | "bathroomCount" | "guestCount" | "locationValue" | "userid" | "price", ExtArgs["result"]["listing"]>
 export type ListingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   reservations?: boolean | Prisma.Listing$reservationsArgs<ExtArgs>
@@ -927,6 +956,7 @@ export type $ListingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     title: string
     description: string
     imageSrc: string
+    images: runtime.JsonValue | null
     createdAt: Date
     category: string
     roomCount: number
@@ -1334,6 +1364,7 @@ export interface ListingFieldRefs {
   readonly title: Prisma.FieldRef<"Listing", 'String'>
   readonly description: Prisma.FieldRef<"Listing", 'String'>
   readonly imageSrc: Prisma.FieldRef<"Listing", 'String'>
+  readonly images: Prisma.FieldRef<"Listing", 'Json'>
   readonly createdAt: Prisma.FieldRef<"Listing", 'DateTime'>
   readonly category: Prisma.FieldRef<"Listing", 'String'>
   readonly roomCount: Prisma.FieldRef<"Listing", 'Int'>

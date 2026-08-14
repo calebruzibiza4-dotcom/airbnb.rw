@@ -52,6 +52,7 @@ model Listing {
   title String
   description String
   imageSrc String
+  images Json? // Array of {url: string, path: string, isCover: boolean}
   createdAt DateTime @default(now())
   category String
   roomCount Int
