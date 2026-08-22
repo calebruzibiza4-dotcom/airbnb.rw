@@ -32,7 +32,10 @@ export async function uploadImageToSupabase(
     throw new Error('No file provided');
   }
 
-  if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+  const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+  const fileExtension = file.name.split('.').pop()?.toLowerCase();
+  if (!allowedTypes.includes(file.type.toLowerCase()) && (!fileExtension || !allowedExtensions.includes(fileExtension))) {
     throw new Error('Unsupported image format. Please upload JPG, PNG, or WEBP.');
   }
 

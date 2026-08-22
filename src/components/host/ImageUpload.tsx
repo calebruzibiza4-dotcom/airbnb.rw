@@ -13,8 +13,14 @@ type ImageUploadProps = {
 const MAX_IMAGES = 20;
 const MIN_IMAGES = 5;
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
-const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+const ACCEPTED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+const ACCEPTED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
 const VIDEO_ACCEPT = 'video/mp4,video/webm,video/quicktime';
+
+function isSupportedImage(file: File) {
+  const extension = file.name.split('.').pop()?.toLowerCase();
+  return ACCEPTED_TYPES.includes(file.type.toLowerCase()) || (extension ? ACCEPTED_EXTENSIONS.includes(extension) : false);
+}
 
 function createImageAsset(file: File): ImageAsset {
   return {
@@ -35,16 +41,19 @@ export default function ImageUpload({ gallery, promoVideoUrl, onGalleryChange, o
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const videoInputRef = useRef<HTMLInputElement | null>(null);
   const fileMapRef = useRef<Map<string, File>>(new Map());
+  const galleryRef = useRef(gallery);
+
+  galleryRef.current = gallery;
 
   useEffect(() => {
     return () => {
-      gallery.forEach((asset) => {
+      galleryRef.current.forEach((asset) => {
         if (asset.previewUrl) {
           URL.revokeObjectURL(asset.previewUrl);
         }
       });
     };
-  }, [gallery]);
+  }, []);
 
   const currentCount = gallery.length;
   const remainingSlots = MAX_IMAGES - currentCount;
@@ -54,28 +63,39 @@ export default function ImageUpload({ gallery, promoVideoUrl, onGalleryChange, o
   };
 
   const updateGallery = (updated: ImageAsset[]) => {
+    galleryRef.current = updated;
     onGalleryChange(updated);
   };
 
   const handleFiles = (files: FileList | File[]) => {
-    const inputFiles = Array.from(files).slice(0, remainingSlots);
+    const currentGallery = galleryRef.current;
+    const availableSlots = MAX_IMAGES - currentGallery.length;
+    if (availableSlots <= 0) {
+      setMessage(`You can upload up to ${MAX_IMAGES} images.`);
+      return;
+    }
+
+    const inputFiles = Array.from(files).slice(0, availableSlots);
     if (inputFiles.length === 0) {
       setMessage(`You can upload up to ${MAX_IMAGES} images.`);
       return;
     }
 
-    const invalidFiles = inputFiles.filter((file) => !ACCEPTED_TYPES.includes(file.type) || file.size > MAX_IMAGE_SIZE);
+    const invalidFiles = inputFiles.filter((file) => !isSupportedImage(file) || file.size > MAX_IMAGE_SIZE);
     if (invalidFiles.length > 0) {
       setMessage('Only JPG, PNG and WEBP images under 10 MB are allowed.');
     }
 
-    const validFiles = inputFiles.filter((file) => ACCEPTED_TYPES.includes(file.type) && file.size <= MAX_IMAGE_SIZE);
+    const validFiles = inputFiles.filter((file) => isSupportedImage(file) && file.size <= MAX_IMAGE_SIZE);
     if (!validFiles.length) {
       return;
     }
 
-    const assets = validFiles.map((file) => createImageAsset(file));
-    const nextGallery = [...gallery, ...assets];
+    const assets = validFiles.map((file, index) => ({
+      ...createImageAsset(file),
+      isCover: currentGallery.length === 0 && index === 0,
+    }));
+    const nextGallery = [...currentGallery, ...assets];
     assets.forEach((asset, index) => fileMapRef.current.set(asset.id, validFiles[index]));
     updateGallery(nextGallery);
     assets.forEach((asset) => uploadImage(asset));
@@ -98,7 +118,7 @@ export default function ImageUpload({ gallery, promoVideoUrl, onGalleryChange, o
     xhr.upload.onprogress = (event) => {
       if (!event.lengthComputable) return;
       const progress = Math.round((event.loaded / event.total) * 100);
-      updateGallery(gallery.map((item) => (item.id === asset.id ? { ...item, progress } : item)));
+      updateGallery(galleryRef.current.map((item) => (item.id === asset.id ? { ...item, progress } : item)));
     };
 
     xhr.onload = () => {
@@ -106,7 +126,7 @@ export default function ImageUpload({ gallery, promoVideoUrl, onGalleryChange, o
         try {
           const response = JSON.parse(xhr.responseText);
           updateGallery(
-            gallery.map((item) =>
+            galleryRef.current.map((item) =>
               item.id === asset.id
                 ? {
                     ...item,
@@ -122,18 +142,18 @@ export default function ImageUpload({ gallery, promoVideoUrl, onGalleryChange, o
           setMessage(`Image ${asset.filename} uploaded successfully!`);
         } catch (error) {
           console.error('Failed to parse upload response:', error);
-          updateGallery(gallery.map((item) => (item.id === asset.id ? { ...item, status: 'failed', error: 'Failed to process upload response' } : item)));
+          updateGallery(galleryRef.current.map((item) => (item.id === asset.id ? { ...item, status: 'failed', error: 'Failed to process upload response' } : item)));
           setMessage('Upload succeeded but response parsing failed.');
         }
       } else {
         try {
           const errorData = JSON.parse(xhr.responseText);
           const errorMsg = errorData.error?.message || `Upload failed with status ${xhr.status}`;
-          updateGallery(gallery.map((item) => (item.id === asset.id ? { ...item, status: 'failed', error: errorMsg } : item)));
+          updateGallery(galleryRef.current.map((item) => (item.id === asset.id ? { ...item, status: 'failed', error: errorMsg } : item)));
           setMessage(errorMsg);
         } catch {
           const errorMsg = `Upload failed with status ${xhr.status}`;
-          updateGallery(gallery.map((item) => (item.id === asset.id ? { ...item, status: 'failed', error: errorMsg } : item)));
+          updateGallery(galleryRef.current.map((item) => (item.id === asset.id ? { ...item, status: 'failed', error: errorMsg } : item)));
           setMessage(errorMsg);
         }
       }
@@ -141,13 +161,13 @@ export default function ImageUpload({ gallery, promoVideoUrl, onGalleryChange, o
 
     xhr.onerror = () => {
       console.error('Network error during upload');
-      updateGallery(gallery.map((item) => (item.id === asset.id ? { ...item, status: 'failed', error: 'Network error' } : item)));
+      updateGallery(galleryRef.current.map((item) => (item.id === asset.id ? { ...item, status: 'failed', error: 'Network error' } : item)));
       setMessage('Network error during upload.');
     };
 
     xhr.ontimeout = () => {
       console.error('Upload timeout');
-      updateGallery(gallery.map((item) => (item.id === asset.id ? { ...item, status: 'failed', error: 'Upload timeout' } : item)));
+      updateGallery(galleryRef.current.map((item) => (item.id === asset.id ? { ...item, status: 'failed', error: 'Upload timeout' } : item)));
       setMessage('Upload took too long. Please try again.');
     };
 
@@ -160,12 +180,16 @@ export default function ImageUpload({ gallery, promoVideoUrl, onGalleryChange, o
   };
 
   const removeImage = (id: string) => {
-    updateGallery(gallery.filter((item) => item.id !== id));
+    const removedAsset = galleryRef.current.find((item) => item.id === id);
+    if (removedAsset?.previewUrl) {
+      URL.revokeObjectURL(removedAsset.previewUrl);
+    }
+    updateGallery(galleryRef.current.filter((item) => item.id !== id));
     fileMapRef.current.delete(id);
   };
 
   const setCover = (id: string) => {
-    updateGallery(gallery.map((item) => ({ ...item, isCover: item.id === id })));
+    updateGallery(galleryRef.current.map((item) => ({ ...item, isCover: item.id === id })));
   };
 
   const handleRetry = (asset: ImageAsset) => {
@@ -174,7 +198,7 @@ export default function ImageUpload({ gallery, promoVideoUrl, onGalleryChange, o
       setMessage('Retry is unavailable for this image. Please remove and upload again.');
       return;
     }
-    updateGallery(gallery.map((item) => (item.id === asset.id ? { ...item, status: 'uploading', progress: 0, error: undefined } : item)));
+    updateGallery(galleryRef.current.map((item) => (item.id === asset.id ? { ...item, status: 'uploading', progress: 0, error: undefined } : item)));
     uploadImage(asset);
   };
 
@@ -225,7 +249,7 @@ export default function ImageUpload({ gallery, promoVideoUrl, onGalleryChange, o
             <ImagePlus className="h-4 w-4" />
             Upload images
           </button>
-          <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp" multiple className="hidden" onChange={(event) => handleFiles(event.target.files ?? [])} />
+          <input ref={fileInputRef} type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/jpg,image/png,image/webp" multiple className="hidden" onChange={(event) => handleFiles(event.target.files ?? [])} />
         </div>
 
         <div className="mt-6 grid gap-4 lg:grid-cols-2">
