@@ -141,6 +141,7 @@ export function AuthSessionProvider({ children }: { children: ReactNode }) {
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ identity, password }),
       });

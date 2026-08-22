@@ -3,6 +3,8 @@ import crypto from 'node:crypto';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { POST as handleUpload } from './src/api/upload/route';
+import { DELETE_BY_ID as deleteListing, GET as getListings, GET_BY_ID as getListingById, PATCH_BY_ID as updateListing, POST as createListing, POST_DRAFT as saveListingDraft } from './src/api/listings/route';
+import { getSessionByToken } from './src/auth/session-store';
 
 function getBaseUrl(req: any) {
   const forwardedProto = req.headers['x-forwarded-proto']?.toString().split(',')[0]?.trim();
@@ -26,6 +28,11 @@ function parseCookies(req: any) {
     accumulator[rawKey] = rawValue.join('=');
     return accumulator;
   }, {});
+}
+
+function getSessionUserId(req: any) {
+  const token = parseCookies(req).inzu_session;
+  return getSessionByToken(token)?.user.id || null;
 }
 
 async function exchangeGoogleCode(code: string, redirectUri: string) {
@@ -165,6 +172,57 @@ export default defineConfig({
             response.headers.forEach((value, key) => {
               res.setHeader(key, value);
             });
+            res.end(await response.text());
+            return;
+          }
+
+          if (method === 'GET' && url === '/api/listings') {
+            const response = await getListings(new Request(`http://localhost${req.url || url}`, { method: 'GET' }));
+            res.statusCode = response.status;
+            response.headers.forEach((value, key) => res.setHeader(key, value));
+            res.end(await response.text());
+            return;
+          }
+
+          if (method === 'GET' && url.startsWith('/api/listings/')) {
+            const response = await getListingById(url.split('/').pop() || '');
+            res.statusCode = response.status;
+            response.headers.forEach((value, key) => res.setHeader(key, value));
+            res.end(await response.text());
+            return;
+          }
+
+          if ((method === 'PATCH' || method === 'DELETE') && url.startsWith('/api/listings/')) {
+            const id = url.split('/').pop() || '';
+            const response = method === 'DELETE'
+              ? await deleteListing(id, getSessionUserId(req))
+              : await (async () => {
+                const chunks: Buffer[] = [];
+                for await (const chunk of req) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+                return updateListing(id, new Request(`http://localhost${url}`, { method: 'PATCH', headers: { 'Content-Type': req.headers['content-type'] || 'application/json' }, body: Buffer.concat(chunks) }), getSessionUserId(req));
+              })();
+            res.statusCode = response.status;
+            response.headers.forEach((value, key) => res.setHeader(key, value));
+            res.end(await response.text());
+            return;
+          }
+
+          if (method === 'POST' && url === '/api/listings') {
+            const chunks: Buffer[] = [];
+            for await (const chunk of req) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+            const response = await createListing(new Request(`http://localhost${url}`, { method: 'POST', headers: { 'Content-Type': req.headers['content-type'] || 'application/json' }, body: Buffer.concat(chunks) }), getSessionUserId(req));
+            res.statusCode = response.status;
+            response.headers.forEach((value, key) => res.setHeader(key, value));
+            res.end(await response.text());
+            return;
+          }
+
+          if (method === 'POST' && url === '/api/listings/draft') {
+            const chunks: Buffer[] = [];
+            for await (const chunk of req) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+            const response = await saveListingDraft(new Request(`http://localhost${url}`, { method: 'POST', headers: { 'Content-Type': req.headers['content-type'] || 'application/json' }, body: Buffer.concat(chunks) }), getSessionUserId(req));
+            res.statusCode = response.status;
+            response.headers.forEach((value, key) => res.setHeader(key, value));
             res.end(await response.text());
             return;
           }

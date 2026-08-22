@@ -53,7 +53,21 @@ model Listing {
   description String
   imageSrc String
   images Json? // Array of {url: string, path: string, isCover: boolean}
+  coverImage Json?
+  listingType String?
+  location String?
+  address String?
+  province String?
+  district String?
+  sector String?
+  latitude Float?
+  longitude Float?
+  currency String?
+  availability Json?
+  maxGuests Int?
+  status String? // draft, published, archived
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   category String
   roomCount Int
   bathroomCount Int

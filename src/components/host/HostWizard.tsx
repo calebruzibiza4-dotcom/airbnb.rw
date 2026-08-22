@@ -214,6 +214,7 @@ type HostWizardProps = {
 export default function HostWizard({ onComplete, onCancel }: HostWizardProps) {
   const [step, setStep] = useState(1);
   const [savedMessage, setSavedMessage] = useState('');
+  const [isPublishing, setIsPublishing] = useState(false);
   const { setValue, watch, setError, clearErrors, formState } = useForm<HostFormData>({
     defaultValues: defaultHostFormData,
     mode: 'onChange',
@@ -332,22 +333,66 @@ export default function HostWizard({ onComplete, onCancel }: HostWizardProps) {
     setStep((current) => Math.min(current + 1, totalSteps));
   };
 
-  const handleSaveDraft = () => {
+  const handleSaveDraft = async () => {
     setValue('draft', true as never);
-    setSavedMessage('Draft saved. You can continue later from where you left off.');
+    setSavedMessage('Saving your draft...');
     if (typeof window !== 'undefined') {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...formData, draft: true }));
     }
+    try {
+      const response = await fetch('/api/listings/draft', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, images: formData.gallery.map((image) => ({ url: image.secureUrl, path: image.path, isCover: image.isCover })) }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      setSavedMessage(response.ok ? 'Draft saved. You can continue later from where you left off.' : payload?.error?.message || 'We could not save your draft.');
+    } catch {
+      setSavedMessage('We could not reach the listing service. Your local draft is still saved.');
+    }
   };
 
-  const handlePublish = () => {
+  const handlePublish = async () => {
+    if (isPublishing) {
+      return;
+    }
+
     const isValid = validateStep(9);
     if (!isValid) {
       setSavedMessage('Please fix the highlighted fields before publishing.');
       return;
     }
-    setValue('draft', false as never);
-    onComplete?.();
+
+  setIsPublishing(true);
+    setSavedMessage('Publishing your listing...');
+    try {
+      const response = await fetch('/api/listings', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          listingType: formData.listingType === 'experiences' ? 'experience' : formData.listingType === 'events' ? 'event' : 'service',
+          images: formData.gallery.map((image) => ({ url: image.secureUrl, path: image.path, isCover: image.isCover })),
+          price: formData.listingType === 'experiences' ? formData.pricing.pricePerGuest : formData.listingType === 'events' ? formData.pricing.standardTicketPrice : formData.pricing.hourlyRate || formData.pricing.dailyRate || formData.pricing.fixedPackagePrice,
+          currency: formData.pricing.currency,
+        }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        setSavedMessage(payload?.error?.message || 'We could not publish your listing.');
+        return;
+      }
+      setValue('draft', false as never);
+      setSavedMessage('Your listing has been published successfully.');
+      window.localStorage.removeItem(STORAGE_KEY);
+      onComplete?.();
+    } catch {
+      setSavedMessage('We could not reach the listing service. Please try again.');
+    } finally {
+      setIsPublishing(false);
+    }
   };
 
   const goBack = () => {
@@ -391,7 +436,7 @@ export default function HostWizard({ onComplete, onCancel }: HostWizardProps) {
       case 8:
         return <StepPricing listingType={formData.listingType} values={formData.pricing} onChange={updatePricing} onNext={goNext} onBack={goBack} errors={{ pricePerGuest: formState.errors.pricing?.pricePerGuest?.message, groupDiscount: formState.errors.pricing?.groupDiscount?.message, standardTicketPrice: formState.errors.pricing?.standardTicketPrice?.message, vipTicketPrice: formState.errors.pricing?.vipTicketPrice?.message, earlyBirdPrice: formState.errors.pricing?.earlyBirdPrice?.message, hourlyRate: formState.errors.pricing?.hourlyRate?.message, dailyRate: formState.errors.pricing?.dailyRate?.message, fixedPackagePrice: formState.errors.pricing?.fixedPackagePrice?.message, serviceFee: formState.errors.pricing?.serviceFee?.message }} />;
       case 9:
-        return <StepReview data={formData} onPublish={handlePublish} onSaveDraft={handleSaveDraft} onBack={goBack} />;
+        return <StepReview data={formData} onPublish={handlePublish} isPublishing={isPublishing} onSaveDraft={handleSaveDraft} onBack={goBack} />;
       default:
         return null;
     }

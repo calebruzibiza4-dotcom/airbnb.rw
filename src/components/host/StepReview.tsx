@@ -4,6 +4,7 @@ import type { HostFormData } from './types';
 type StepReviewProps = {
   data: HostFormData;
   onPublish: () => void;
+  isPublishing?: boolean;
   onSaveDraft: () => void;
   onBack: () => void;
 };
@@ -28,7 +29,7 @@ function formatPricing(data: HostFormData) {
   return `${data.pricing.hourlyRate || '0'} ${data.pricing.currency} hourly`;
 }
 
-export default function StepReview({ data, onPublish, onSaveDraft, onBack }: StepReviewProps) {
+export default function StepReview({ data, onPublish, isPublishing = false, onSaveDraft, onBack }: StepReviewProps) {
   return (
     <div className="space-y-6">
       <div className="rounded-[32px] border border-white/70 bg-white/70 p-8 shadow-[0_20px_80px_rgba(15,23,42,0.08)] backdrop-blur-xl">
@@ -112,8 +113,8 @@ export default function StepReview({ data, onPublish, onSaveDraft, onBack }: Ste
           <button type="button" onClick={onSaveDraft} className="rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50">
             Save as Draft
           </button>
-          <button type="button" onClick={onPublish} className="rounded-full bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(16,185,129,0.2)] transition hover:bg-emerald-700">
-            Publish Listing
+          <button type="button" onClick={onPublish} disabled={isPublishing} aria-busy={isPublishing} className="rounded-full bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(16,185,129,0.2)] transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60">
+            {isPublishing ? 'Publishing...' : 'Publish Listing'}
           </button>
         </div>
       </div>

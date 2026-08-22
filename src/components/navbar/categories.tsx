@@ -5,7 +5,7 @@ import CategoryButton from './CategoryButton';
 import CategoryGrid from './CategoryGrid';
 import CategoryModal from './CategoryModal';
 
-export default function Categories() {
+export default function Categories({ onCategoryChange }: { onCategoryChange?: (category: TopCategoryKey) => void }) {
   const [activeCategory, setActiveCategory] = useState<TopCategoryKey>('everything');
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -35,6 +35,7 @@ export default function Categories() {
   }, [activeCategory]);
 
   const handleSelect = (category: TopCategoryKey) => {
+    onCategoryChange?.(category);
     if (category === 'everything') {
       setActiveCategory('everything');
       setModalOpen(false);

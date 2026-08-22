@@ -27,6 +27,9 @@ export type AggregateListing = {
 }
 
 export type ListingAvgAggregateOutputType = {
+  latitude: number | null
+  longitude: number | null
+  maxGuests: number | null
   roomCount: number | null
   bathroomCount: number | null
   guestCount: number | null
@@ -34,6 +37,9 @@ export type ListingAvgAggregateOutputType = {
 }
 
 export type ListingSumAggregateOutputType = {
+  latitude: number | null
+  longitude: number | null
+  maxGuests: number | null
   roomCount: number | null
   bathroomCount: number | null
   guestCount: number | null
@@ -46,7 +52,19 @@ export type ListingMinAggregateOutputType = {
   title: string | null
   description: string | null
   imageSrc: string | null
+  listingType: string | null
+  location: string | null
+  address: string | null
+  province: string | null
+  district: string | null
+  sector: string | null
+  latitude: number | null
+  longitude: number | null
+  currency: string | null
+  maxGuests: number | null
+  status: string | null
   createdAt: Date | null
+  updatedAt: Date | null
   category: string | null
   roomCount: number | null
   bathroomCount: number | null
@@ -62,7 +80,19 @@ export type ListingMaxAggregateOutputType = {
   title: string | null
   description: string | null
   imageSrc: string | null
+  listingType: string | null
+  location: string | null
+  address: string | null
+  province: string | null
+  district: string | null
+  sector: string | null
+  latitude: number | null
+  longitude: number | null
+  currency: string | null
+  maxGuests: number | null
+  status: string | null
   createdAt: Date | null
+  updatedAt: Date | null
   category: string | null
   roomCount: number | null
   bathroomCount: number | null
@@ -79,7 +109,21 @@ export type ListingCountAggregateOutputType = {
   description: number
   imageSrc: number
   images: number
+  coverImage: number
+  listingType: number
+  location: number
+  address: number
+  province: number
+  district: number
+  sector: number
+  latitude: number
+  longitude: number
+  currency: number
+  availability: number
+  maxGuests: number
+  status: number
   createdAt: number
+  updatedAt: number
   category: number
   roomCount: number
   bathroomCount: number
@@ -92,6 +136,9 @@ export type ListingCountAggregateOutputType = {
 
 
 export type ListingAvgAggregateInputType = {
+  latitude?: true
+  longitude?: true
+  maxGuests?: true
   roomCount?: true
   bathroomCount?: true
   guestCount?: true
@@ -99,6 +146,9 @@ export type ListingAvgAggregateInputType = {
 }
 
 export type ListingSumAggregateInputType = {
+  latitude?: true
+  longitude?: true
+  maxGuests?: true
   roomCount?: true
   bathroomCount?: true
   guestCount?: true
@@ -111,7 +161,19 @@ export type ListingMinAggregateInputType = {
   title?: true
   description?: true
   imageSrc?: true
+  listingType?: true
+  location?: true
+  address?: true
+  province?: true
+  district?: true
+  sector?: true
+  latitude?: true
+  longitude?: true
+  currency?: true
+  maxGuests?: true
+  status?: true
   createdAt?: true
+  updatedAt?: true
   category?: true
   roomCount?: true
   bathroomCount?: true
@@ -127,7 +189,19 @@ export type ListingMaxAggregateInputType = {
   title?: true
   description?: true
   imageSrc?: true
+  listingType?: true
+  location?: true
+  address?: true
+  province?: true
+  district?: true
+  sector?: true
+  latitude?: true
+  longitude?: true
+  currency?: true
+  maxGuests?: true
+  status?: true
   createdAt?: true
+  updatedAt?: true
   category?: true
   roomCount?: true
   bathroomCount?: true
@@ -144,7 +218,21 @@ export type ListingCountAggregateInputType = {
   description?: true
   imageSrc?: true
   images?: true
+  coverImage?: true
+  listingType?: true
+  location?: true
+  address?: true
+  province?: true
+  district?: true
+  sector?: true
+  latitude?: true
+  longitude?: true
+  currency?: true
+  availability?: true
+  maxGuests?: true
+  status?: true
   createdAt?: true
+  updatedAt?: true
   category?: true
   roomCount?: true
   bathroomCount?: true
@@ -248,7 +336,21 @@ export type ListingGroupByOutputType = {
   description: string
   imageSrc: string
   images: runtime.JsonValue | null
+  coverImage: runtime.JsonValue | null
+  listingType: string | null
+  location: string | null
+  address: string | null
+  province: string | null
+  district: string | null
+  sector: string | null
+  latitude: number | null
+  longitude: number | null
+  currency: string | null
+  availability: runtime.JsonValue | null
+  maxGuests: number | null
+  status: string | null
   createdAt: Date
+  updatedAt: Date
   category: string
   roomCount: number
   bathroomCount: number
@@ -288,7 +390,21 @@ export type ListingWhereInput = {
   description?: Prisma.StringFilter<"Listing"> | string
   imageSrc?: Prisma.StringFilter<"Listing"> | string
   images?: Prisma.JsonNullableFilter<"Listing">
+  coverImage?: Prisma.JsonNullableFilter<"Listing">
+  listingType?: Prisma.StringNullableFilter<"Listing"> | string | null
+  location?: Prisma.StringNullableFilter<"Listing"> | string | null
+  address?: Prisma.StringNullableFilter<"Listing"> | string | null
+  province?: Prisma.StringNullableFilter<"Listing"> | string | null
+  district?: Prisma.StringNullableFilter<"Listing"> | string | null
+  sector?: Prisma.StringNullableFilter<"Listing"> | string | null
+  latitude?: Prisma.FloatNullableFilter<"Listing"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Listing"> | number | null
+  currency?: Prisma.StringNullableFilter<"Listing"> | string | null
+  availability?: Prisma.JsonNullableFilter<"Listing">
+  maxGuests?: Prisma.IntNullableFilter<"Listing"> | number | null
+  status?: Prisma.StringNullableFilter<"Listing"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Listing"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Listing"> | Date | string
   category?: Prisma.StringFilter<"Listing"> | string
   roomCount?: Prisma.IntFilter<"Listing"> | number
   bathroomCount?: Prisma.IntFilter<"Listing"> | number
@@ -307,7 +423,21 @@ export type ListingOrderByWithRelationInput = {
   description?: Prisma.SortOrder
   imageSrc?: Prisma.SortOrder
   images?: Prisma.SortOrder
+  coverImage?: Prisma.SortOrder
+  listingType?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  province?: Prisma.SortOrder
+  district?: Prisma.SortOrder
+  sector?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
+  availability?: Prisma.SortOrder
+  maxGuests?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   category?: Prisma.SortOrder
   roomCount?: Prisma.SortOrder
   bathroomCount?: Prisma.SortOrder
@@ -329,7 +459,21 @@ export type ListingWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringFilter<"Listing"> | string
   imageSrc?: Prisma.StringFilter<"Listing"> | string
   images?: Prisma.JsonNullableFilter<"Listing">
+  coverImage?: Prisma.JsonNullableFilter<"Listing">
+  listingType?: Prisma.StringNullableFilter<"Listing"> | string | null
+  location?: Prisma.StringNullableFilter<"Listing"> | string | null
+  address?: Prisma.StringNullableFilter<"Listing"> | string | null
+  province?: Prisma.StringNullableFilter<"Listing"> | string | null
+  district?: Prisma.StringNullableFilter<"Listing"> | string | null
+  sector?: Prisma.StringNullableFilter<"Listing"> | string | null
+  latitude?: Prisma.FloatNullableFilter<"Listing"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Listing"> | number | null
+  currency?: Prisma.StringNullableFilter<"Listing"> | string | null
+  availability?: Prisma.JsonNullableFilter<"Listing">
+  maxGuests?: Prisma.IntNullableFilter<"Listing"> | number | null
+  status?: Prisma.StringNullableFilter<"Listing"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Listing"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Listing"> | Date | string
   category?: Prisma.StringFilter<"Listing"> | string
   roomCount?: Prisma.IntFilter<"Listing"> | number
   bathroomCount?: Prisma.IntFilter<"Listing"> | number
@@ -348,7 +492,21 @@ export type ListingOrderByWithAggregationInput = {
   description?: Prisma.SortOrder
   imageSrc?: Prisma.SortOrder
   images?: Prisma.SortOrder
+  coverImage?: Prisma.SortOrder
+  listingType?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  province?: Prisma.SortOrder
+  district?: Prisma.SortOrder
+  sector?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
+  availability?: Prisma.SortOrder
+  maxGuests?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   category?: Prisma.SortOrder
   roomCount?: Prisma.SortOrder
   bathroomCount?: Prisma.SortOrder
@@ -373,7 +531,21 @@ export type ListingScalarWhereWithAggregatesInput = {
   description?: Prisma.StringWithAggregatesFilter<"Listing"> | string
   imageSrc?: Prisma.StringWithAggregatesFilter<"Listing"> | string
   images?: Prisma.JsonNullableWithAggregatesFilter<"Listing">
+  coverImage?: Prisma.JsonNullableWithAggregatesFilter<"Listing">
+  listingType?: Prisma.StringNullableWithAggregatesFilter<"Listing"> | string | null
+  location?: Prisma.StringNullableWithAggregatesFilter<"Listing"> | string | null
+  address?: Prisma.StringNullableWithAggregatesFilter<"Listing"> | string | null
+  province?: Prisma.StringNullableWithAggregatesFilter<"Listing"> | string | null
+  district?: Prisma.StringNullableWithAggregatesFilter<"Listing"> | string | null
+  sector?: Prisma.StringNullableWithAggregatesFilter<"Listing"> | string | null
+  latitude?: Prisma.FloatNullableWithAggregatesFilter<"Listing"> | number | null
+  longitude?: Prisma.FloatNullableWithAggregatesFilter<"Listing"> | number | null
+  currency?: Prisma.StringNullableWithAggregatesFilter<"Listing"> | string | null
+  availability?: Prisma.JsonNullableWithAggregatesFilter<"Listing">
+  maxGuests?: Prisma.IntNullableWithAggregatesFilter<"Listing"> | number | null
+  status?: Prisma.StringNullableWithAggregatesFilter<"Listing"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Listing"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Listing"> | Date | string
   category?: Prisma.StringWithAggregatesFilter<"Listing"> | string
   roomCount?: Prisma.IntWithAggregatesFilter<"Listing"> | number
   bathroomCount?: Prisma.IntWithAggregatesFilter<"Listing"> | number
@@ -389,7 +561,21 @@ export type ListingCreateInput = {
   description: string
   imageSrc: string
   images?: runtime.InputJsonValue | null
+  coverImage?: runtime.InputJsonValue | null
+  listingType?: string | null
+  location?: string | null
+  address?: string | null
+  province?: string | null
+  district?: string | null
+  sector?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  currency?: string | null
+  availability?: runtime.InputJsonValue | null
+  maxGuests?: number | null
+  status?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   category: string
   roomCount: number
   bathroomCount: number
@@ -408,7 +594,21 @@ export type ListingUncheckedCreateInput = {
   description: string
   imageSrc: string
   images?: runtime.InputJsonValue | null
+  coverImage?: runtime.InputJsonValue | null
+  listingType?: string | null
+  location?: string | null
+  address?: string | null
+  province?: string | null
+  district?: string | null
+  sector?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  currency?: string | null
+  availability?: runtime.InputJsonValue | null
+  maxGuests?: number | null
+  status?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   category: string
   roomCount: number
   bathroomCount: number
@@ -424,7 +624,21 @@ export type ListingUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
   images?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  coverImage?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  listingType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  availability?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  maxGuests?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   roomCount?: Prisma.IntFieldUpdateOperationsInput | number
   bathroomCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -442,7 +656,21 @@ export type ListingUncheckedUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
   images?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  coverImage?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  listingType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  availability?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  maxGuests?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   roomCount?: Prisma.IntFieldUpdateOperationsInput | number
   bathroomCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -460,7 +688,21 @@ export type ListingCreateManyInput = {
   description: string
   imageSrc: string
   images?: runtime.InputJsonValue | null
+  coverImage?: runtime.InputJsonValue | null
+  listingType?: string | null
+  location?: string | null
+  address?: string | null
+  province?: string | null
+  district?: string | null
+  sector?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  currency?: string | null
+  availability?: runtime.InputJsonValue | null
+  maxGuests?: number | null
+  status?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   category: string
   roomCount: number
   bathroomCount: number
@@ -475,7 +717,21 @@ export type ListingUpdateManyMutationInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
   images?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  coverImage?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  listingType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  availability?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  maxGuests?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   roomCount?: Prisma.IntFieldUpdateOperationsInput | number
   bathroomCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -491,7 +747,21 @@ export type ListingUncheckedUpdateManyInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
   images?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  coverImage?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  listingType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  availability?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  maxGuests?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   roomCount?: Prisma.IntFieldUpdateOperationsInput | number
   bathroomCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -518,7 +788,21 @@ export type ListingCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   imageSrc?: Prisma.SortOrder
   images?: Prisma.SortOrder
+  coverImage?: Prisma.SortOrder
+  listingType?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  province?: Prisma.SortOrder
+  district?: Prisma.SortOrder
+  sector?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
+  availability?: Prisma.SortOrder
+  maxGuests?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   category?: Prisma.SortOrder
   roomCount?: Prisma.SortOrder
   bathroomCount?: Prisma.SortOrder
@@ -529,6 +813,9 @@ export type ListingCountOrderByAggregateInput = {
 }
 
 export type ListingAvgOrderByAggregateInput = {
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  maxGuests?: Prisma.SortOrder
   roomCount?: Prisma.SortOrder
   bathroomCount?: Prisma.SortOrder
   guestCount?: Prisma.SortOrder
@@ -541,7 +828,19 @@ export type ListingMaxOrderByAggregateInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   imageSrc?: Prisma.SortOrder
+  listingType?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  province?: Prisma.SortOrder
+  district?: Prisma.SortOrder
+  sector?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
+  maxGuests?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   category?: Prisma.SortOrder
   roomCount?: Prisma.SortOrder
   bathroomCount?: Prisma.SortOrder
@@ -557,7 +856,19 @@ export type ListingMinOrderByAggregateInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   imageSrc?: Prisma.SortOrder
+  listingType?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  province?: Prisma.SortOrder
+  district?: Prisma.SortOrder
+  sector?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
+  maxGuests?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   category?: Prisma.SortOrder
   roomCount?: Prisma.SortOrder
   bathroomCount?: Prisma.SortOrder
@@ -568,6 +879,9 @@ export type ListingMinOrderByAggregateInput = {
 }
 
 export type ListingSumOrderByAggregateInput = {
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  maxGuests?: Prisma.SortOrder
   roomCount?: Prisma.SortOrder
   bathroomCount?: Prisma.SortOrder
   guestCount?: Prisma.SortOrder
@@ -621,6 +935,15 @@ export type ListingUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.ListingScalarWhereInput | Prisma.ListingScalarWhereInput[]
 }
 
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+  unset?: boolean
+}
+
 export type IntFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -649,7 +972,21 @@ export type ListingCreateWithoutUserInput = {
   description: string
   imageSrc: string
   images?: runtime.InputJsonValue | null
+  coverImage?: runtime.InputJsonValue | null
+  listingType?: string | null
+  location?: string | null
+  address?: string | null
+  province?: string | null
+  district?: string | null
+  sector?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  currency?: string | null
+  availability?: runtime.InputJsonValue | null
+  maxGuests?: number | null
+  status?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   category: string
   roomCount: number
   bathroomCount: number
@@ -666,7 +1003,21 @@ export type ListingUncheckedCreateWithoutUserInput = {
   description: string
   imageSrc: string
   images?: runtime.InputJsonValue | null
+  coverImage?: runtime.InputJsonValue | null
+  listingType?: string | null
+  location?: string | null
+  address?: string | null
+  province?: string | null
+  district?: string | null
+  sector?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  currency?: string | null
+  availability?: runtime.InputJsonValue | null
+  maxGuests?: number | null
+  status?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   category: string
   roomCount: number
   bathroomCount: number
@@ -712,7 +1063,21 @@ export type ListingScalarWhereInput = {
   description?: Prisma.StringFilter<"Listing"> | string
   imageSrc?: Prisma.StringFilter<"Listing"> | string
   images?: Prisma.JsonNullableFilter<"Listing">
+  coverImage?: Prisma.JsonNullableFilter<"Listing">
+  listingType?: Prisma.StringNullableFilter<"Listing"> | string | null
+  location?: Prisma.StringNullableFilter<"Listing"> | string | null
+  address?: Prisma.StringNullableFilter<"Listing"> | string | null
+  province?: Prisma.StringNullableFilter<"Listing"> | string | null
+  district?: Prisma.StringNullableFilter<"Listing"> | string | null
+  sector?: Prisma.StringNullableFilter<"Listing"> | string | null
+  latitude?: Prisma.FloatNullableFilter<"Listing"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Listing"> | number | null
+  currency?: Prisma.StringNullableFilter<"Listing"> | string | null
+  availability?: Prisma.JsonNullableFilter<"Listing">
+  maxGuests?: Prisma.IntNullableFilter<"Listing"> | number | null
+  status?: Prisma.StringNullableFilter<"Listing"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Listing"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Listing"> | Date | string
   category?: Prisma.StringFilter<"Listing"> | string
   roomCount?: Prisma.IntFilter<"Listing"> | number
   bathroomCount?: Prisma.IntFilter<"Listing"> | number
@@ -728,7 +1093,21 @@ export type ListingCreateWithoutReservationsInput = {
   description: string
   imageSrc: string
   images?: runtime.InputJsonValue | null
+  coverImage?: runtime.InputJsonValue | null
+  listingType?: string | null
+  location?: string | null
+  address?: string | null
+  province?: string | null
+  district?: string | null
+  sector?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  currency?: string | null
+  availability?: runtime.InputJsonValue | null
+  maxGuests?: number | null
+  status?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   category: string
   roomCount: number
   bathroomCount: number
@@ -746,7 +1125,21 @@ export type ListingUncheckedCreateWithoutReservationsInput = {
   description: string
   imageSrc: string
   images?: runtime.InputJsonValue | null
+  coverImage?: runtime.InputJsonValue | null
+  listingType?: string | null
+  location?: string | null
+  address?: string | null
+  province?: string | null
+  district?: string | null
+  sector?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  currency?: string | null
+  availability?: runtime.InputJsonValue | null
+  maxGuests?: number | null
+  status?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   category: string
   roomCount: number
   bathroomCount: number
@@ -777,7 +1170,21 @@ export type ListingUpdateWithoutReservationsInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
   images?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  coverImage?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  listingType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  availability?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  maxGuests?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   roomCount?: Prisma.IntFieldUpdateOperationsInput | number
   bathroomCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -794,7 +1201,21 @@ export type ListingUncheckedUpdateWithoutReservationsInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
   images?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  coverImage?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  listingType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  availability?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  maxGuests?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   roomCount?: Prisma.IntFieldUpdateOperationsInput | number
   bathroomCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -810,7 +1231,21 @@ export type ListingCreateManyUserInput = {
   description: string
   imageSrc: string
   images?: runtime.InputJsonValue | null
+  coverImage?: runtime.InputJsonValue | null
+  listingType?: string | null
+  location?: string | null
+  address?: string | null
+  province?: string | null
+  district?: string | null
+  sector?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  currency?: string | null
+  availability?: runtime.InputJsonValue | null
+  maxGuests?: number | null
+  status?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   category: string
   roomCount: number
   bathroomCount: number
@@ -825,7 +1260,21 @@ export type ListingUpdateWithoutUserInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
   images?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  coverImage?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  listingType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  availability?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  maxGuests?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   roomCount?: Prisma.IntFieldUpdateOperationsInput | number
   bathroomCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -841,7 +1290,21 @@ export type ListingUncheckedUpdateWithoutUserInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
   images?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  coverImage?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  listingType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  availability?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  maxGuests?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   roomCount?: Prisma.IntFieldUpdateOperationsInput | number
   bathroomCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -857,7 +1320,21 @@ export type ListingUncheckedUpdateManyWithoutUserInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
   images?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  coverImage?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  listingType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  availability?: runtime.InputJsonValue | runtime.InputJsonValue | null
+  maxGuests?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   roomCount?: Prisma.IntFieldUpdateOperationsInput | number
   bathroomCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -905,7 +1382,21 @@ export type ListingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   description?: boolean
   imageSrc?: boolean
   images?: boolean
+  coverImage?: boolean
+  listingType?: boolean
+  location?: boolean
+  address?: boolean
+  province?: boolean
+  district?: boolean
+  sector?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  currency?: boolean
+  availability?: boolean
+  maxGuests?: boolean
+  status?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   category?: boolean
   roomCount?: boolean
   bathroomCount?: boolean
@@ -927,7 +1418,21 @@ export type ListingSelectScalar = {
   description?: boolean
   imageSrc?: boolean
   images?: boolean
+  coverImage?: boolean
+  listingType?: boolean
+  location?: boolean
+  address?: boolean
+  province?: boolean
+  district?: boolean
+  sector?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  currency?: boolean
+  availability?: boolean
+  maxGuests?: boolean
+  status?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   category?: boolean
   roomCount?: boolean
   bathroomCount?: boolean
@@ -937,7 +1442,7 @@ export type ListingSelectScalar = {
   price?: boolean
 }
 
-export type ListingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "description" | "imageSrc" | "images" | "createdAt" | "category" | "roomCount" | "bathroomCount" | "guestCount" | "locationValue" | "userid" | "price", ExtArgs["result"]["listing"]>
+export type ListingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "description" | "imageSrc" | "images" | "coverImage" | "listingType" | "location" | "address" | "province" | "district" | "sector" | "latitude" | "longitude" | "currency" | "availability" | "maxGuests" | "status" | "createdAt" | "updatedAt" | "category" | "roomCount" | "bathroomCount" | "guestCount" | "locationValue" | "userid" | "price", ExtArgs["result"]["listing"]>
 export type ListingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   reservations?: boolean | Prisma.Listing$reservationsArgs<ExtArgs>
@@ -957,7 +1462,21 @@ export type $ListingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     description: string
     imageSrc: string
     images: runtime.JsonValue | null
+    coverImage: runtime.JsonValue | null
+    listingType: string | null
+    location: string | null
+    address: string | null
+    province: string | null
+    district: string | null
+    sector: string | null
+    latitude: number | null
+    longitude: number | null
+    currency: string | null
+    availability: runtime.JsonValue | null
+    maxGuests: number | null
+    status: string | null
     createdAt: Date
+    updatedAt: Date
     category: string
     roomCount: number
     bathroomCount: number
@@ -1365,7 +1884,21 @@ export interface ListingFieldRefs {
   readonly description: Prisma.FieldRef<"Listing", 'String'>
   readonly imageSrc: Prisma.FieldRef<"Listing", 'String'>
   readonly images: Prisma.FieldRef<"Listing", 'Json'>
+  readonly coverImage: Prisma.FieldRef<"Listing", 'Json'>
+  readonly listingType: Prisma.FieldRef<"Listing", 'String'>
+  readonly location: Prisma.FieldRef<"Listing", 'String'>
+  readonly address: Prisma.FieldRef<"Listing", 'String'>
+  readonly province: Prisma.FieldRef<"Listing", 'String'>
+  readonly district: Prisma.FieldRef<"Listing", 'String'>
+  readonly sector: Prisma.FieldRef<"Listing", 'String'>
+  readonly latitude: Prisma.FieldRef<"Listing", 'Float'>
+  readonly longitude: Prisma.FieldRef<"Listing", 'Float'>
+  readonly currency: Prisma.FieldRef<"Listing", 'String'>
+  readonly availability: Prisma.FieldRef<"Listing", 'Json'>
+  readonly maxGuests: Prisma.FieldRef<"Listing", 'Int'>
+  readonly status: Prisma.FieldRef<"Listing", 'String'>
   readonly createdAt: Prisma.FieldRef<"Listing", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Listing", 'DateTime'>
   readonly category: Prisma.FieldRef<"Listing", 'String'>
   readonly roomCount: Prisma.FieldRef<"Listing", 'Int'>
   readonly bathroomCount: Prisma.FieldRef<"Listing", 'Int'>
