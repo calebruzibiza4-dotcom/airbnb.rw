@@ -4,7 +4,9 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { POST as handleUpload } from './src/api/upload/route';
 import { DELETE_BY_ID as deleteListing, GET as getListings, GET_BY_ID as getListingById, PATCH_BY_ID as updateListing, POST as createListing, POST_DRAFT as saveListingDraft } from './src/api/listings/route';
-import { getSessionByToken } from './src/auth/session-store';
+import { POST as login } from './src/api/login/route';
+import { POST as register } from './src/api/register/route';
+import { createSession, getSessionByToken } from './src/auth/session-store';
 
 function getBaseUrl(req: any) {
   const forwardedProto = req.headers['x-forwarded-proto']?.toString().split(',')[0]?.trim();
@@ -117,6 +119,14 @@ export default defineConfig({
                 },
                 expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7).toISOString(),
               };
+              const { token } = createSession({
+                id: sessionPayload.user.id,
+                firstName: sessionPayload.user.name.split(' ')[0] || '',
+                lastName: sessionPayload.user.name.split(' ').slice(1).join(' '),
+                name: sessionPayload.user.name,
+                email: sessionPayload.user.email,
+                image: sessionPayload.user.image,
+              });
 
               const html = `<!doctype html>
 <html>
@@ -135,6 +145,7 @@ export default defineConfig({
 
               res.statusCode = 200;
               res.setHeader('Content-Type', 'text/html; charset=utf-8');
+              res.setHeader('Set-Cookie', `inzu_session=${token}; Path=/; Max-Age=604800; HttpOnly; SameSite=Lax`);
               res.end(html);
             } catch (error) {
               const message = error instanceof Error ? error.message : 'Unable to sign in.';
@@ -172,6 +183,21 @@ export default defineConfig({
             response.headers.forEach((value, key) => {
               res.setHeader(key, value);
             });
+            res.end(await response.text());
+            return;
+          }
+
+          if (method === 'POST' && (url === '/api/login' || url === '/api/register')) {
+            const chunks: Buffer[] = [];
+            for await (const chunk of req) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+            const request = new Request(`http://localhost${url}`, {
+              method: 'POST',
+              headers: { 'Content-Type': req.headers['content-type'] || 'application/json' },
+              body: Buffer.concat(chunks),
+            });
+            const response = url === '/api/login' ? await login(request) : await register(request);
+            res.statusCode = response.status;
+            response.headers.forEach((value, key) => res.setHeader(key, value));
             res.end(await response.text());
             return;
           }

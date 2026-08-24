@@ -381,7 +381,7 @@ export default function HostWizard({ onComplete, onCancel }: HostWizardProps) {
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) {
-        setSavedMessage(payload?.error?.message || 'We could not publish your listing.');
+        setSavedMessage(response.status === 401 ? 'Your sign-in session has expired. Please sign out, sign in again, and publish once more.' : payload?.error?.message || 'We could not publish your listing.');
         return;
       }
       setValue('draft', false as never);

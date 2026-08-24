@@ -35,7 +35,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request, userId: string | null) {
-  if (!userId || !ObjectId.isValid(userId)) return json({ error: { message: 'You must be signed in to publish a listing.' } }, 401);
+  if (!userId) return json({ error: { message: 'You must be signed in to publish a listing.' } }, 401);
   try {
     const body = await request.json();
     const listingType = normalizeType(body?.listingType);
@@ -62,7 +62,7 @@ export async function POST(request: Request, userId: string | null) {
 }
 
 export async function POST_DRAFT(request: Request, userId: string | null) {
-  if (!userId || !ObjectId.isValid(userId)) return json({ error: { message: 'You must be signed in to save a draft.' } }, 401);
+  if (!userId) return json({ error: { message: 'You must be signed in to save a draft.' } }, 401);
   try {
     const body = await request.json();
     const now = new Date();
@@ -98,7 +98,7 @@ export async function GET_BY_ID(id: string) {
 }
 
 export async function PATCH_BY_ID(id: string, request: Request, userId: string | null) {
-  if (!userId || !ObjectId.isValid(userId) || !ObjectId.isValid(id)) return json({ error: { message: 'Listing not found.' } }, 404);
+  if (!userId || !ObjectId.isValid(id)) return json({ error: { message: 'Listing not found.' } }, 404);
   try {
     const body = await request.json();
     const allowedUpdates: Record<string, unknown> = {};
@@ -117,7 +117,7 @@ export async function PATCH_BY_ID(id: string, request: Request, userId: string |
 }
 
 export async function DELETE_BY_ID(id: string, userId: string | null) {
-  if (!userId || !ObjectId.isValid(userId) || !ObjectId.isValid(id)) return json({ error: { message: 'Listing not found.' } }, 404);
+  if (!userId || !ObjectId.isValid(id)) return json({ error: { message: 'Listing not found.' } }, 404);
   try {
     const db = await getMongoDatabase();
     const result = await db.collection('listings').updateOne({ _id: new ObjectId(id), userId }, { $set: { status: 'archived', updatedAt: new Date() } });
