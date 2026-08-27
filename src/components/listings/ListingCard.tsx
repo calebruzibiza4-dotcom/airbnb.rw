@@ -8,10 +8,19 @@ export type PublicListing = {
   category: string;
   location: string;
   address: string;
+  province?: string;
+  district?: string;
+  sector?: string;
+  latitude?: number;
+  longitude?: number;
   images: Array<{ url: string; path: string; isCover: boolean }>;
   coverImage?: { url: string; path: string; isCover: boolean };
   price: number;
   currency: string;
+  maxGuests?: number;
+  availability?: Record<string, unknown>;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 type ListingCardProps = { listing: PublicListing };

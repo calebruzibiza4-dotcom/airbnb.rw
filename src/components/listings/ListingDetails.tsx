@@ -1,20 +1,135 @@
+'use client';
+
 import { useEffect, useState } from 'react';
-import { MapPin } from 'lucide-react';
 import type { PublicListing } from './ListingCard';
+import ListingGallery from './ListingGallery';
+import ListingHeader from './ListingHeader';
+import ListingAbout from './ListingAbout';
+import ListingAvailability from './ListingAvailability';
+import ListingLocation from './ListingLocation';
+import ListingHost from './ListingHost';
+import SimilarListings from './SimilarListings';
+import BookingCard from './BookingCard';
 
 export default function ListingDetails({ id }: { id: string }) {
   const [listing, setListing] = useState<PublicListing | null>(null);
   const [state, setState] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [isSaved, setIsSaved] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [guestCount, setGuestCount] = useState(1);
+  const [ticketType, setTicketType] = useState<string | null>(null);
+  const [ticketQuantity, setTicketQuantity] = useState(1);
 
   useEffect(() => {
     fetch(`/api/listings/${encodeURIComponent(id)}`)
-      .then(async (response) => { if (!response.ok) throw new Error('Not found'); return response.json(); })
-      .then((payload) => { setListing(payload.listing); setState('ready'); })
+      .then(async (response) => {
+        if (!response.ok) throw new Error('Not found');
+        return response.json();
+      })
+      .then((payload) => {
+        setListing(payload.listing);
+        setState('ready');
+      })
       .catch(() => setState('error'));
   }, [id]);
 
-  if (state === 'loading') return <main className="mx-auto max-w-6xl px-4 py-16 text-center text-slate-500">Loading listing...</main>;
-  if (state === 'error' || !listing) return <main className="mx-auto max-w-6xl px-4 py-16 text-center"><h1 className="text-2xl font-bold text-slate-900">Listing not found</h1><a href="/" className="mt-4 inline-block font-semibold text-emerald-800">Return home</a></main>;
-  const gallery = listing.images.length ? listing.images : listing.coverImage ? [listing.coverImage] : [];
-  return <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8"><a href="/" className="text-sm font-semibold text-emerald-800">Back to discover</a><div className="mt-5 grid gap-3 sm:grid-cols-2">{gallery.slice(0, 5).map((image) => <img key={image.path} src={image.url} alt={listing.title} className="h-72 w-full rounded-2xl object-cover first:sm:col-span-2 first:sm:h-[28rem]" />)}</div><div className="mt-8 max-w-3xl"><p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">{listing.listingType} · {listing.category}</p><h1 className="mt-2 text-4xl font-bold text-slate-950">{listing.title}</h1><p className="mt-3 flex items-center gap-2 text-slate-600"><MapPin className="h-4 w-4 text-emerald-700" />{listing.location} · {listing.address}</p><p className="mt-6 whitespace-pre-wrap leading-7 text-slate-700">{listing.description}</p><p className="mt-6 text-xl font-bold text-slate-900">{listing.price ? `${listing.currency} ${listing.price.toLocaleString()}` : 'Contact host'}</p></div></main>;
+  if (state === 'loading') {
+    return (
+      <div className="min-h-screen bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="animate-pulse space-y-8">
+            <div className="aspect-video rounded-2xl bg-slate-200" />
+            <div className="space-y-4">
+              <div className="h-4 w-32 rounded bg-slate-200" />
+              <div className="h-8 w-3/4 rounded bg-slate-200" />
+              <div className="h-4 w-1/2 rounded bg-slate-200" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (state === 'error' || !listing) {
+    return (
+      <main className="min-h-screen bg-white px-4 py-16 text-center sm:px-6 lg:px-8">
+        <h1 className="text-3xl font-bold text-slate-900">Listing not found</h1>
+        <p className="mt-2 text-slate-600">This listing may have been removed or is no longer available.</p>
+        <a href="/" className="mt-6 inline-block font-semibold text-emerald-700 hover:text-emerald-800">
+          ← Back to discover
+        </a>
+      </main>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white pb-24 lg:pb-0">
+      {/* Back Navigation */}
+      <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+        <a href="/" className="text-sm font-semibold text-emerald-700 hover:text-emerald-800">
+          ← Back to {listing.listingType}s
+        </a>
+      </div>
+
+      {/* Gallery */}
+      <ListingGallery listing={listing} />
+
+      {/* Main Content Grid */}
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="grid gap-12 lg:grid-cols-3">
+          {/* Left Content */}
+          <div className="lg:col-span-2 space-y-12">
+            <ListingHeader listing={listing} isSaved={isSaved} onSaveToggle={() => setIsSaved(!isSaved)} />
+            <ListingAbout listing={listing} />
+            <ListingAvailability
+              listing={listing}
+              selectedDate={selectedDate}
+              onDateChange={setSelectedDate}
+              selectedTime={selectedTime}
+              onTimeChange={setSelectedTime}
+              guestCount={guestCount}
+              onGuestChange={setGuestCount}
+              ticketType={ticketType}
+              onTicketTypeChange={setTicketType}
+              ticketQuantity={ticketQuantity}
+              onTicketQuantityChange={setTicketQuantity}
+            />
+            <ListingLocation listing={listing} />
+            <ListingHost listing={listing} />
+          </div>
+
+          {/* Right Sidebar - Booking Card */}
+          <div className="hidden lg:block">
+            <div className="sticky top-24">
+              <BookingCard
+                listing={listing}
+                selectedDate={selectedDate}
+                selectedTime={selectedTime}
+                guestCount={guestCount}
+                ticketType={ticketType}
+                ticketQuantity={ticketQuantity}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Booking Card */}
+        <div className="fixed bottom-0 left-0 right-0 border-t border-slate-200 bg-white px-4 py-3 lg:hidden">
+          <BookingCard
+            listing={listing}
+            selectedDate={selectedDate}
+            selectedTime={selectedTime}
+            guestCount={guestCount}
+            ticketType={ticketType}
+            ticketQuantity={ticketQuantity}
+            compact
+          />
+        </div>
+      </div>
+
+      {/* Similar Listings */}
+      <SimilarListings listing={listing} />
+    </div>
+  );
 }
