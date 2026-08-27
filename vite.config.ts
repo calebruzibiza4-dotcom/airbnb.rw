@@ -202,6 +202,18 @@ export default defineConfig({
             return;
           }
 
+          if (method === 'GET' && url === '/api/auth/session') {
+            const session = getSessionByToken(parseCookies(req).inzu_session);
+            const response = new Response(JSON.stringify({ session: session ? { user: session.user, expires: session.expires } : null }), {
+              status: 200,
+              headers: { 'Content-Type': 'application/json' },
+            });
+            res.statusCode = response.status;
+            response.headers.forEach((value, key) => res.setHeader(key, value));
+            res.end(await response.text());
+            return;
+          }
+
           if (method === 'GET' && url === '/api/listings') {
             const response = await getListings(new Request(`http://localhost${req.url || url}`, { method: 'GET' }));
             res.statusCode = response.status;

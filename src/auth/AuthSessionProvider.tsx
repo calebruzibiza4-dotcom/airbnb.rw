@@ -109,9 +109,21 @@ export function AuthSessionProvider({ children }: { children: ReactNode }) {
     const hydrateSession = async () => {
       try {
         const storedSession = readStoredSession();
-        setSession(storedSession);
-        setStatus(storedSession ? 'authenticated' : 'unauthenticated');
+        const response = await fetch('/api/auth/session', { credentials: 'include' });
+        const payload = response.ok ? await response.json() : null;
+        const serverSession = payload?.session as AppSession | null;
+        if (!active) return;
+        if (serverSession?.user) {
+          setSession(serverSession);
+          setStatus('authenticated');
+          window.localStorage.setItem(STORAGE_KEY, JSON.stringify(serverSession));
+        } else {
+          setSession(null);
+          setStatus('unauthenticated');
+          if (storedSession) window.localStorage.removeItem(STORAGE_KEY);
+        }
       } catch {
+        if (!active) return;
         setSession(null);
         setStatus('unauthenticated');
       }
