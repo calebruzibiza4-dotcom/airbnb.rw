@@ -59,7 +59,7 @@ export default function App() {
             </div>
           </div>
         ) : null}
-        {listingId ? <ListingDetails id={listingId} /> : <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8"><div className="mb-8"><p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-700">Discover Rwanda</p><h1 className="mt-2 text-3xl font-bold text-slate-950">Find your next local moment</h1><p className="mt-2 text-slate-600">Stays, experiences, events and services from local hosts.</p></div><ListingGrid category={category} /></section>}
+        {listingId ? <ListingDetails id={listingId} /> : <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8"><div className="mb-8"><p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-700">Discover Rwanda</p></div><ListingGrid category={category} /></section>}
         {hostWizardOpen ? (
           <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/70 px-4 py-6 backdrop-blur-sm" onClick={closeHostWizard}>
             <div className="max-h-[95vh] w-full max-w-6xl overflow-y-auto rounded-[32px] border border-white/70 bg-white/90 shadow-2xl" onClick={(event) => event.stopPropagation()} role="dialog" aria-modal="true" aria-label="Create host profile">
