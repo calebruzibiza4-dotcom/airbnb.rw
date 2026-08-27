@@ -14,6 +14,7 @@ export default function App() {
   const [hostProfileComplete, setHostProfileComplete] = useState(false);
   const [hostNotice, setHostNotice] = useState('');
   const [category, setCategory] = useState<TopCategoryKey>('everything');
+  const [listingRefreshKey, setListingRefreshKey] = useState(0);
   const listingId = typeof window !== 'undefined' && window.location.pathname.startsWith('/listings/') ? window.location.pathname.split('/').pop() : null;
 
   useEffect(() => {
@@ -41,6 +42,7 @@ export default function App() {
   const handleHostWizardComplete = () => {
     setHostProfileComplete(true);
     setHostWizardOpen(false);
+    setListingRefreshKey((current) => current + 1);
     setHostNotice('Your host profile is ready. You can manage it from your account.');
 
     if (typeof window !== 'undefined') {
@@ -59,7 +61,7 @@ export default function App() {
             </div>
           </div>
         ) : null}
-        {listingId ? <ListingDetails id={listingId} /> : <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8"><div className="mb-8"><p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-700">Discover Rwanda</p></div><ListingGrid category={category} /></section>}
+        {listingId ? <ListingDetails id={listingId} /> : <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8"><div className="mb-8"><p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-700">Discover Rwanda</p></div><ListingGrid key={listingRefreshKey} category={category} /></section>}
         {hostWizardOpen ? (
           <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/70 px-4 py-6 backdrop-blur-sm" onClick={closeHostWizard}>
             <div className="max-h-[95vh] w-full max-w-6xl overflow-y-auto rounded-[32px] border border-white/70 bg-white/90 shadow-2xl" onClick={(event) => event.stopPropagation()} role="dialog" aria-modal="true" aria-label="Create host profile">
