@@ -14,6 +14,7 @@ type NavbarProps = {
   onOpenHostWizard?: () => void;
   hostProfileComplete?: boolean;
   onCategoryChange?: (category: TopCategoryKey) => void;
+  onLogoClick?: () => void;
 };
 
 type SearchType = 'everything' | 'experiences' | 'events' | 'services';
@@ -106,9 +107,19 @@ function GuestSelector({ search, onChange }: { search: SearchState; onChange: (g
   );
 }
 
-function Logo() {
+function Logo({ onClick }: { onClick?: () => void }) {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    onClick?.();
+  };
+
   return (
-    <a href="#" aria-label="Inzu Stay home" className="inline-flex shrink-0 items-center gap-2 text-slate-950 transition duration-200 hover:opacity-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-4">
+    <a 
+      href="#" 
+      onClick={handleClick}
+      aria-label="Inzu Stay home" 
+      className="inline-flex shrink-0 items-center gap-2 text-slate-950 transition duration-200 hover:opacity-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-4"
+    >
       <span className="grid h-9 w-9 place-items-center rounded-xl bg-emerald-800 text-white shadow-sm shadow-emerald-900/20">
         <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M5 18 9.5 6h5L19 18" />
@@ -203,7 +214,7 @@ function GlobeIcon() {
   );
 }
 
-export default function Navbar({ onOpenHostWizard, hostProfileComplete = false, onCategoryChange }: NavbarProps) {
+export default function Navbar({ onOpenHostWizard, hostProfileComplete = false, onCategoryChange, onLogoClick }: NavbarProps) {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [search, setSearch] = useState<SearchState>(initialSearch);
   const [authMode, setAuthMode] = useState<'login' | 'signup' | 'forgot' | null>(null);
@@ -240,7 +251,7 @@ export default function Navbar({ onOpenHostWizard, hostProfileComplete = false, 
       <header className="sticky top-0 z-50 bg-white/90 shadow-[0_4px_20px_rgba(15,23,42,0.06)] backdrop-blur-xl">
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4">
-          <Logo />
+          <Logo onClick={onLogoClick} />
           <SearchBar search={search} onChange={setSearch} onSubmit={submitSearch} />
           <div className="flex items-center gap-1 sm:gap-2">
             {authenticated ? (
