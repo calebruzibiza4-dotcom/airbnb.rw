@@ -1,13 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { useEffect, useState, useRef } from 'react';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
 import ListingCard, { type PublicListing } from '../listings/ListingCard';
 import { landingAnalytics } from '../../utils/analytics';
 
 export default function FeaturedExperiences() {
   const [listings, setListings] = useState<PublicListing[]>([]);
   const [loading, setLoading] = useState(true);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(sectionRef, { once: true, margin: '-80px' });
+  const reduce = useReducedMotion();
 
   useEffect(() => {
     landingAnalytics.trackSectionImpression('featured-experiences');
@@ -21,81 +24,102 @@ export default function FeaturedExperiences() {
         const data = await response.json();
         setListings(data.listings || []);
       }
-    } catch (error) {
-      console.error('Failed to fetch featured experiences:', error);
-      // Use mock data for development
+    } catch {
       setListings(mockExperiences);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleViewMore = () => {
-    landingAnalytics.trackCategoryClick('experiences');
-  };
-
   return (
-    <section className="relative py-24 bg-white">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
-        <div className="flex items-end justify-between mb-12">
-          <div className="flex-1">
-            <span className="inline-block px-4 py-2 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-[0.14em] mb-4">
+    <section
+      ref={sectionRef}
+      className="relative bg-cream py-24 border-t border-charcoal-900/8"
+      aria-label="Featured experiences"
+    >
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5 mb-12">
+          <div>
+            <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-charcoal-200 mb-4">
+              <motion.span
+                className="block h-px bg-brand"
+                initial={reduce ? false : { width: 0 }}
+                animate={inView ? { width: 32 } : {}}
+                transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                aria-hidden="true"
+              />
               Featured
-            </span>
-            <h2 className="text-4xl sm:text-5xl font-bold text-slate-900">
-              Experience Rwanda
-            </h2>
-            <p className="text-lg text-slate-600 mt-4 max-w-lg">
-              Discover unforgettable activities and immersive experiences led by local experts
-            </p>
+            </div>
+            <div className="overflow-hidden">
+              <motion.h2
+                initial={reduce ? false : { y: '105%' }}
+                animate={inView ? { y: '0%' } : {}}
+                transition={{ duration: 0.85, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                className="font-display text-3xl font-800 tracking-tightest text-charcoal-900 sm:text-4xl"
+              >
+                Experience Rwanda
+              </motion.h2>
+            </div>
           </div>
-
-          <a
-            href="/?category=experiences"
-            onClick={handleViewMore}
-            className="hidden sm:flex items-center gap-2 text-emerald-800 font-bold hover:text-emerald-900 transition duration-300 group whitespace-nowrap"
+          <motion.a
+            initial={reduce ? false : { opacity: 0, y: 12 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            href="/?view=browse&category=experiences"
+            onClick={() => landingAnalytics.trackCategoryClick('experiences')}
+            className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-charcoal-900 underline underline-offset-4 decoration-charcoal-900/25 hover:decoration-charcoal-900 transition-all duration-200 whitespace-nowrap"
           >
-            View all experiences
-            <ArrowRight className="w-4 h-4 transition group-hover:translate-x-1" />
-          </a>
+            View all
+            <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </motion.a>
         </div>
 
-        {/* Listings grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {loading ? (
-            // Loading skeletons
-            Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="animate-pulse">
-                <div className="aspect-[4/3] bg-slate-200 rounded-2xl mb-4" />
-                <div className="space-y-2">
-                  <div className="h-4 bg-slate-200 rounded w-3/4" />
-                  <div className="h-4 bg-slate-200 rounded w-1/2" />
+        {/* Grid */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {loading
+            ? Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="animate-pulse rounded-xl bg-white overflow-hidden border border-charcoal-900/8">
+                  <div className="aspect-[4/3] bg-charcoal-100" />
+                  <div className="p-5 space-y-2.5">
+                    <div className="h-4 bg-charcoal-100 rounded w-3/4" />
+                    <div className="h-3 bg-charcoal-100 rounded w-1/2" />
+                  </div>
                 </div>
+              ))
+            : listings.length > 0
+            ? listings.map((listing, i) => (
+                <motion.div
+                  key={listing.id}
+                  initial={reduce ? false : { opacity: 0, y: 20 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6, delay: 0.15 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  onClick={() => landingAnalytics.trackListingClick(listing.id, listing.title)}
+                >
+                  <ListingCard listing={listing} />
+                </motion.div>
+              ))
+            : (
+              <div className="col-span-full py-12 text-center text-sm text-charcoal-200">
+                No experiences available yet. Check back soon.
               </div>
-            ))
-          ) : listings.length > 0 ? (
-            listings.map((listing) => (
-              <div key={listing.id} onClick={() => landingAnalytics.trackListingClick(listing.id, listing.title)}>
-                <ListingCard listing={listing} />
-              </div>
-            ))
-          ) : (
-            <div className="col-span-full text-center py-12">
-              <p className="text-slate-600">No experiences available yet. Check back soon!</p>
-            </div>
-          )}
+            )
+          }
         </div>
 
         {/* Mobile CTA */}
-        <div className="mt-12 sm:hidden text-center">
+        <div className="mt-10 sm:hidden text-center">
           <a
-            href="/?category=experiences"
-            onClick={handleViewMore}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-emerald-800 text-white font-bold rounded-2xl hover:bg-emerald-900 transition duration-300"
+            href="/?view=browse&category=experiences"
+            onClick={() => landingAnalytics.trackCategoryClick('experiences')}
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-charcoal-900 underline underline-offset-4 decoration-charcoal-900/25 hover:decoration-charcoal-900 transition-all duration-200"
           >
             View all experiences
-            <ArrowRight className="w-4 h-4" />
+            <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
           </a>
         </div>
       </div>
@@ -103,12 +127,11 @@ export default function FeaturedExperiences() {
   );
 }
 
-// Mock data for development
 const mockExperiences: PublicListing[] = [
   {
     id: '1',
     title: 'Gorilla Trekking in Volcanoes National Park',
-    description: 'Experience the majesty of mountain gorillas in their natural habitat',
+    description: 'Trek through lush rainforest to observe mountain gorillas in their natural habitat.',
     listingType: 'Experience',
     category: 'Adventure',
     location: 'Volcanoes National Park',
@@ -119,8 +142,8 @@ const mockExperiences: PublicListing[] = [
   },
   {
     id: '2',
-    title: 'Coffee Farm Tour & Tasting',
-    description: 'Learn about Rwanda\'s famous coffee and taste freshly roasted beans',
+    title: 'Coffee Farm Tour and Tasting',
+    description: "Learn about Rwanda's award-winning coffee from bean to cup with a local farmer.",
     listingType: 'Experience',
     category: 'Culture',
     location: 'Southern Province',
@@ -132,7 +155,7 @@ const mockExperiences: PublicListing[] = [
   {
     id: '3',
     title: 'Kayaking on Lake Kivu',
-    description: 'Paddle across stunning Lake Kivu with breathtaking mountain views',
+    description: 'Paddle across the stunning lake with breathtaking views of the surrounding hills.',
     listingType: 'Experience',
     category: 'Adventure',
     location: 'Lake Kivu',

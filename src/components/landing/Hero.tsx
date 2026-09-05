@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { landingAnalytics } from '../../utils/analytics';
 import { getLandingConfig } from '../../utils/landingConfig';
@@ -11,16 +11,77 @@ interface HeroProps {
   onHostClick: () => void;
 }
 
+/* ── Clip-path reveal: text slides up from behind an invisible curtain ── */
+function RevealLine({
+  children,
+  delay = 0,
+  className = '',
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  const reduce = useReducedMotion();
+  return (
+    <div className="overflow-hidden">
+      <motion.div
+        initial={reduce ? false : { y: '110%', opacity: 0 }}
+        animate={{ y: '0%', opacity: 1 }}
+        transition={{ duration: 0.85, delay, ease: [0.22, 1, 0.36, 1] }}
+        className={className}
+      >
+        {children}
+      </motion.div>
+    </div>
+  );
+}
+
+/* ── Simple fade-up ── */
+function FadeUp({
+  children,
+  delay = 0,
+  className = '',
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.div
+      initial={reduce ? false : { y: 24, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 export default function Hero({ onExploreClick, onHostClick }: HeroProps) {
   const config = getLandingConfig();
-  const prefersReducedMotion = useReducedMotion();
+  const reduce = useReducedMotion();
+
+  /* Scroll-driven exit animation */
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  });
+
+  const heroContentY = useTransform(scrollYProgress, [0, 1], ['0px', '-45px']);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0.2]);
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.97]);
+  const cardY = useTransform(scrollYProgress, [0, 1], ['0px', '-90px']);
+  const floatingCardY = useTransform(scrollYProgress, [0, 1], ['0px', '-50px']);
 
   useEffect(() => {
     landingAnalytics.trackSectionImpression('hero');
   }, []);
 
   const handleExploreClick = () => {
-    landingAnalytics.trackCTAClick('Explore Rwanda', 'hero');
+    landingAnalytics.trackCTAClick('Start Exploring', 'hero');
     onExploreClick();
   };
 
@@ -29,151 +90,191 @@ export default function Hero({ onExploreClick, onHostClick }: HeroProps) {
     onHostClick();
   };
 
-  const reveal = prefersReducedMotion
-    ? { initial: { opacity: 1, y: 0 }, animate: { opacity: 1, y: 0 } }
-    : {
-        initial: { opacity: 0, y: 36 },
-        animate: { opacity: 1, y: 0 },
-      };
-
   return (
     <section
-      className="relative min-h-screen w-full overflow-hidden bg-[#f4f1eb] text-slate-900"
+      ref={sectionRef}
+      className="relative min-h-screen w-full overflow-hidden bg-cream"
       aria-label="Hero section"
     >
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-[-12%] top-[-10%] h-80 w-80 rounded-full bg-emerald-200/50 blur-3xl" />
-        <div className="absolute bottom-[-12%] right-[-8%] h-[26rem] w-[26rem] rounded-full bg-emerald-100/60 blur-3xl" />
-      </div>
+      {/* Subtle noise grain */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.025]"
+        style={{
+          backgroundImage:
+            'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\' opacity=\'1\'/%3E%3C/svg%3E")',
+          backgroundRepeat: 'repeat',
+          backgroundSize: '128px 128px',
+        }}
+        aria-hidden="true"
+      />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 pb-14 pt-28 sm:px-6 lg:px-8 lg:pb-20 lg:pt-32">
-        <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
-          <motion.div
-            initial={reveal.initial}
-            animate={reveal.animate}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="flex flex-col justify-center"
-          >
-            <div className="mb-6 flex items-center gap-3">
-              <span className="inline-flex items-center rounded-full border border-emerald-700/20 bg-white/70 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-900 backdrop-blur-sm">
-                Rwanda marketplace
-              </span>
-            </div>
+      <motion.div
+        style={reduce ? {} : { y: heroContentY, opacity: heroOpacity, scale: heroScale }}
+        className="relative z-10 mx-auto max-w-7xl px-6 pb-20 pt-36 lg:px-8 lg:pt-44"
+      >
+        <div className="grid items-center gap-16 lg:grid-cols-[1fr_0.9fr]">
 
-            <div className="space-y-5">
-              <h1 className="max-w-xl text-5xl font-semibold leading-[0.9] tracking-[-0.08em] text-slate-900 sm:text-6xl lg:text-[6.5rem]">
-                {config.heroHeadline.split(' ').slice(0, 3).join(' ')}
-                <span className="block text-emerald-900">{config.heroHeadline.split(' ').slice(3).join(' ') || 'your way.'}</span>
-              </h1>
-            </div>
+          {/* Left column */}
+          <div className="flex flex-col">
 
-            <motion.p
-              initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 26 }}
-              animate={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.7, ease: 'easeOut' }}
-              className="mt-6 max-w-lg text-base leading-7 text-slate-600 sm:text-lg"
-            >
-              {config.heroSubheading}
-            </motion.p>
-
-            <motion.div
-              initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-              animate={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
-              transition={{ delay: 0.28, duration: 0.7, ease: 'easeOut' }}
-              className="mt-8 flex flex-col gap-4 sm:flex-row"
-            >
-              <button
-                onClick={handleExploreClick}
-                className="group inline-flex items-center justify-center gap-3 rounded-full bg-emerald-800 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_16px_35px_rgba(6,78,59,0.25)] transition duration-300 hover:-translate-y-0.5 hover:bg-emerald-900 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-300 focus-visible:ring-offset-2"
-                aria-label={`${config.primaryCTAText} - start exploring Rwanda`}
-              >
-                {config.primaryCTAText}
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </button>
-
-              <button
-                onClick={handleHostClick}
-                className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-7 py-3.5 text-sm font-semibold text-slate-900 transition duration-300 hover:-translate-y-0.5 hover:border-slate-400 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-300 focus-visible:ring-offset-2"
-                aria-label={config.secondaryCTAText}
-              >
-                {config.secondaryCTAText}
-              </button>
-            </motion.div>
-
-            <motion.div
-              initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              animate={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
-              transition={{ delay: 0.38, duration: 0.7, ease: 'easeOut' }}
-              className="mt-10 grid max-w-lg grid-cols-3 gap-4 border-t border-slate-200 pt-6"
-            >
-              {[
-                { value: '500+', label: 'Experiences' },
-                { value: '1k+', label: 'Hosts' },
-                { value: '4.9/5', label: 'Rated' },
-              ].map((stat) => (
-                <div key={stat.label}>
-                  <div className="text-2xl font-semibold tracking-[-0.06em] text-emerald-900">{stat.value}</div>
-                  <div className="mt-1 text-xs uppercase tracking-[0.12em] text-slate-500">{stat.label}</div>
-                </div>
-              ))}
-            </motion.div>
-          </motion.div>
-
-          <motion.div
-            initial={prefersReducedMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.04, y: 30 }}
-            animate={prefersReducedMotion ? { opacity: 1, scale: 1, y: 0 } : { opacity: 1, scale: 1, y: 0 }}
-            transition={{ delay: 0.22, duration: 0.9, ease: 'easeOut' }}
-            className="relative"
-          >
-            <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-3 shadow-[0_30px_100px_rgba(15,23,42,0.12)]">
-              <div className="relative overflow-hidden rounded-[1.5rem]">
-                <img
-                  src="https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1200&q=80"
-                  alt="Rwanda landscape with hills and greenery"
-                  className="h-[520px] w-full object-cover object-center transition-transform duration-700 ease-out hover:scale-[1.02]"
+            {/* Eyebrow label with animated line */}
+            <FadeUp delay={0} className="mb-8">
+              <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-charcoal-200">
+                <motion.span
+                  className="block h-px bg-brand"
+                  initial={reduce ? false : { width: 0 }}
+                  animate={{ width: 32 }}
+                  transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                  aria-hidden="true"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-slate-900/10 to-transparent" />
-              </div>
+                Rwanda Marketplace
+              </span>
+            </FadeUp>
 
-              <div className="absolute inset-x-8 bottom-8 rounded-[1.5rem] bg-white/90 p-4 shadow-[0_10px_25px_rgba(15,23,42,0.08)] backdrop-blur-sm sm:inset-x-10 sm:p-5">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-800">featured stay</div>
-                    <h2 className="mt-2 text-2xl font-semibold tracking-[-0.05em] text-slate-900">Lake Kivu Escape</h2>
-                  </div>
-                  <div className="rounded-full bg-emerald-900 px-3 py-1.5 text-xs font-semibold text-white">From $120</div>
-                </div>
-              </div>
-            </div>
-
-            <motion.div
-              initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, x: 20, y: 20 }}
-              animate={prefersReducedMotion ? { opacity: 1, x: 0, y: 0 } : { opacity: 1, x: 0, y: 0 }}
-              transition={{ delay: 0.45, duration: 0.8 }}
-              className="absolute -bottom-6 -left-6 rounded-[1.25rem] border border-slate-200 bg-white/90 p-4 shadow-[0_20px_35px_rgba(15,23,42,0.08)] backdrop-blur-sm"
+            {/* Headline: clip-path curtain reveal, each line staggered */}
+            <h1
+              className="font-display text-[3.25rem] font-800 leading-[0.92] tracking-tightest text-charcoal-900 sm:text-[4.5rem] lg:text-[5.75rem]"
+              aria-label="Discover Rwanda your way."
             >
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-800">
-                  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-                    <path d="M12 21s-6.7-4.35-9.5-8.56C.84 9.72 2.9 4.5 7.7 4.5c2.14 0 3.15 1.14 4.3 2.64C13.15 5.64 14.16 4.5 16.3 4.5c4.8 0 6.86 5.22 5.2 7.94C18.7 16.65 12 21 12 21Z" />
-                  </svg>
+              <RevealLine delay={0.1}>Discover</RevealLine>
+              <RevealLine delay={0.2}>Rwanda{' '}
+                <span className="italic text-brand">your way.</span>
+              </RevealLine>
+            </h1>
+
+            {/* Sub-copy */}
+            <FadeUp delay={0.38} className="mt-7">
+              <p className="max-w-md text-base leading-7 text-charcoal-200 sm:text-lg">
+                Stays, experiences, events and services, curated by local hosts who know Rwanda best.
+              </p>
+            </FadeUp>
+
+            {/* CTAs */}
+            <FadeUp delay={0.48} className="mt-10">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <motion.button
+                  onClick={handleExploreClick}
+                  whileHover={reduce ? {} : { y: -2, boxShadow: '0 20px 40px rgba(0,0,0,0.18)' }}
+                  whileTap={reduce ? {} : { scale: 0.97 }}
+                  transition={{ duration: 0.2 }}
+                  className="group inline-flex items-center justify-center gap-2.5 rounded-xl bg-charcoal-900 px-7 py-3.5 text-sm font-semibold text-cream shadow-elevated transition-colors hover:bg-charcoal-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-charcoal-900 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+                  aria-label="Start exploring Rwanda"
+                >
+                  Start Exploring
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
+                </motion.button>
+
+                <button
+                  onClick={handleHostClick}
+                  className="inline-flex items-center justify-center gap-1.5 px-2 py-3.5 text-sm font-semibold text-charcoal-900 underline underline-offset-4 decoration-charcoal-900/30 hover:decoration-charcoal-900 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-charcoal-900 rounded-lg"
+                  aria-label="List your experience as a host"
+                >
+                  List your experience
+                  <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </button>
+              </div>
+            </FadeUp>
+
+            {/* Trust line */}
+            <FadeUp delay={0.56} className="mt-8">
+              <p className="text-xs text-charcoal-200">
+                Trusted by travelers and local hosts across Rwanda.
+              </p>
+            </FadeUp>
+          </div>
+
+          {/* Right column: parallax abstract card */}
+          <div className="relative hidden lg:block">
+            {/* Main card with parallax scroll */}
+            <motion.div
+              initial={reduce ? false : { opacity: 0, scale: 0.94 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              style={reduce ? {} : { y: cardY }}
+              className="relative overflow-hidden rounded-2xl bg-charcoal-900 aspect-[4/5]"
+            >
+              {/* Grid background */}
+              <div aria-hidden="true" className="absolute inset-0">
+                <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full border border-white/5" />
+                <div className="absolute -top-12 -right-12 h-56 w-56 rounded-full border border-white/5" />
+                <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-brand/20 to-transparent" />
+                <svg
+                  className="absolute inset-0 h-full w-full opacity-[0.07]"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <defs>
+                    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+                      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="white" strokeWidth="0.5" />
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#grid)" />
+                </svg>
+              </div>
+
+              {/* Content layer */}
+              <div className="relative flex h-full flex-col justify-between p-8">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/40">
+                  Inzu Stay
+                </span>
+                <div className="text-center select-none" aria-hidden="true">
+                  <p className="font-display text-[8rem] font-800 leading-none tracking-tightest text-white/5">
+                    RW
+                  </p>
+                  <div className="mt-4 flex justify-center gap-3">
+                    {['Stays', 'Experiences', 'Events', 'Services'].map((cat) => (
+                      <span
+                        key={cat}
+                        className="rounded-lg border border-white/10 px-2.5 py-1 text-[10px] font-medium text-white/50"
+                      >
+                        {cat}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <div>
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">trusted by</div>
-                  <div className="text-sm font-semibold text-slate-900">Local hosts</div>
+                <div className="flex items-center gap-3">
+                  <div className="h-px flex-1 bg-white/10" aria-hidden="true" />
+                  <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-white/40">
+                    Kigali, Rwanda
+                  </span>
+                  <div className="h-px flex-1 bg-white/10" aria-hidden="true" />
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </div>
 
-      <div className="absolute bottom-8 left-1/2 z-20 -translate-x-1/2 animate-[pulse_2s_ease-in-out_infinite]">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300/60 bg-white/60 text-emerald-900 backdrop-blur-sm">
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+              <div className="absolute top-8 right-8 h-3 w-3 rounded-full bg-brand" aria-hidden="true" />
+            </motion.div>
+
+            {/* Floating info card: parallaxes at different rate (depth effect) */}
+            <motion.div
+              initial={reduce ? false : { opacity: 0, x: 16, y: 16 }}
+              animate={{ opacity: 1, x: 0, y: 0 }}
+              transition={{ delay: 0.75, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              style={reduce ? {} : { y: floatingCardY }}
+              className="absolute -bottom-6 -left-8 rounded-xl border border-charcoal-900/8 bg-cream px-5 py-4 shadow-elevated"
+            >
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-charcoal-200">
+                Local hosts
+              </p>
+              <p className="mt-1 text-sm font-semibold text-charcoal-900">
+                Across all of Rwanda
+              </p>
+            </motion.div>
+          </div>
+
+        </div>
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2" aria-hidden="true">
+        <motion.div
+          animate={{ y: [0, 7, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-charcoal-900/15 bg-cream/80 backdrop-blur-sm"
+        >
+          <svg className="h-3.5 w-3.5 text-charcoal-900" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14m0 0 6-6m-6 6-6-6" />
           </svg>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

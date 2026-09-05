@@ -1,113 +1,118 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import { motion, useInView, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { landingAnalytics } from '../../utils/analytics';
 
+const features = [
+  {
+    title: 'Local authenticity',
+    description: 'Every experience is designed by people who know Rwanda, not algorithms.',
+  },
+  {
+    title: 'Community impact',
+    description: 'Your bookings directly support local entrepreneurs and sustainable tourism.',
+  },
+  {
+    title: 'Meaningful travel',
+    description: 'Go beyond sightseeing. Leave with stories and connections that last.',
+  },
+];
+
 export default function RwandaStory() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(sectionRef, { once: true, margin: '-80px' });
+  const reduce = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+  const paragraphY = useTransform(scrollYProgress, [0, 1], ['20px', '-20px']);
+
   useEffect(() => {
     landingAnalytics.trackSectionImpression('rwanda-story');
   }, []);
 
   return (
     <section
-      className="relative py-32 bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-950 text-white overflow-hidden"
-      aria-label="Rwanda story"
+      ref={sectionRef}
+      className="relative bg-cream py-28 border-t border-charcoal-900/8"
+      aria-label="About Rwanda"
     >
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <svg className="w-full h-full" viewBox="0 0 1440 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 300 Q360 100 720 300 T1440 300 L1440 600 L0 600 Z" fill="rgba(255,255,255,0.05)" />
-          <path d="M0 250 Q360 50 720 250 T1440 250 L1440 600 L0 600 Z" fill="rgba(255,255,255,0.05)" />
-        </svg>
-      </div>
-
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Left: Content */}
-          <div className="space-y-8">
-            <div>
-              <span className="inline-block px-4 py-2 rounded-full bg-emerald-700/40 border border-emerald-500/40 text-emerald-200 text-xs font-bold uppercase tracking-[0.14em] mb-6">
-                Discover
-              </span>
-              <h2 className="text-5xl sm:text-6xl font-bold leading-tight mb-4">
-                More than a destination.
-              </h2>
-              <p className="text-lg text-emerald-100 leading-relaxed">
-                Rwanda isn't just a place to visit—it's an experience to live. Through INZU STAY, you'll discover the true heart of Rwanda through authentic connections with local hosts, expert guides, and vibrant communities.
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-emerald-500/20 border border-emerald-500/40">
-                    <svg className="h-6 w-6 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold mb-1">Local authenticity</h3>
-                  <p className="text-emerald-100">Experiences crafted by people who know Rwanda best</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-emerald-500/20 border border-emerald-500/40">
-                    <svg className="h-6 w-6 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold mb-1">Community impact</h3>
-                  <p className="text-emerald-100">Support local entrepreneurs and sustainable tourism</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-emerald-500/20 border border-emerald-500/40">
-                    <svg className="h-6 w-6 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold mb-1">Memories made</h3>
-                  <p className="text-emerald-100">Create unforgettable stories and meaningful connections</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right: Visual */}
-          <div className="relative h-96 md:h-full min-h-96 rounded-3xl overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 via-emerald-500/10 to-transparent" />
-            <svg
-              className="w-full h-full"
-              viewBox="0 0 400 500"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        {/* Pull-quote row */}
+        <div className="mb-20">
+          <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-charcoal-200 mb-6">
+            <motion.span
+              className="block h-px bg-brand"
+              initial={reduce ? false : { width: 0 }}
+              animate={inView ? { width: 32 } : {}}
+              transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               aria-hidden="true"
-            >
-              {/* Mountain illustration */}
-              <path d="M50 300 L150 100 L250 200 L350 120 L400 300" stroke="rgba(255,255,255,0.2)" strokeWidth="2" fill="none" />
-              <path d="M0 200 L100 50 L200 150 L300 80 L400 200 L400 500 L0 500 Z" fill="rgba(16,185,129,0.1)" />
-              
-              {/* Decorative elements */}
-              <circle cx="100" cy="80" r="4" fill="rgba(255,255,255,0.3)" />
-              <circle cx="280" cy="120" r="3" fill="rgba(255,255,255,0.2)" />
-              <circle cx="180" cy="40" r="3" fill="rgba(255,255,255,0.25)" />
-            </svg>
-
-            {/* Text overlay */}
-            <div className="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent">
-              <p className="text-emerald-200 text-sm font-semibold mb-2">Welcome to Rwanda</p>
-              <h3 className="text-2xl font-bold text-white">The land of a thousand hills</h3>
-            </div>
+            />
+            Discover
           </div>
+
+          <div className="overflow-hidden">
+            <motion.h2
+              initial={reduce ? false : { y: '105%' }}
+              animate={inView ? { y: '0%' } : {}}
+              transition={{ duration: 0.85, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              className="font-display text-4xl font-800 leading-[0.95] tracking-tightest text-charcoal-900 sm:text-5xl lg:text-[5rem] max-w-3xl text-balance"
+            >
+              Rwanda is more than a destination.
+            </motion.h2>
+          </div>
+        </div>
+
+        {/* Body and features */}
+        <div className="grid gap-16 lg:grid-cols-[0.8fr_1fr] items-start">
+
+          {/* Left: editorial paragraph */}
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            style={reduce ? {} : { y: paragraphY }}
+          >
+            <p className="text-base leading-8 text-charcoal-200 max-w-sm">
+              Through INZU STAY, you access the true heart of Rwanda, guided by local hosts, expert guides and vibrant communities who want to share what they love most.
+            </p>
+          </motion.div>
+
+          {/* Right: feature list */}
+          <div className="space-y-0">
+            {features.map((feature, i) => (
+              <motion.div
+                key={feature.title}
+                initial={reduce ? false : { opacity: 0, y: 24 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.65, delay: 0.25 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                className="border-t border-charcoal-900/8 py-8 grid grid-cols-[1.5rem_1fr] gap-5 items-start"
+              >
+                {/* Marker */}
+                <motion.span
+                  className="mt-1.5 block h-1.5 w-1.5 rounded-full bg-brand flex-shrink-0"
+                  initial={reduce ? false : { scale: 0 }}
+                  animate={inView ? { scale: 1 } : {}}
+                  transition={{ duration: 0.4, delay: 0.35 + i * 0.12, ease: 'backOut' }}
+                  aria-hidden="true"
+                />
+
+                <div>
+                  <h3 className="font-display text-lg font-700 text-charcoal-900 tracking-tight mb-1.5">
+                    {feature.title}
+                  </h3>
+                  <p className="text-sm leading-6 text-charcoal-200">
+                    {feature.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+            <div className="border-t border-charcoal-900/8" aria-hidden="true" />
+          </div>
+
         </div>
       </div>
     </section>

@@ -1,22 +1,80 @@
+/* ──────────────────────────────────────────────
+   Clash Grotesk: display typeface
+   Must be first, before @tailwind directives
+   ────────────────────────────────────────────── */
+@import url('https://api.fontshare.com/v2/css?f[]=clash-grotesk@400,500,600,700,800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ──────────────────────────────────────────────
+   Design tokens
+   ────────────────────────────────────────────── */
 :root {
   color-scheme: light;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Palette */
+  --color-cream:    #F5F2ED;
+  --color-charcoal: #111111;
+  --color-brand:    #0A7C5C;
+
+  /* Typography */
+  --font-display: 'Clash Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-body: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+/* ──────────────────────────────────────────────
+   Base reset
+   ────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: #f8fafc;
+  background-color: var(--color-cream);
+  color: var(--color-charcoal);
 }
 
 #root {
   min-height: 100vh;
 }
 
+/* ──────────────────────────────────────────────
+   Typography utilities
+   ────────────────────────────────────────────── */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* ──────────────────────────────────────────────
+   Scrollbar suppression
+   ────────────────────────────────────────────── */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ──────────────────────────────────────────────
+   Dropdown utility (kept for navbar components)
+   ────────────────────────────────────────────── */
 @keyframes dropdown {
   from {
     opacity: 0;
@@ -26,13 +84,4 @@ body {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
 }

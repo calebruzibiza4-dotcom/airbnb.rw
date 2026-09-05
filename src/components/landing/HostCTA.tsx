@@ -1,14 +1,31 @@
 'use client';
 
-import { useEffect } from 'react';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { useEffect, useRef } from 'react';
+import { motion, useInView, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { landingAnalytics } from '../../utils/analytics';
 
 interface HostCTAProps {
   onHostClick: () => void;
 }
 
+const benefits = [
+  'Low commission rates with fast, transparent payouts',
+  'Dedicated host support and onboarding resources',
+  'Exposure to travelers actively planning their Rwanda trip',
+  'Full control over your listing, pricing and availability',
+];
+
 export default function HostCTA({ onHostClick }: HostCTAProps) {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(sectionRef, { once: true, margin: '-80px' });
+  const reduce = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+  const cardParallaxY = useTransform(scrollYProgress, [0, 1], ['30px', '-30px']);
+
   useEffect(() => {
     landingAnalytics.trackSectionImpression('host-cta');
   }, []);
@@ -20,83 +37,140 @@ export default function HostCTA({ onHostClick }: HostCTAProps) {
 
   return (
     <section
-      className="relative py-24 bg-gradient-to-r from-emerald-50 via-white to-emerald-50 border-y border-slate-200"
+      ref={sectionRef}
+      className="relative bg-cream py-24 border-t border-charcoal-900/8"
       aria-label="Become a host"
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Left: Content */}
-          <div className="space-y-8">
-            <div>
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-[0.14em] mb-6">
-                <Sparkles className="w-4 h-4" />
-                Opportunity
-              </span>
-              <h2 className="text-5xl sm:text-6xl font-bold text-slate-900 leading-tight mb-4">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="grid items-center gap-16 lg:grid-cols-2">
+
+          {/* Left: Copy */}
+          <div className="flex flex-col">
+            <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-charcoal-200 mb-6">
+              <motion.span
+                className="block h-px bg-brand"
+                initial={reduce ? false : { width: 0 }}
+                animate={inView ? { width: 32 } : {}}
+                transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                aria-hidden="true"
+              />
+              For Hosts
+            </div>
+
+            <div className="overflow-hidden mb-6">
+              <motion.h2
+                initial={reduce ? false : { y: '105%' }}
+                animate={inView ? { y: '0%' } : {}}
+                transition={{ duration: 0.85, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                className="font-display text-4xl font-800 leading-tight tracking-tightest text-charcoal-900 sm:text-5xl lg:text-6xl text-balance"
+              >
                 Have something worth sharing?
-              </h2>
-              <p className="text-xl text-slate-600 leading-relaxed">
-                Turn your experience, event, service or accommodation into an opportunity to connect with people exploring Rwanda. Earn income while sharing your passion.
-              </p>
+              </motion.h2>
             </div>
 
-            {/* Benefits */}
-            <div className="space-y-4">
-              {[
-                'Low commission rates and quick payouts',
-                'Full support and host resources',
-                'Marketing assistance and exposure',
-                'Dedicated host community',
-              ].map((benefit, idx) => (
-                <div key={idx} className="flex items-center gap-3">
-                  <div className="flex-shrink-0">
-                    <svg className="h-6 w-6 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <span className="text-slate-700 font-medium">{benefit}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* CTA Button */}
-            <button
-              onClick={handleClick}
-              className="inline-flex items-center gap-3 px-8 py-4 bg-emerald-800 text-white font-bold rounded-2xl hover:bg-emerald-900 hover:scale-105 transition duration-300 shadow-lg shadow-emerald-800/30 group"
+            <motion.p
+              initial={reduce ? false : { opacity: 0, y: 16 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="text-base leading-7 text-charcoal-200 mb-10 max-w-md"
             >
-              Become a Host
-              <ArrowRight className="w-5 h-5 transition group-hover:translate-x-1" />
-            </button>
+              Turn your place, expertise or event into an opportunity. Earn income while helping travelers discover the real Rwanda.
+            </motion.p>
+
+            {/* Benefits: plain list, no icons */}
+            <ul className="mb-10 space-y-3" aria-label="Host benefits">
+              {benefits.map((benefit, i) => (
+                <motion.li
+                  key={benefit}
+                  initial={reduce ? false : { opacity: 0, x: -12 }}
+                  animate={inView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.35 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex items-start gap-3 text-sm text-charcoal-900"
+                >
+                  <span className="mt-1.5 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand" aria-hidden="true" />
+                  {benefit}
+                </motion.li>
+              ))}
+            </ul>
+
+            {/* CTA: solid, high contrast */}
+            <motion.div
+              initial={reduce ? false : { opacity: 0, y: 16 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <motion.button
+                onClick={handleClick}
+                whileHover={reduce ? {} : { y: -2, boxShadow: '0 20px 40px rgba(0,0,0,0.18)' }}
+                whileTap={reduce ? {} : { scale: 0.97 }}
+                className="inline-flex items-center gap-2.5 rounded-xl bg-charcoal-900 px-7 py-3.5 text-sm font-semibold text-cream transition-colors hover:bg-charcoal-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-charcoal-900 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+              >
+                Become a Host
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </motion.button>
+            </motion.div>
           </div>
 
-          {/* Right: Visual */}
-          <div className="relative h-96 rounded-3xl overflow-hidden bg-gradient-to-br from-emerald-600 to-emerald-800 shadow-2xl">
-            {/* Background pattern */}
-            <div className="absolute inset-0 opacity-20">
-              <svg className="w-full h-full" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <circle cx="100" cy="100" r="80" stroke="rgba(255,255,255,0.1)" strokeWidth="2" fill="none" />
-                <circle cx="300" cy="300" r="100" stroke="rgba(255,255,255,0.1)" strokeWidth="2" fill="none" />
-                <rect x="50" y="250" width="300" height="100" stroke="rgba(255,255,255,0.1)" strokeWidth="2" fill="none" />
-              </svg>
-            </div>
-
-            {/* Content overlay */}
-            <div className="relative h-full flex flex-col justify-end p-8 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent text-white">
-              <p className="text-emerald-300 text-sm font-semibold mb-2">Join our community</p>
-              <h3 className="text-3xl font-bold mb-3">Earn on your terms</h3>
-              <p className="text-emerald-100 mb-6">Share your expertise and create income while helping others discover Rwanda</p>
-              <div className="flex gap-4">
-                {[1, 2, 3].map((i) => (
-                  <div
-                    key={i}
-                    className="h-10 w-10 rounded-full bg-emerald-500/30 border border-emerald-400/50 flex items-center justify-center text-xs font-bold"
-                  >
-                    +
-                  </div>
-                ))}
+          {/* Right: Abstract card */}
+          <motion.div
+            initial={reduce ? false : { opacity: 0, scale: 0.96 }}
+            animate={inView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            style={reduce ? {} : { y: cardParallaxY }}
+            className="relative hidden lg:block"
+          >
+            <div className="relative overflow-hidden rounded-2xl bg-charcoal-900 aspect-square">
+              {/* Abstract grid */}
+              <div aria-hidden="true" className="absolute inset-0">
+                <svg className="h-full w-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <pattern id="hostgrid" width="48" height="48" patternUnits="userSpaceOnUse">
+                      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="white" strokeWidth="0.5" />
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#hostgrid)" />
+                </svg>
+                {/* Brand accent */}
+                <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-brand/15 to-transparent" />
               </div>
+
+              {/* Content */}
+              <div className="relative flex h-full flex-col justify-between p-10">
+                <div>
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/30">
+                    Host on INZU STAY
+                  </span>
+                </div>
+
+                <div>
+                  <p
+                    className="font-display text-[5rem] font-800 leading-none tracking-tightest text-white/[0.04] select-none"
+                    aria-hidden="true"
+                  >
+                    Host
+                  </p>
+                  <div className="mt-6 h-px bg-white/10" aria-hidden="true" />
+                  <p className="mt-4 text-sm text-white/40 max-w-xs leading-6">
+                    Share your space, knowledge or event and earn income while connecting with travelers who care.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="h-px flex-1 bg-white/10" aria-hidden="true" />
+                  <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/30">
+                    Rwanda
+                  </span>
+                  <div className="h-px flex-1 bg-white/10" aria-hidden="true" />
+                </div>
+              </div>
+
+              {/* Accent dot */}
+              <div className="absolute top-8 right-8 h-2.5 w-2.5 rounded-full bg-brand" aria-hidden="true" />
             </div>
-          </div>
+          </motion.div>
+
         </div>
       </div>
     </section>

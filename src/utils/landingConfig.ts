@@ -22,7 +22,7 @@ export const landingVariants: Record<LandingVariant, LandingConfig> = {
   A: {
     variant: 'A',
     heroHeadline: 'Discover Rwanda, your way.',
-    heroSubheading: 'Find unforgettable experiences, events, services and places to stay — all in one place.',
+    heroSubheading: 'Find unforgettable experiences, events, services and places to stay, all in one place.',
     primaryCTAText: 'Explore Rwanda',
     secondaryCTAText: 'Become a Host',
     heroImageStyle: 'gradient-overlay',
