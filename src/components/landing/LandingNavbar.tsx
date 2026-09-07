@@ -6,9 +6,10 @@ import { landingAnalytics } from '../../utils/analytics';
 interface LandingNavbarProps {
   onLogoClick?: () => void;
   onExploreClick?: () => void;
+  onLoginClick?: () => void;
 }
 
-export default function LandingNavbar({ onLogoClick, onExploreClick }: LandingNavbarProps) {
+export default function LandingNavbar({ onLogoClick, onExploreClick, onLoginClick }: LandingNavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLDivElement | null>(null);
@@ -42,10 +43,21 @@ export default function LandingNavbar({ onLogoClick, onExploreClick }: LandingNa
     const params = new URLSearchParams();
     params.set('view', 'browse');
     if (category) params.set('category', category);
-    window.location.href = `/?${params.toString()}`;
+    const href = `/?${params.toString()}`;
+    if (window.location.pathname + window.location.search !== href) {
+      window.history.pushState({}, '', href);
+      window.dispatchEvent(new Event('pushstate'));
+    }
   };
 
-  const goToLanding = () => { if (typeof window !== 'undefined') window.location.href = '/'; };
+  const goToLanding = () => { 
+    if (typeof window !== 'undefined') {
+      if (window.location.pathname !== '/') {
+        window.history.pushState({}, '', '/');
+        window.dispatchEvent(new Event('pushstate'));
+      }
+    } 
+  };
 
   const track = (action: string, cb?: () => void) => {
     setIsOpen(false);
@@ -121,7 +133,7 @@ export default function LandingNavbar({ onLogoClick, onExploreClick }: LandingNa
                 </button>
               ) : (
                 <button
-                  onClick={() => track('login_clicked', () => goToBrowse())}
+                  onClick={() => track('login_clicked', onLoginClick || (() => goToBrowse()))}
                   className="px-3 py-1.5 text-sm font-medium text-charcoal-700 hover:text-charcoal-900 rounded-lg hover:bg-charcoal-900/5 transition-colors duration-200"
                 >
                   Log in
@@ -179,7 +191,7 @@ export default function LandingNavbar({ onLogoClick, onExploreClick }: LandingNa
                   </button>
                 ) : (
                   <button
-                    onClick={() => track('login_clicked', () => goToBrowse())}
+                    onClick={() => track('login_clicked', onLoginClick || (() => goToBrowse()))}
                     className="flex items-center justify-between w-full px-3 py-2.5 text-left text-sm font-medium text-charcoal-900 rounded-lg hover:bg-charcoal-900/5 transition-colors duration-200"
                   >
                     <span>Log in</span>

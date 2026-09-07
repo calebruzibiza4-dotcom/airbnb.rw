@@ -16,9 +16,14 @@ import HostCTA from '../../components/landing/HostCTA';
 import FinalCTA from '../../components/landing/FinalCTA';
 import Footer from '../../components/landing/Footer';
 import ScrollProgress from '../../components/landing/ScrollProgress';
+import AuthModal from '../auth/AuthModal';
+import LoginModal from '../auth/LoginModal';
+import SignupModal from '../auth/SignupModal';
+import ForgotPasswordModal from '../auth/ForgotPasswordModal';
 
 export default function Landing() {
   const [hostWizardOpen, setHostWizardOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'signup' | 'forgot' | null>(null);
 
   useScrollTracking();
 
@@ -47,6 +52,7 @@ export default function Landing() {
       <LandingNavbar
         onExploreClick={handleExploreClick}
         onLogoClick={() => (window.location.href = '/')}
+        onLoginClick={() => setAuthMode('login')}
       />
 
       <main aria-label="Landing page content">
@@ -62,6 +68,20 @@ export default function Landing() {
         <FinalCTA onExploreClick={handleExploreClick} />
         <Footer />
       </main>
+
+      <AuthModal
+        open={authMode !== null}
+        title={authMode === 'signup' ? 'Sign up' : authMode === 'forgot' ? 'Password recovery' : 'Log in'}
+        onClose={() => setAuthMode(null)}
+      >
+        {authMode === 'signup' ? (
+          <SignupModal onSwitchToLogin={() => setAuthMode('login')} />
+        ) : authMode === 'forgot' ? (
+          <ForgotPasswordModal onClose={() => setAuthMode(null)} onBackToLogin={() => setAuthMode('login')} />
+        ) : (
+          <LoginModal onSwitchToSignup={() => setAuthMode('signup')} onForgotPassword={() => setAuthMode('forgot')} />
+        )}
+      </AuthModal>
 
       {/* Host wizard overlay */}
       {hostWizardOpen && (

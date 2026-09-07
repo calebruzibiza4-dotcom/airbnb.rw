@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { landingAnalytics } from '../../utils/analytics';
+import { Link } from '../ui/Link';
 
 const exploreLinks = [
   { label: 'Stays', href: '/?view=browse&category=stays' },
@@ -55,7 +56,7 @@ export default function Footer() {
 
           {/* Brand column */}
           <div className="lg:col-span-1">
-            <a
+            <Link
               href="/"
               className="inline-flex items-center gap-2.5 mb-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-lg"
               aria-label="INZU STAY homepage"
@@ -69,7 +70,7 @@ export default function Footer() {
               <span className="font-display text-sm font-700 tracking-[0.18em] text-cream uppercase">
                 INZU STAY
               </span>
-            </a>
+            </Link>
 
             <p className="text-sm leading-6 text-white/40 max-w-[220px]">
               Discover Rwanda through authentic experiences and local connections.
@@ -85,13 +86,13 @@ export default function Footer() {
               <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.label}>
-                    <a
+                    <Link
                       href={link.href}
                       onClick={() => track(link.label)}
                       className="text-sm text-white/50 hover:text-white transition-colors duration-200 focus-visible:outline-none focus-visible:text-white"
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -106,14 +107,14 @@ export default function Footer() {
           </p>
           <div className="flex flex-wrap gap-5">
             {legalLinks.slice(0, 2).map((link) => (
-              <a
+              <Link
                 key={link.label}
                 href={link.href}
                 onClick={() => track(link.label)}
                 className="text-xs text-white/30 hover:text-white/60 transition-colors duration-200 focus-visible:outline-none focus-visible:text-white/60"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
         </div>
