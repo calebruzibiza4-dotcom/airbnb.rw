@@ -9,6 +9,7 @@ import AccountMenu from './AccountMenu';
 import Categories from './categories';
 import type { TopCategoryKey } from '../../data/categoryNavigation';
 import { useAuthSession } from '../../auth/AuthSessionProvider';
+import ThemeToggle from '../ui/ThemeToggle';
 
 type NavbarProps = {
   onOpenHostWizard?: () => void;
@@ -262,6 +263,7 @@ export default function Navbar({ onOpenHostWizard, hostProfileComplete = false, 
             <button type="button" aria-label="Choose language" className="hidden h-11 w-11 place-items-center rounded-full text-slate-700 transition duration-200 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 sm:grid">
               <GlobeIcon />
             </button>
+            <ThemeToggle />
             <AccountMenu onLogIn={() => setAuthMode('login')} onSignUp={() => setAuthMode('signup')} onSignOutComplete={() => setAuthMode(null)} onOpenHostWizard={onOpenHostWizard} hostProfileComplete={hostProfileComplete} />
           </div>
         </div>

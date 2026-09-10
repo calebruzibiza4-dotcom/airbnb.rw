@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { X, Menu } from 'lucide-react';
 import { useAuthSession } from '../../auth/AuthSessionProvider';
 import { landingAnalytics } from '../../utils/analytics';
+import ThemeToggle from '../ui/ThemeToggle';
 
 interface LandingNavbarProps {
   onLogoClick?: () => void;
@@ -124,6 +125,7 @@ export default function LandingNavbar({ onLogoClick, onExploreClick, onLoginClic
           <div className="flex items-center gap-2">
             {/* Desktop auth + CTA */}
             <div className="hidden md:flex items-center gap-2">
+              <ThemeToggle />
               {authenticated ? (
                 <button
                   onClick={() => track('profile_clicked', () => goToBrowse())}
@@ -160,6 +162,9 @@ export default function LandingNavbar({ onLogoClick, onExploreClick, onLoginClic
                 : <Menu className="h-4 w-4" />
               }
             </button>
+            <div className="md:hidden">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
 

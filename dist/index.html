@@ -3,9 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (() => {
+        const saved = localStorage.getItem('inzu-theme');
+        const theme = saved === 'dark' || saved === 'light'
+          ? saved
+          : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+      })();
+    </script>
     <title>Airbnb.rw</title>
-    <script type="module" crossorigin src="/assets/index-aUmCqp8M.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-B-tH7Lmu.css">
+    <script type="module" crossorigin src="/assets/index-CzlvkdK9.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BLY15GWR.css">
   </head>
   <body class="bg-slate-50 text-slate-900">
     <div id="root"></div>
