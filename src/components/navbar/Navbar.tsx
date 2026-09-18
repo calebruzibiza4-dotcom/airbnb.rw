@@ -16,6 +16,7 @@ type NavbarProps = {
   hostProfileComplete?: boolean;
   onCategoryChange?: (category: TopCategoryKey) => void;
   onLogoClick?: () => void;
+  onOpenBookings?: () => void;
 };
 
 type SearchType = 'everything' | 'experiences' | 'events' | 'services';
@@ -215,7 +216,7 @@ function GlobeIcon() {
   );
 }
 
-export default function Navbar({ onOpenHostWizard, hostProfileComplete = false, onCategoryChange, onLogoClick }: NavbarProps) {
+export default function Navbar({ onOpenHostWizard, onOpenBookings, hostProfileComplete = false, onCategoryChange, onLogoClick }: NavbarProps) {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [search, setSearch] = useState<SearchState>(initialSearch);
   const [authMode, setAuthMode] = useState<'login' | 'signup' | 'forgot' | null>(null);
@@ -231,6 +232,15 @@ export default function Navbar({ onOpenHostWizard, hostProfileComplete = false, 
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    const handleAuthRequest = (event: Event) => {
+      const mode = (event as CustomEvent<'login' | 'signup'>).detail;
+      if (mode === 'login' || mode === 'signup') setAuthMode(mode);
+    };
+    window.addEventListener('open-auth', handleAuthRequest);
+    return () => window.removeEventListener('open-auth', handleAuthRequest);
   }, []);
 
   const submitSearch = (event: FormEvent) => {
@@ -264,7 +274,7 @@ export default function Navbar({ onOpenHostWizard, hostProfileComplete = false, 
               <GlobeIcon />
             </button>
             <ThemeToggle />
-            <AccountMenu onLogIn={() => setAuthMode('login')} onSignUp={() => setAuthMode('signup')} onSignOutComplete={() => setAuthMode(null)} onOpenHostWizard={onOpenHostWizard} hostProfileComplete={hostProfileComplete} />
+            <AccountMenu onLogIn={() => setAuthMode('login')} onSignUp={() => setAuthMode('signup')} onSignOutComplete={() => setAuthMode(null)} onOpenHostWizard={onOpenHostWizard} onOpenBookings={onOpenBookings} hostProfileComplete={hostProfileComplete} />
           </div>
         </div>
         <div className="mt-3">

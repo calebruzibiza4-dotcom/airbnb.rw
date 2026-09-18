@@ -8,10 +8,11 @@ type AccountMenuProps = {
   onSignUp: () => void;
   onSignOutComplete?: () => void;
   onOpenHostWizard?: () => void;
+  onOpenBookings?: () => void;
   hostProfileComplete?: boolean;
 };
 
-export default function AccountMenu({ onLogIn, onSignUp, onSignOutComplete, onOpenHostWizard, hostProfileComplete = false }: AccountMenuProps) {
+export default function AccountMenu({ onLogIn, onSignUp, onSignOutComplete, onOpenHostWizard, onOpenBookings, hostProfileComplete = false }: AccountMenuProps) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const { session, status, signOut } = useAuthSession();
@@ -46,6 +47,7 @@ export default function AccountMenu({ onLogIn, onSignUp, onSignOutComplete, onOp
           userImage={session?.user?.image}
           onSignOut={handleSignOut}
           onOpenHostWizard={onOpenHostWizard}
+          onOpenBookings={onOpenBookings}
           hostProfileComplete={hostProfileComplete}
         />
       ) : (

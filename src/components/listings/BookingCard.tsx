@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { PublicListing } from './ListingCard';
+import BookingFlow from './BookingFlow';
 
 interface BookingCardProps {
   listing: PublicListing;
@@ -22,38 +23,9 @@ export default function BookingCard({
   ticketQuantity,
   compact = false,
 }: BookingCardProps) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [flowOpen, setFlowOpen] = useState(false);
 
-  const handleBook = async () => {
-    setIsLoading(true);
-
-    // Prepare booking data
-    const bookingData = {
-      listingId: listing.id,
-      listingType: listing.listingType,
-      selectedDate,
-      selectedTime,
-      guestCount: listing.listingType === 'experience' || listing.listingType === 'stay' ? guestCount : undefined,
-      ticketType: listing.listingType === 'event' ? ticketType : undefined,
-      ticketQuantity: listing.listingType === 'event' ? ticketQuantity : undefined,
-    };
-
-    try {
-      // For now, just log the booking data
-      // In the future, this will call the booking API
-      console.log('Booking:', bookingData);
-
-      // Show confirmation or redirect to payment
-      alert('Booking confirmed! You will be redirected to payment.');
-
-      // TODO: Implement actual booking flow
-    } catch (error) {
-      console.error('Booking failed:', error);
-      alert('Booking failed. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const handleBook = () => setFlowOpen(true);
 
   const getButtonText = () => {
     switch (listing.listingType) {
@@ -111,7 +83,8 @@ export default function BookingCard({
 
   if (compact) {
     return (
-      <div className="flex items-center justify-between gap-4">
+      <>
+        <div className="flex items-center justify-between gap-4">
         <div>
           <p className="font-bold text-slate-950">{pricePerUnit()}</p>
           {(listing.listingType === 'experience' || listing.listingType === 'service') && guestCount > 0 && (
@@ -125,12 +98,14 @@ export default function BookingCard({
         </div>
         <button
           onClick={handleBook}
-          disabled={!canBook() || isLoading}
+          disabled={!canBook()}
           className="rounded-lg bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
         >
-          {isLoading ? 'Loading...' : getButtonText()}
+          {getButtonText()}
         </button>
-      </div>
+        </div>
+        {flowOpen ? <BookingFlow listing={listing} selectedDate={selectedDate} selectedTime={selectedTime} guestCount={guestCount} ticketType={ticketType} ticketQuantity={ticketQuantity} onClose={() => setFlowOpen(false)} /> : null}
+      </>
     );
   }
 
@@ -218,14 +193,15 @@ export default function BookingCard({
       {/* Book Button */}
       <button
         onClick={handleBook}
-        disabled={!canBook() || isLoading}
+        disabled={!canBook()}
         className="mt-6 w-full rounded-lg bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isLoading ? 'Processing...' : getButtonText()}
+        {getButtonText()}
       </button>
 
       {/* Info Text */}
-      <p className="mt-4 text-center text-xs text-slate-500">You won't be charged yet</p>
+      <p className="mt-4 text-center text-xs text-slate-500">You will review availability before payment.</p>
+      {flowOpen ? <BookingFlow listing={listing} selectedDate={selectedDate} selectedTime={selectedTime} guestCount={guestCount} ticketType={ticketType} ticketQuantity={ticketQuantity} onClose={() => setFlowOpen(false)} /> : null}
     </div>
   );
 }

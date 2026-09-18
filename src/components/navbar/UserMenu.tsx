@@ -13,6 +13,7 @@ type UserMenuProps = {
   userImage?: string | null;
   onSignOut: () => void;
   onOpenHostWizard?: () => void;
+  onOpenBookings?: () => void;
   hostProfileComplete?: boolean;
 };
 
@@ -27,7 +28,7 @@ const primaryItems = [
   { label: 'Account Settings', icon: faGear, iconClassName: 'text-slate-700' },
 ];
 
-export default function UserMenu({ open, onToggle, userName, userEmail, userImage, onSignOut, onOpenHostWizard, hostProfileComplete = false }: UserMenuProps) {
+export default function UserMenu({ open, onToggle, userName, userEmail, userImage, onSignOut, onOpenHostWizard, onOpenBookings, hostProfileComplete = false }: UserMenuProps) {
   return (
     <div className="relative shrink-0">
       <button
@@ -46,7 +47,7 @@ export default function UserMenu({ open, onToggle, userName, userEmail, userImag
           <ProfileHeader name={userName} email={userEmail} image={userImage} />
           <div className="mt-1.5 space-y-1">
             {primaryItems.map((item) => (
-              <button key={item.label} type="button" role="menuitem" className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-left text-sm text-slate-700 transition duration-200 hover:bg-slate-100 focus-visible:bg-slate-100 focus-visible:outline-none">
+              <button key={item.label} type="button" onClick={item.label === 'My Bookings' ? onOpenBookings : undefined} role="menuitem" className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-left text-sm text-slate-700 transition duration-200 hover:bg-slate-100 focus-visible:bg-slate-100 focus-visible:outline-none">
                 <span className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-xs">
                   <FontAwesomeIcon icon={item.icon} className={item.iconClassName} />
                 </span>

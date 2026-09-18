@@ -14,6 +14,8 @@ import Contact from './pages/contact/Contact';
 import Blog from './pages/blog/Blog';
 import BlogPost from './pages/blog/BlogPost';
 import Help from './pages/help/Help';
+import MyBookings from './pages/bookings/MyBookings';
+import BookingDetails from './pages/bookings/BookingDetails';
 
 const HOST_PROFILE_STORAGE_KEY = 'inzu-host-profile-complete';
 
@@ -80,6 +82,7 @@ export default function App() {
   // Route matching logic
   const isLandingPage = currentPath === '/' && !searchParams.includes('view=browse');
   const listingId = currentPath.startsWith('/listings/') ? currentPath.split('/').pop() : null;
+  const bookingId = currentPath.startsWith('/bookings/') ? currentPath.split('/').pop() : null;
   const isAboutPage = currentPath === '/about';
   const isContactPage = currentPath === '/contact';
   const isHelpPage = currentPath === '/help';
@@ -89,6 +92,14 @@ export default function App() {
   const renderRoute = () => {
     if (isLandingPage) {
       return <Landing />;
+    }
+
+    if (bookingId && currentPath.startsWith('/bookings/')) {
+      return <BookingDetails id={bookingId} />;
+    }
+
+    if (currentPath === '/bookings') {
+      return <MyBookings />;
     }
     
     if (isAboutPage) {
@@ -118,6 +129,10 @@ export default function App() {
           onOpenHostWizard={openHostWizard} 
           hostProfileComplete={hostProfileComplete} 
           onCategoryChange={setCategory}
+          onOpenBookings={() => {
+            window.history.pushState({}, '', '/bookings');
+            window.dispatchEvent(new Event('pushstate'));
+          }}
           onLogoClick={() => {
             window.history.pushState({}, '', '/');
             window.dispatchEvent(new Event('pushstate'));
