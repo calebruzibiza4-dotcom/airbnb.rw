@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowLeft, CheckCircle2, CreditCard, Loader2, MapPin, Smartphone } from 'lucide-react';
 import type { PublicListing } from './ListingCard';
 
@@ -45,8 +45,43 @@ export default function BookingFlow({ listing, selectedDate, selectedTime, guest
   const [booking, setBooking] = useState<Booking | null>(null);
   const [paymentId, setPaymentId] = useState<string | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<'mobile_money' | 'card'>('mobile_money');
+  const [availableMethods, setAvailableMethods] = useState({ mobile_money: false, card: false });
+  const [phone, setPhone] = useState('');
+  const [paymentInstructions, setPaymentInstructions] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    fetch('/api/payments/methods')
+      .then((response) => response.json())
+      .then((payload) => {
+        const methods = payload.methods || { mobile_money: false, card: false };
+        setAvailableMethods(methods);
+        if (!methods.mobile_money && methods.card) setPaymentMethod('card');
+      })
+      .catch(() => setAvailableMethods({ mobile_money: false, card: false }));
+  }, []);
+
+  useEffect(() => {
+    if (step !== 'payment' || !paymentId) return;
+    let active = true;
+    let attempts = 0;
+    const verify = async () => {
+      attempts += 1;
+      try {
+        const response = await fetch(`/api/payments/${paymentId}/status`, { credentials: 'include' });
+        const payload = await response.json();
+        if (!active) return;
+        if (payload.status === 'PAID') setStep('confirmation');
+        if (['FAILED', 'CANCELLED', 'EXPIRED'].includes(payload.status)) setError(`Payment ${String(payload.status).toLowerCase()}. You can try again with another payment method.`);
+      } catch {
+        if (active && attempts >= 6) setError('Payment verification is taking longer than expected. Refresh this step to check again.');
+      }
+    };
+    void verify();
+    const interval = window.setInterval(() => { if (attempts < 12) void verify(); }, 5000);
+    return () => { active = false; window.clearInterval(interval); };
+  }, [paymentId, step]);
 
   const effectiveDate = selectedDate || (listing.availability?.eventDate as string | undefined) || null;
   const quantity = listing.listingType === 'event' ? ticketQuantity : guestCount;
@@ -96,15 +131,15 @@ export default function BookingFlow({ listing, selectedDate, selectedTime, guest
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ method: paymentMethod }),
+        body: JSON.stringify({ method: paymentMethod, phone: paymentMethod === 'mobile_money' ? phone : undefined }),
       });
       const payload = await response.json();
       if (!response.ok) throw new Error(payload?.error?.message || 'Payment could not be started.');
+      setPaymentInstructions(payload.instructions || 'Payment is processing. We will confirm it after server verification.');
       if (payload.redirectUrl) {
         window.location.assign(payload.redirectUrl);
         return;
       }
-      setStep('confirmation');
     } catch (requestError) {
       setError(requestError instanceof Error ? requestError.message : 'Payment could not be started.');
     } finally {
@@ -157,11 +192,14 @@ export default function BookingFlow({ listing, selectedDate, selectedTime, guest
             <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-100">Your booking is held as <strong>PENDING_PAYMENT</strong>. Payment confirmation must come from the configured provider webhook. No payment will be marked successful in this browser.</div>
             <fieldset className="mt-6 space-y-3">
               <legend className="text-sm font-bold text-slate-900 dark:text-white">Payment method</legend>
-              <label className={`flex cursor-pointer items-center gap-3 rounded-2xl border p-4 ${paymentMethod === 'mobile_money' ? 'border-emerald-600 bg-emerald-50 dark:bg-emerald-400/10' : 'border-slate-200 dark:border-white/10'}`}><input type="radio" name="payment-method" checked={paymentMethod === 'mobile_money'} onChange={() => setPaymentMethod('mobile_money')} /><Smartphone className="h-5 w-5 text-emerald-700" /><span className="font-semibold text-slate-900 dark:text-white">Mobile Money</span></label>
-              <label className={`flex cursor-pointer items-center gap-3 rounded-2xl border p-4 ${paymentMethod === 'card' ? 'border-emerald-600 bg-emerald-50 dark:bg-emerald-400/10' : 'border-slate-200 dark:border-white/10'}`}><input type="radio" name="payment-method" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod('card')} /><CreditCard className="h-5 w-5 text-emerald-700" /><span className="font-semibold text-slate-900 dark:text-white">Card</span></label>
+              {availableMethods.mobile_money ? <label className={`flex cursor-pointer items-center gap-3 rounded-2xl border p-4 ${paymentMethod === 'mobile_money' ? 'border-emerald-600 bg-emerald-50 dark:bg-emerald-400/10' : 'border-slate-200 dark:border-white/10'}`}><input type="radio" name="payment-method" checked={paymentMethod === 'mobile_money'} onChange={() => setPaymentMethod('mobile_money')} /><Smartphone className="h-5 w-5 text-emerald-700" /><span><span className="block font-semibold text-slate-900 dark:text-white">MTN Mobile Money</span><span className="text-xs text-slate-500 dark:text-slate-300">Approve securely on your MTN phone.</span></span></label> : null}
+              {availableMethods.card ? <label className={`flex cursor-pointer items-center gap-3 rounded-2xl border p-4 ${paymentMethod === 'card' ? 'border-emerald-600 bg-emerald-50 dark:bg-emerald-400/10' : 'border-slate-200 dark:border-white/10'}`}><input type="radio" name="payment-method" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod('card')} /><CreditCard className="h-5 w-5 text-emerald-700" /><span><span className="block font-semibold text-slate-900 dark:text-white">Credit / Debit Card</span><span className="text-xs text-slate-500 dark:text-slate-300">Secure hosted card checkout.</span></span></label> : null}
+              {!availableMethods.mobile_money && !availableMethods.card ? <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-100">No live payment method is configured yet.</p> : null}
             </fieldset>
+            {paymentMethod === 'mobile_money' ? <label className="mt-5 block text-sm font-semibold text-slate-900 dark:text-white">MTN Rwanda phone number<input value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="07XXXXXXXX" inputMode="tel" className="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 font-normal outline-none focus:border-emerald-600 dark:border-white/10 dark:bg-white/5 dark:text-white" /></label> : null}
+            {paymentInstructions ? <p className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-100">{paymentInstructions}</p> : null}
             {error ? <p role="alert" className="mt-5 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700 dark:border-rose-400/30 dark:bg-rose-400/10 dark:text-rose-200">{error}</p> : null}
-            <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between"><button type="button" onClick={() => setStep('review')} className="inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-3 font-semibold text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"><ArrowLeft className="h-4 w-4" />Back</button><button type="button" onClick={initializePayment} disabled={isLoading} className="flex items-center justify-center gap-2 rounded-2xl bg-emerald-700 px-5 py-3.5 font-bold text-white hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-60">{isLoading ? <><Loader2 className="h-4 w-4 animate-spin" />Redirecting to payment...</> : `Pay ${formatMoney(booking?.total || 0, booking?.currency || listing.currency)}`}</button></div>
+            <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between"><button type="button" onClick={() => setStep('review')} className="inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-3 font-semibold text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"><ArrowLeft className="h-4 w-4" />Back</button><button type="button" onClick={initializePayment} disabled={isLoading || !availableMethods[paymentMethod]} className="flex items-center justify-center gap-2 rounded-2xl bg-emerald-700 px-5 py-3.5 font-bold text-white hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-60">{isLoading ? <><Loader2 className="h-4 w-4 animate-spin" />Waiting for payment...</> : `Pay ${formatMoney(booking?.total || 0, booking?.currency || listing.currency)}`}</button></div>
           </>
         ) : null}
 

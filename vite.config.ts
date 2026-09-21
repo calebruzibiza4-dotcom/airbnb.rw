@@ -7,7 +7,7 @@ import { DELETE_BY_ID as deleteListing, GET as getListings, GET_BY_ID as getList
 import { POST as login } from './src/api/login/route';
 import { POST as register } from './src/api/register/route';
 import { CANCEL as cancelBooking, GET as getBookings, GET_BY_ID as getBookingById, POST as createBooking } from './src/api/bookings/route';
-import { INITIALIZE as initializePayment, WEBHOOK as paymentWebhook } from './src/api/payments/route';
+import { INITIALIZE as initializePayment, METHODS as paymentMethods, STATUS as paymentStatus, WEBHOOK as paymentWebhook } from './src/api/payments/route';
 import { createSession, getSessionByToken } from './src/auth/session-store';
 
 function getBaseUrl(req: any) {
@@ -237,7 +237,25 @@ export default defineConfig({
           if (method === 'POST' && url === '/api/payments/webhook') {
             const chunks: Buffer[] = [];
             for await (const chunk of req) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
-            const response = await paymentWebhook(new Request(`http://localhost${url}`, { method: 'POST', headers: { 'Content-Type': req.headers['content-type'] || 'application/json', 'x-payment-signature': req.headers['x-payment-signature'] || '' }, body: Buffer.concat(chunks) }));
+            const signatureHeader = req.headers['x-payment-signature'];
+            const response = await paymentWebhook(new Request(`http://localhost${url}`, { method: 'POST', headers: { 'Content-Type': req.headers['content-type'] || 'application/json', 'x-payment-signature': Array.isArray(signatureHeader) ? signatureHeader[0] || '' : signatureHeader || '' }, body: Buffer.concat(chunks) }));
+            res.statusCode = response.status;
+            response.headers.forEach((value, key) => res.setHeader(key, value));
+            res.end(await response.text());
+            return;
+          }
+
+          if (method === 'GET' && url === '/api/payments/methods') {
+            const response = paymentMethods();
+            res.statusCode = response.status;
+            response.headers.forEach((value, key) => res.setHeader(key, value));
+            res.end(await response.text());
+            return;
+          }
+
+          if (method === 'GET' && url.startsWith('/api/payments/') && url.endsWith('/status')) {
+            const paymentId = url.split('/')[3] || '';
+            const response = await paymentStatus(paymentId, getSessionUserId(req));
             res.statusCode = response.status;
             response.headers.forEach((value, key) => res.setHeader(key, value));
             res.end(await response.text());
