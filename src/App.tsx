@@ -16,6 +16,7 @@ import BlogPost from './pages/blog/BlogPost';
 import Help from './pages/help/Help';
 import MyBookings from './pages/bookings/MyBookings';
 import BookingDetails from './pages/bookings/BookingDetails';
+import AuthPages from './pages/auth/AuthPages';
 
 const HOST_PROFILE_STORAGE_KEY = 'inzu-host-profile-complete';
 
@@ -88,10 +89,15 @@ export default function App() {
   const isHelpPage = currentPath === '/help';
   const isBlogPage = currentPath === '/blog';
   const blogSlug = currentPath.startsWith('/blog/') ? currentPath.split('/').pop() : null;
+  const isAuthPage = ['/login', '/signup', '/forgot-password', '/reset-password', '/verify-email'].includes(currentPath);
 
   const renderRoute = () => {
     if (isLandingPage) {
       return <Landing />;
+    }
+
+    if (isAuthPage) {
+      return <AuthPages pathname={currentPath} />;
     }
 
     if (bookingId && currentPath.startsWith('/bookings/')) {

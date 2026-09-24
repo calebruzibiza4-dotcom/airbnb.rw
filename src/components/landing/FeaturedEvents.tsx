@@ -10,6 +10,7 @@ interface Event {
   date: string;
   location: string;
   price: number;
+  currency?: string;
   image?: string;
 }
 
@@ -101,7 +102,7 @@ export default function FeaturedEvents() {
             ? events.map((event, i) => (
                 <motion.a
                   key={event.id}
-                  href={`/events/${event.id}`}
+                  href={`/listings/${event.id}`}
                   onClick={() => landingAnalytics.trackListingClick(event.id, event.title)}
                   initial={reduce ? false : { opacity: 0, y: 20 }}
                   animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -133,7 +134,7 @@ export default function FeaturedEvents() {
                     <div className="flex items-center justify-between text-xs text-white/40">
                       <span>{event.location}</span>
                       <span className="font-medium text-white/60">
-                        {event.price ? `$${event.price}` : 'Free'}
+                        {event.price ? `${event.currency || 'RWF'} ${event.price.toLocaleString()}` : 'Free'}
                       </span>
                     </div>
                   </div>

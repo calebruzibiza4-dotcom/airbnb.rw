@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { CalendarDays, MapPin } from 'lucide-react';
 import Link from '../../components/ui/Link';
+import { useAuthSession } from '../../auth/AuthSessionProvider';
 
 type Booking = {
   id: string;
@@ -29,8 +30,15 @@ export default function MyBookings() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>('UPCOMING');
   const [state, setState] = useState<'loading' | 'ready' | 'error'>('loading');
+  const { status } = useAuthSession();
 
   useEffect(() => {
+    if (status === 'loading') return;
+    if (status === 'unauthenticated') {
+      setState('error');
+      return;
+    }
+
     fetch('/api/bookings', { credentials: 'include' })
       .then(async (response) => {
         const payload = await response.json();
@@ -39,7 +47,7 @@ export default function MyBookings() {
         setState('ready');
       })
       .catch(() => setState('error'));
-  }, []);
+  }, [status]);
 
   const filtered = useMemo(() => bookings.filter((booking) => {
     if (activeTab === 'CANCELLED') return booking.status === 'CANCELLED' || booking.status === 'REFUNDED';

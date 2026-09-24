@@ -140,7 +140,7 @@ function SearchBar({ search, onChange, onSubmit }: { search: SearchState; onChan
   };
 
   return (
-    <form onSubmit={onSubmit} className="hidden h-[70px] w-full max-w-[930px] items-center rounded-[24px] border border-slate-200 bg-white p-1.5 shadow-[0_8px_24px_rgba(15,23,42,0.08)] md:flex">
+    <form onSubmit={onSubmit} className="hidden h-[70px] w-full max-w-[930px] items-center rounded-[24px] border border-slate-200 bg-white p-1.5 shadow-[0_8px_24px_rgba(15,23,42,0.08)] lg:flex">
       <div className="relative min-w-0 flex-[1.25]">
         <SearchField label="What">
           <input value={search.query} onChange={(event) => handleQueryChange(event.target.value)} list="what-search-suggestions" placeholder="Stays, experiences, events..." className="mt-0.5 w-full truncate bg-transparent text-sm font-semibold text-slate-900 outline-none placeholder:text-slate-400" aria-label="What are you looking for?" />
@@ -277,7 +277,7 @@ export default function Navbar({ onOpenHostWizard, onOpenBookings, hostProfileCo
             <AccountMenu onLogIn={() => setAuthMode('login')} onSignUp={() => setAuthMode('signup')} onSignOutComplete={() => setAuthMode(null)} onOpenHostWizard={onOpenHostWizard} onOpenBookings={onOpenBookings} hostProfileComplete={hostProfileComplete} />
           </div>
         </div>
-        <div className="mt-3">
+        <div className="mt-3 lg:hidden">
             <MobileSearch open={mobileSearchOpen} onToggle={() => setMobileSearchOpen((open) => !open)} search={search} onChange={setSearch} onSubmit={submitSearch} />
         </div>
       </div>
